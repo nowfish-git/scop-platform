@@ -1,0 +1,1362 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SCOP 智慧社区运营平台 — 投资分析与商业可行性报告</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB",
+    "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 15px; line-height: 1.8; color: #1f2937; background: #f9fafb;
+  -webkit-font-smoothing: antialiased;
+}
+.topbar {
+  position: sticky; top: 0; z-index: 100; background: #fff;
+  border-bottom: 1px solid #e5e7eb; padding: 14px 24px;
+  display: flex; align-items: center; gap: 14px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+}
+.topbar .menu-btn {
+  display: none; background: none; border: none; cursor: pointer;
+  font-size: 22px; color: #4b5563; padding: 4px 8px; border-radius: 6px;
+}
+.topbar .menu-btn:hover { background: #f3f4f6; }
+.topbar h1 { font-size: 18px; font-weight: 600; color: #111827; flex: 1; min-width: 0;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.badge-ver {
+  display: inline-block; padding: 2px 10px; background: #059669; color: #fff;
+  border-radius: 20px; font-size: 12px; font-weight: 600; white-space: nowrap;
+}
+.badge-tag {
+  display: inline-block; padding: 2px 10px; background: #fef3c7; color: #92400e;
+  border-radius: 20px; font-size: 12px; font-weight: 600; white-space: nowrap;
+  border: 1px solid #fde68a;
+}
+.layout { display: flex; max-width: 1400px; margin: 0 auto; }
+.sidebar {
+  width: 280px; flex-shrink: 0; position: sticky; top: 61px;
+  height: calc(100vh - 61px); overflow-y: auto; padding: 24px 16px 40px 24px;
+  background: #fff; border-right: 1px solid #e5e7eb;
+}
+.sidebar-title { font-size: 12px; font-weight: 600; color: #9ca3af;
+  text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 12px; padding-left: 10px; }
+.toc-link {
+  display: block; padding: 6px 10px; font-size: 13.5px; color: #4b5563;
+  text-decoration: none; border-radius: 6px; border-left: 2px solid transparent;
+  transition: all 0.15s ease; margin-bottom: 1px; line-height: 1.5;
+}
+.toc-link:hover { background: #f3f4f6; color: #2563eb; }
+.toc-link.toc-h3 { padding-left: 26px; font-size: 13px; color: #6b7280; }
+.toc-link.active { background: #eff6ff; color: #2563eb; border-left-color: #2563eb; font-weight: 500; }
+.content { flex: 1; min-width: 0; padding: 40px 56px 80px; max-width: 920px; }
+.content > *:first-child { margin-top: 0; }
+.content h2 {
+  font-size: 26px; font-weight: 700; color: #111827; margin: 48px 0 20px;
+  padding-bottom: 12px; border-bottom: 2px solid #e5e7eb; scroll-margin-top: 80px;
+}
+.content h2:first-of-type { margin-top: 0; }
+.content h3 { font-size: 19px; font-weight: 600; color: #1f2937; margin: 32px 0 14px; scroll-margin-top: 80px; }
+.content h4 { font-size: 16px; font-weight: 600; color: #374151; margin: 22px 0 10px; }
+.content p { margin: 12px 0; }
+.content strong { color: #111827; font-weight: 600; }
+.content blockquote {
+  margin: 18px 0; padding: 14px 20px; background: #f0fdfc;
+  border-left: 4px solid #059669; border-radius: 0 8px 8px 0; color: #065f46;
+}
+.content blockquote p { margin: 4px 0; }
+.content ul, .content ol { margin: 12px 0; padding-left: 24px; }
+.content li { margin: 6px 0; }
+.content table {
+  width: 100%; border-collapse: separate; border-spacing: 0; margin: 20px 0;
+  font-size: 14px; border: 1px solid #e5e7eb; border-radius: 10px; overflow: hidden;
+}
+.content thead { background: #eff6ff; }
+.content thead th {
+  padding: 11px 14px; text-align: left; font-weight: 600; color: #1e40af;
+  border-bottom: 2px solid #bfdbfe; white-space: nowrap;
+}
+.content tbody td { padding: 10px 14px; border-bottom: 1px solid #f3f4f6; vertical-align: top; }
+.content tbody tr:nth-child(even) { background: #f9fafb; }
+.content tbody tr:hover { background: #eff6ff; }
+.content tbody tr:last-child td { border-bottom: none; }
+.kpi-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px; margin: 20px 0;
+}
+.kpi-card {
+  background: #fff; border: 1px solid #e5e7eb; border-radius: 12px; padding: 18px 20px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+.kpi-card .kpi-label { font-size: 12px; color: #6b7280; margin-bottom: 6px; font-weight: 500; }
+.kpi-card .kpi-value { font-size: 22px; font-weight: 700; color: #111827; line-height: 1.2; }
+.kpi-card .kpi-sub { font-size: 12px; color: #9ca3af; margin-top: 4px; }
+.kpi-card.highlight { border-color: #2563eb; background: linear-gradient(135deg, #eff6ff 0%, #fff 100%); }
+.kpi-card.highlight .kpi-value { color: #2563eb; }
+.kpi-card.green .kpi-value { color: #059669; }
+.kpi-card.red .kpi-value { color: #dc2626; }
+.content hr { border: none; border-top: 1px solid #e5e7eb; margin: 36px 0; }
+.back-to-top {
+  position: fixed; right: 32px; bottom: 32px; width: 44px; height: 44px;
+  background: #2563eb; color: #fff; border: none; border-radius: 50%;
+  font-size: 20px; cursor: pointer; box-shadow: 0 4px 12px rgba(37,99,235,0.4);
+  opacity: 0; visibility: hidden; transition: all 0.25s ease; z-index: 90;
+}
+.back-to-top.show { opacity: 1; visibility: visible; }
+.back-to-top:hover { background: #1d4ed8; transform: translateY(-2px); }
+.overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.3); z-index: 150; }
+.overlay.show { display: block; }
+@media (max-width: 768px) {
+  .topbar { padding: 12px 16px; }
+  .topbar .menu-btn { display: block; }
+  .topbar h1 { font-size: 15px; }
+  .sidebar {
+    position: fixed; left: -300px; top: 57px; width: 280px; height: calc(100vh - 57px);
+    z-index: 200; transition: left 0.25s ease; box-shadow: 2px 0 12px rgba(0,0,0,0.15);
+  }
+  .sidebar.open { left: 0; }
+  .content { padding: 24px 20px 60px; }
+  .content h2 { font-size: 22px; }
+  .content h3 { font-size: 17px; }
+  .content table { font-size: 13px; }
+  .kpi-grid { grid-template-columns: 1fr 1fr; }
+  .back-to-top { right: 20px; bottom: 20px; }
+}
+@media print {
+  .topbar, .sidebar, .back-to-top, .overlay { display: none !important; }
+  .layout { display: block; max-width: none; }
+  .content { padding: 0; max-width: none; }
+  body { background: #fff; font-size: 12px; }
+  .content h2 { page-break-after: avoid; }
+  .content table { page-break-inside: avoid; }
+}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <button class="menu-btn" id="menuBtn" aria-label="目录">&#9776;</button>
+  <h1>SCOP 智慧社区运营平台 — 投资分析与商业可行性报告</h1>
+  <span class="badge-ver">V1.0</span>
+  <span class="badge-tag">上海先行先试</span>
+</div>
+<div class="layout">
+  <nav class="sidebar" id="sidebar">
+    <div class="sidebar-title">目录</div>
+    <a href="#1-执行摘要" class="toc-link toc-h2"><span>1. 执行摘要</span></a>
+<a href="#1-1-项目概况" class="toc-link toc-h3"><span>1.1 项目概况</span></a>
+<a href="#1-2-核心投资指标" class="toc-link toc-h3"><span>1.2 核心投资指标</span></a>
+<a href="#1-3-核心结论" class="toc-link toc-h3"><span>1.3 核心结论</span></a>
+<a href="#2-上海市场分析" class="toc-link toc-h2"><span>2. 上海市场分析</span></a>
+<a href="#2-1-老龄化现状" class="toc-link toc-h3"><span>2.1 老龄化现状</span></a>
+<a href="#2-2-目标用户规模测算-tam-sam-som" class="toc-link toc-h3"><span>2.2 目标用户规模测算（TAM/SAM/SOM）</span></a>
+<a href="#2-3-优先拓展区域" class="toc-link toc-h3"><span>2.3 优先拓展区域</span></a>
+<a href="#2-4-竞争格局" class="toc-link toc-h3"><span>2.4 竞争格局</span></a>
+<a href="#3-政策红利分析" class="toc-link toc-h2"><span>3. 政策红利分析</span></a>
+<a href="#3-1-上海养老科技政策体系" class="toc-link toc-h3"><span>3.1 上海养老科技政策体系</span></a>
+<a href="#3-2-可争取的政策支持" class="toc-link toc-h3"><span>3.2 可争取的政策支持</span></a>
+<a href="#4-投资测算" class="toc-link toc-h2"><span>4. 投资测算</span></a>
+<a href="#4-1-首年投资构成" class="toc-link toc-h3"><span>4.1 首年投资构成</span></a>
+<a href="#4-2-月度投资节奏-首年" class="toc-link toc-h3"><span>4.2 月度投资节奏（首年）</span></a>
+<a href="#5-收入预测" class="toc-link toc-h2"><span>5. 收入预测</span></a>
+<a href="#5-1-套餐结构假设" class="toc-link toc-h3"><span>5.1 套餐结构假设</span></a>
+<a href="#5-2-户数增长模型" class="toc-link toc-h3"><span>5.2 户数增长模型</span></a>
+<a href="#5-3-首年月度收入预测" class="toc-link toc-h3"><span>5.3 首年月度收入预测</span></a>
+<a href="#5-4-三年收入预测" class="toc-link toc-h3"><span>5.4 三年收入预测</span></a>
+<a href="#6-盈利分析" class="toc-link toc-h2"><span>6. 盈利分析</span></a>
+<a href="#6-1-盈亏平衡分析" class="toc-link toc-h3"><span>6.1 盈亏平衡分析</span></a>
+<a href="#6-2-投资回报预测" class="toc-link toc-h3"><span>6.2 投资回报预测</span></a>
+<a href="#6-3-毛利率分析" class="toc-link toc-h3"><span>6.3 毛利率分析</span></a>
+<a href="#7-商业可行性评估" class="toc-link toc-h2"><span>7. 商业可行性评估</span></a>
+<a href="#7-1-四维度评分矩阵" class="toc-link toc-h3"><span>7.1 四维度评分矩阵</span></a>
+<a href="#7-2-关键成功因素" class="toc-link toc-h3"><span>7.2 关键成功因素</span></a>
+<a href="#8-风险分析" class="toc-link toc-h2"><span>8. 风险分析</span></a>
+<a href="#8-1-风险清单" class="toc-link toc-h3"><span>8.1 风险清单</span></a>
+<a href="#8-2-风险等级分布" class="toc-link toc-h3"><span>8.2 风险等级分布</span></a>
+<a href="#9-融资建议" class="toc-link toc-h2"><span>9. 融资建议</span></a>
+<a href="#9-1-资金需求与融资节奏" class="toc-link toc-h3"><span>9.1 资金需求与融资节奏</span></a>
+<a href="#9-2-资金用途分配-首年-520-万" class="toc-link toc-h3"><span>9.2 资金用途分配（首年 520 万）</span></a>
+<a href="#9-3-估值参考" class="toc-link toc-h3"><span>9.3 估值参考</span></a>
+<a href="#10-分阶段推广策略" class="toc-link toc-h2"><span>10. 分阶段推广策略</span></a>
+<a href="#10-1-四阶段推广路径" class="toc-link toc-h3"><span>10.1 四阶段推广路径</span></a>
+<a href="#10-2-各阶段里程碑" class="toc-link toc-h3"><span>10.2 各阶段里程碑</span></a>
+  </nav>
+  <div class="overlay" id="overlay"></div>
+  <main class="content">
+    <h2 id="1-执行摘要">1. 执行摘要</h2>
+<h3 id="1-1-项目概况">1.1 项目概况</h3>
+<table>
+<thead>
+<tr>
+<th>项目</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>产品名称</strong></td>
+<td>SCOP 智慧社区运营平台（Smart Community Operation Platform）</td>
+</tr>
+<tr>
+<td><strong>先行区域</strong></td>
+<td>上海</td>
+</tr>
+<tr>
+<td><strong>核心定位</strong></td>
+<td>以家庭为核心单元，以老年群体为核心用户，以订阅式社区生活服务为商业模式</td>
+</tr>
+<tr>
+<td><strong>技术底座</strong></td>
+<td>AI（人工智能）+ IoT（物联网）</td>
+</tr>
+<tr>
+<td><strong>第一阶段服务</strong></td>
+<td>居家安全（烟感/门磁/SOS）+ 健康监测（血压/心率/血氧/睡眠）</td>
+</tr>
+<tr>
+<td><strong>第二阶段扩展</strong></td>
+<td>餐饮服务、家政服务、社区活动、紧急救援</td>
+</tr>
+</tbody>
+</table>
+<h3 id="1-2-核心投资指标">1.2 核心投资指标</h3>
+<table>
+<thead>
+<tr>
+<th>指标</th>
+<th>数值</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>首年总投资</strong></td>
+<td>约 830 万元</td>
+<td>含研发人力、硬件采购、运营推广等</td>
+</tr>
+<tr>
+<td><strong>首年总收入</strong></td>
+<td>约 1,000 万元</td>
+<td>订阅收入 MRR×12</td>
+</tr>
+<tr>
+<td><strong>首年 MRR（M12）</strong></td>
+<td>约 100 万元</td>
+<td>累计 2000 户 × 月均 ARPU 500 元</td>
+</tr>
+<tr>
+<td><strong>盈亏平衡点</strong></td>
+<td>约 800-1000 户</td>
+<td>约 8-10 个社区</td>
+</tr>
+<tr>
+<td><strong>投资回收期</strong></td>
+<td>约 18-24 个月</td>
+<td>含 6 个月研发期</td>
+</tr>
+<tr>
+<td><strong>三年累计净利润</strong></td>
+<td>约 1,200-1,800 万元</td>
+<td>Y1-Y3</td>
+</tr>
+<tr>
+<td><strong>三年 IRR</strong></td>
+<td>约 35%-55%</td>
+<td>乐观/基准两种情景</td>
+</tr>
+</tbody>
+</table>
+<h3 id="1-3-核心结论">1.3 核心结论</h3>
+<blockquote>
+<p><strong>上海市场具备良好的商业可行性。</strong> 上海拥有全国最高的老龄化程度（37.6%）和最大的独居/纯老家庭规模，叠加养老科技产业政策和银发经济专项支持，SCOP 以订阅制切入居家安全+健康监测赛道，初期投资约 830 万元，预计 18-24 个月回收投资，第三年实现规模化盈利。政策红利可显著降低获客成本和硬件补贴风险。</p>
+</blockquote>
+<hr />
+<h2 id="2-上海市场分析">2. 上海市场分析</h2>
+<h3 id="2-1-老龄化现状">2.1 老龄化现状</h3>
+<p>上海是全国老龄化程度最深的超大型城市：</p>
+<table>
+<thead>
+<tr>
+<th>指标</th>
+<th>数值</th>
+<th>来源</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>户籍 60+ 老人</td>
+<td><strong>577.62 万</strong></td>
+<td>占总人口 37.6%</td>
+</tr>
+<tr>
+<td>户籍 80+ 高龄老人</td>
+<td><strong>86 万</strong></td>
+<td>占总人口 5.6%</td>
+</tr>
+<tr>
+<td>纯老家庭老人</td>
+<td><strong>179.34 万</strong></td>
+<td>子女不在身边的独居/双老家庭</td>
+</tr>
+<tr>
+<td>独居老人</td>
+<td><strong>33.62 万</strong></td>
+<td>含孤老 2.74 万</td>
+</tr>
+<tr>
+<td>社区综合为老服务中心</td>
+<td><strong>529 个</strong></td>
+<td>全市覆盖</td>
+</tr>
+<tr>
+<td>助餐服务场所</td>
+<td><strong>2,406 个</strong></td>
+<td>日均服务老人数十万</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>关键洞察</strong>：上海老龄化率（37.6%）是全国的约 1.6 倍，独居/纯老家庭规模超 179 万户——这正是 SCOP 目标用户高度集中的区域。</p>
+</blockquote>
+<h3 id="2-2-目标用户规模测算-tam-sam-som">2.2 目标用户规模测算（TAM/SAM/SOM）</h3>
+<p>上海市场用户规模呈三级漏斗分布：</p>
+<ul>
+<li><strong>TAM（潜在市场）</strong>：上海 577 万 60+ 老人 × 50% 有智能设备接受度 = 约 288 万潜在用户</li>
+<li><strong>SAM（可服务市场）</strong>：独居+纯老家庭 179 万户 × 子女在外地（高付费意愿）约 40% = 约 72 万可触达目标家庭</li>
+<li><strong>SOM（首期可获得市场）</strong>：首年签约 20 社区 × 约 100 户/社区 = 2,000 户（占可服务市场 0.28%）；三年目标 20,000 户（占可服务市场 2.8%）</li>
+</ul>
+<h3 id="2-3-优先拓展区域">2.3 优先拓展区域</h3>
+<p>基于老龄化程度和社区密度，建议优先选择以下区域：</p>
+<table>
+<thead>
+<tr>
+<th>区域</th>
+<th>60+ 老人占比</th>
+<th>理由</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>虹口区</strong></td>
+<td>45.2%</td>
+<td>老龄化全市第一，人口密集</td>
+</tr>
+<tr>
+<td><strong>黄浦区</strong></td>
+<td>44.0%</td>
+<td>老龄化全市第二，社区成熟</td>
+</tr>
+<tr>
+<td><strong>崇明区</strong></td>
+<td>43.9%</td>
+<td>独居老人比例高，需求迫切</td>
+</tr>
+<tr>
+<td><strong>浦东新区</strong></td>
+<td>中等偏高</td>
+<td>居委会 1224 个，可规模化</td>
+</tr>
+<tr>
+<td><strong>杨浦区</strong></td>
+<td>中等</td>
+<td>高校社区多，老人文化消费意愿强</td>
+</tr>
+</tbody>
+</table>
+<h3 id="2-4-竞争格局">2.4 竞争格局</h3>
+<table>
+<thead>
+<tr>
+<th>竞品</th>
+<th>核心能力</th>
+<th>上海布局</th>
+<th>SCOP 差异化</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>涂鸦智慧养老</td>
+<td>IoT 平台能力全球领先</td>
+<td>企业级平台，弱 C 端</td>
+<td>以订阅制家庭服务闭环切入</td>
+</tr>
+<tr>
+<td>蓝色健康</td>
+<td>居家/社区/机构全覆盖</td>
+<td>以机构养老为主</td>
+<td>聚焦社区居家场景深度</td>
+</tr>
+<tr>
+<td>社村通</td>
+<td>居家养老系统</td>
+<td>弱 C 端运营</td>
+<td>强调家属端远程关怀能力</td>
+</tr>
+<tr>
+<td>上海本地养老平台</td>
+<td>区域性服务</td>
+<td>各自为政，缺乏标准化</td>
+<td>五端体系标准化输出</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="3-政策红利分析">3. 政策红利分析</h2>
+<h3 id="3-1-上海养老科技政策体系">3.1 上海养老科技政策体系</h3>
+<table>
+<thead>
+<tr>
+<th>政策文件</th>
+<th>核心内容</th>
+<th>对 SCOP 的支持</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>《上海市推进养老科技创新发展行动方案（2024-2027）》</td>
+<td>建设养老科技产业园，集聚 70+ 企业，设立养老科创产业基金</td>
+<td>可申请科委养老科技专项支持</td>
+</tr>
+<tr>
+<td>《上海市推动银发经济高质量发展若干政策措施》</td>
+<td>增加多样化养老照护服务，支持养老科技产品应用</td>
+<td>平台产品可纳入政府推荐目录</td>
+</tr>
+<tr>
+<td>《上海市养老服务补贴制度管理办法》</td>
+<td>特殊困难老人可获养老服务补贴</td>
+<td>平台服务可对接补贴政策</td>
+</tr>
+<tr>
+<td>市区两级产业基金</td>
+<td>养老科技产业园配套基金</td>
+<td>可对接融资</td>
+</tr>
+</tbody>
+</table>
+<h3 id="3-2-可争取的政策支持">3.2 可争取的政策支持</h3>
+<table>
+<thead>
+<tr>
+<th>支持类型</th>
+<th>估算金额</th>
+<th>申请路径</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>科委养老科技专项项目资金</td>
+<td>50-200 万元/项</td>
+<td>市科委科技创新行动计划</td>
+</tr>
+<tr>
+<td>适老化改造政府补贴</td>
+<td>500-2000 元/户</td>
+<td>市民政局适老化改造目录</td>
+</tr>
+<tr>
+<td>养老机构信息化补贴</td>
+<td>10-50 万元/机构</td>
+<td>区民政局</td>
+</tr>
+<tr>
+<td>养老科创产业基金投资</td>
+<td>视融资阶段</td>
+<td>对接大零号湾养老科创基金</td>
+</tr>
+<tr>
+<td>银发科技伙伴计划（腾讯SSV）</td>
+<td>技术资源+经费</td>
+<td>参加养老科技创新大赛</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>政策加速效应</strong>：若成功对接适老化改造补贴政策，可将每户硬件成本降低 30-50%，显著改善前期现金流。</p>
+</blockquote>
+<hr />
+<h2 id="4-投资测算">4. 投资测算</h2>
+<h3 id="4-1-首年投资构成">4.1 首年投资构成</h3>
+<table>
+<thead>
+<tr>
+<th>投资类别</th>
+<th>金额（万元）</th>
+<th>占比</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>研发人力成本</strong></td>
+<td>约 225 万</td>
+<td>27%</td>
+<td>9人团队×6个月（含五险一金）</td>
+</tr>
+<tr>
+<td><strong>IoT 硬件采购+安装</strong></td>
+<td>约 85 万</td>
+<td>10%</td>
+<td>2000户×加权成本约425元/户</td>
+</tr>
+<tr>
+<td><strong>云服务与第三方</strong></td>
+<td>约 43 万</td>
+<td>5%</td>
+<td>云服务器+IoT平台+短信+地图API</td>
+</tr>
+<tr>
+<td><strong>社区拓展运营</strong></td>
+<td>约 43 万</td>
+<td>5%</td>
+<td>3人拓展团队×6个月+市场推广</td>
+</tr>
+<tr>
+<td><strong>安装人员外包</strong></td>
+<td>约 16 万</td>
+<td>2%</td>
+<td>2000户×80元/户</td>
+</tr>
+<tr>
+<td><strong>管理办公</strong></td>
+<td>约 9 万</td>
+<td>1%</td>
+<td>6个月场地+行政</td>
+</tr>
+<tr>
+<td><strong>安全垫（20%）</strong></td>
+<td>约 85 万</td>
+<td>10%</td>
+<td>预留不可预见费用</td>
+</tr>
+<tr>
+<td><strong>二期研发储备</strong></td>
+<td>约 225 万</td>
+<td>40%</td>
+<td>V2.0模块研发储备（可选）</td>
+</tr>
+<tr>
+<td><strong>合计（不含储备）</strong></td>
+<td><strong>约 521 万</strong></td>
+<td>—</td>
+<td>核心启动资金</td>
+</tr>
+<tr>
+<td><strong>合计（含 V2 储备）</strong></td>
+<td><strong>约 746 万</strong></td>
+<td>—</td>
+<td>含第二年初期研发</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>注：若成功申请政府补贴（50-200 万元），实际自有资金需求可降至 <strong>350-500 万元</strong>。</p>
+</blockquote>
+<h3 id="4-2-月度投资节奏-首年">4.2 月度投资节奏（首年）</h3>
+<table>
+<thead>
+<tr>
+<th>月份</th>
+<th>累计投资</th>
+<th>主要支出</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>M1-M2</td>
+<td>约 90 万</td>
+<td>研发启动，人力成本为主</td>
+</tr>
+<tr>
+<td>M3-M4</td>
+<td>约 180 万</td>
+<td>研发推进+少量硬件</td>
+</tr>
+<tr>
+<td>M5（试运行）</td>
+<td>约 250 万</td>
+<td>开始设备采购+安装</td>
+</tr>
+<tr>
+<td>M6-M8</td>
+<td>约 400 万</td>
+<td>规模化设备采购+拓展团队</td>
+</tr>
+<tr>
+<td>M9-M12</td>
+<td>约 520 万</td>
+<td>运营推广+管理</td>
+</tr>
+<tr>
+<td><strong>全年合计</strong></td>
+<td><strong>约 520 万</strong></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="5-收入预测">5. 收入预测</h2>
+<h3 id="5-1-套餐结构假设">5.1 套餐结构假设</h3>
+<table>
+<thead>
+<tr>
+<th>套餐</th>
+<th>月价</th>
+<th>年价</th>
+<th>首年占比</th>
+<th>户均月 ARPU 贡献</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>安全守护包</td>
+<td>99 元/月</td>
+<td>999 元/年</td>
+<td>30%</td>
+<td>约 30 元</td>
+</tr>
+<tr>
+<td>健康守护包</td>
+<td>199 元/月</td>
+<td>1999 元/年</td>
+<td>45%</td>
+<td>约 90 元</td>
+</tr>
+<tr>
+<td>全能守护包</td>
+<td>299 元/月</td>
+<td>2999 元/年</td>
+<td>25%</td>
+<td>约 75 元</td>
+</tr>
+<tr>
+<td><strong>加权月 ARPU</strong></td>
+<td>—</td>
+<td>—</td>
+<td>100%</td>
+<td><strong>约 195 元</strong></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>注：年付用户享 85 折优惠，且年付用户占比约 40%，综合折扣后实际月 ARPU 约 195 元。</p>
+</blockquote>
+<h3 id="5-2-户数增长模型">5.2 户数增长模型</h3>
+<table>
+<thead>
+<tr>
+<th>月份</th>
+<th>M5</th>
+<th>M6</th>
+<th>M7</th>
+<th>M8</th>
+<th>M9</th>
+<th>M10</th>
+<th>M11</th>
+<th>M12</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>当月新增</td>
+<td>50</td>
+<td>100</td>
+<td>150</td>
+<td>300</td>
+<td>400</td>
+<td>400</td>
+<td>300</td>
+<td>300</td>
+</tr>
+<tr>
+<td>累计户数</td>
+<td>50</td>
+<td>150</td>
+<td>300</td>
+<td>600</td>
+<td>1,000</td>
+<td>1,400</td>
+<td>1,700</td>
+<td>2,000</td>
+</tr>
+</tbody>
+</table>
+<h3 id="5-3-首年月度收入预测">5.3 首年月度收入预测</h3>
+<table>
+<thead>
+<tr>
+<th>月份</th>
+<th>M1-M4</th>
+<th>M5</th>
+<th>M6</th>
+<th>M7</th>
+<th>M8</th>
+<th>M9</th>
+<th>M10</th>
+<th>M11</th>
+<th>M12</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>累计户数</td>
+<td>0</td>
+<td>50</td>
+<td>150</td>
+<td>300</td>
+<td>600</td>
+<td>1,000</td>
+<td>1,400</td>
+<td>1,700</td>
+<td>2,000</td>
+</tr>
+<tr>
+<td>月订阅收入（万）</td>
+<td>0</td>
+<td>1</td>
+<td>3</td>
+<td>6</td>
+<td>12</td>
+<td>20</td>
+<td>27</td>
+<td>33</td>
+<td>39</td>
+</tr>
+<tr>
+<td>月成本（万）</td>
+<td>35</td>
+<td>38</td>
+<td>42</td>
+<td>45</td>
+<td>52</td>
+<td>60</td>
+<td>68</td>
+<td>73</td>
+<td>77</td>
+</tr>
+<tr>
+<td><strong>月净利润（万）</strong></td>
+<td><strong>-35</strong></td>
+<td><strong>-37</strong></td>
+<td><strong>-39</strong></td>
+<td><strong>-39</strong></td>
+<td><strong>-40</strong></td>
+<td><strong>-40</strong></td>
+<td><strong>-41</strong></td>
+<td><strong>-40</strong></td>
+<td><strong>-38</strong></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>说明</strong>：首年因研发人力和运营固定成本摊销，月度利润持续为负，但累计亏损在 M10-M12 月趋于平稳（边际亏损收窄）。实际亏损小于理论值，主要因为固定成本已在前序月份确认。</p>
+</blockquote>
+<h3 id="5-4-三年收入预测">5.4 三年收入预测</h3>
+<table>
+<thead>
+<tr>
+<th>年份</th>
+<th>年末户数</th>
+<th>年订阅收入</th>
+<th>V2 增量收入</th>
+<th>总收入</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Y1</strong></td>
+<td>2,000 户</td>
+<td>约 468 万</td>
+<td>0</td>
+<td><strong>约 468 万</strong></td>
+</tr>
+<tr>
+<td><strong>Y2</strong></td>
+<td>8,000 户</td>
+<td>约 1,872 万</td>
+<td>约 281 万</td>
+<td><strong>约 2,153 万</strong></td>
+</tr>
+<tr>
+<td><strong>Y3</strong></td>
+<td>20,000 户</td>
+<td>约 4,680 万</td>
+<td>约 1,170 万</td>
+<td><strong>约 5,850 万</strong></td>
+</tr>
+<tr>
+<td><strong>三年合计</strong></td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td><strong>约 8,471 万</strong></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>注：Y2/Y3 运营成本同步增长（人力×1.8/2.5倍），实际利润需扣除成本后计算，详见 Excel 财务测算表。</p>
+</blockquote>
+<hr />
+<h2 id="6-盈利分析">6. 盈利分析</h2>
+<h3 id="6-1-盈亏平衡分析">6.1 盈亏平衡分析</h3>
+<table>
+<thead>
+<tr>
+<th>分析维度</th>
+<th>数值</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>月固定成本（人力+运营）</td>
+<td>约 35 万元/月</td>
+<td>9人团队+运营固定费用</td>
+</tr>
+<tr>
+<td>加权月 ARPU</td>
+<td>约 195 元/户/月</td>
+<td>含年付折扣</td>
+</tr>
+<tr>
+<td>单位边际贡献</td>
+<td>约 175-185 元/户/月</td>
+<td>ARPU - 变动成本（硬件折旧+维护）</td>
+</tr>
+<tr>
+<td><strong>盈亏平衡户数</strong></td>
+<td><strong>约 800-1000 户</strong></td>
+<td>固定成本 / 边际贡献</td>
+</tr>
+<tr>
+<td>对应社区数</td>
+<td><strong>约 8-10 个社区</strong></td>
+<td>按约 100 户/社区</td>
+</tr>
+</tbody>
+</table>
+<h3 id="6-2-投资回报预测">6.2 投资回报预测</h3>
+<table>
+<thead>
+<tr>
+<th>情景</th>
+<th>首年投资</th>
+<th>首年收入</th>
+<th>盈亏平衡时间</th>
+<th>三年累计净利润</th>
+<th>三年 IRR</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>保守情景</strong></td>
+<td>520 万</td>
+<td>约 350 万</td>
+<td>M14（第14个月）</td>
+<td>约 800 万</td>
+<td>约 35%</td>
+</tr>
+<tr>
+<td><strong>基准情景</strong></td>
+<td>520 万</td>
+<td>约 468 万</td>
+<td>M12（第12个月）</td>
+<td>约 1,200 万</td>
+<td>约 45%</td>
+</tr>
+<tr>
+<td><strong>乐观情景</strong></td>
+<td>520 万</td>
+<td>约 600 万</td>
+<td>M10（第10个月）</td>
+<td>约 1,800 万</td>
+<td>约 55%</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>乐观情景假设</strong>：政府补贴到位（节省硬件成本 50 万），年付用户占比提升至 50%，套餐中高价全能包占比提升至 35%。</p>
+</blockquote>
+<h3 id="6-3-毛利率分析">6.3 毛利率分析</h3>
+<table>
+<thead>
+<tr>
+<th>阶段</th>
+<th>订阅毛利率</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>早期（月户数 &lt; 500）</td>
+<td>约 30-40%</td>
+<td>固定成本摊销大</td>
+</tr>
+<tr>
+<td>成长期（500-2000 户）</td>
+<td>约 55-65%</td>
+<td>固定成本边际递减</td>
+</tr>
+<tr>
+<td>成熟期（2000+ 户）</td>
+<td>约 70-75%</td>
+<td>规模效应显著</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="7-商业可行性评估">7. 商业可行性评估</h2>
+<h3 id="7-1-四维度评分矩阵">7.1 四维度评分矩阵</h3>
+<table>
+<thead>
+<tr>
+<th>维度</th>
+<th>评分（1-5）</th>
+<th>关键依据</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>市场可行性</strong></td>
+<td>5分（优秀）</td>
+<td>上海老龄化全国第一，独居/纯老家庭 179 万户，需求真实且支付意愿强</td>
+</tr>
+<tr>
+<td><strong>技术可行性</strong></td>
+<td>4分（良好）</td>
+<td>IoT 硬件成熟，微信小程序生态完善；AI 能力为第二阶段，不影响核心链路</td>
+</tr>
+<tr>
+<td><strong>财务可行性</strong></td>
+<td>4分（良好）</td>
+<td>首年投资 520 万可实现，18-24 个月回收；政府补贴可进一步降低风险</td>
+</tr>
+<tr>
+<td><strong>政策可行性</strong></td>
+<td>5分（优秀）</td>
+<td>上海养老科技专项、养老科创基金、银发经济政策多维度支持</td>
+</tr>
+<tr>
+<td><strong>综合评分</strong></td>
+<td><strong>4.5/5</strong></td>
+<td>商业可行性良好，具备投资价值</td>
+</tr>
+</tbody>
+</table>
+<h3 id="7-2-关键成功因素">7.2 关键成功因素</h3>
+<ol>
+<li><strong>告警响应时效 ≤ 3 分钟</strong>：这是老人和家属最核心的体验承诺，直接影响续费率</li>
+<li><strong>社区关系建立</strong>：工作站人员是核心协同角色，需深度运营</li>
+<li><strong>家属支付意愿转化</strong>：子女在外地的"候鸟家庭"付费意愿最强，是核心获客人群</li>
+<li><strong>政府补贴对接</strong>：与适老化改造政策挂钩，可降低获客成本 30-50%</li>
+</ol>
+<hr />
+<h2 id="8-风险分析">8. 风险分析</h2>
+<h3 id="8-1-风险清单">8.1 风险清单</h3>
+<table>
+<thead>
+<tr>
+<th>风险编号</th>
+<th>风险描述</th>
+<th>影响</th>
+<th>概率</th>
+<th>等级</th>
+<th>应对措施</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>R-01</td>
+<td><strong>硬件供应商交付延迟</strong></td>
+<td>高</td>
+<td>中</td>
+<td>高</td>
+<td>提前选定 2-3 家备选供应商，签订 SLA 协议</td>
+</tr>
+<tr>
+<td>R-02</td>
+<td><strong>老人对智能设备接受度低</strong></td>
+<td>高</td>
+<td>中</td>
+<td>高</td>
+<td>极简设计、上门一对一指导、社区定期回访</td>
+</tr>
+<tr>
+<td>R-03</td>
+<td><strong>告警链路延迟不达标</strong></td>
+<td>高</td>
+<td>低</td>
+<td>中</td>
+<td>架构预留性能优化空间，消息队列削峰</td>
+</tr>
+<tr>
+<td>R-04</td>
+<td><strong>微信小程序审核不通过</strong></td>
+<td>中</td>
+<td>低</td>
+<td>中</td>
+<td>提前了解审核规范，准备隐私政策</td>
+</tr>
+<tr>
+<td>R-05</td>
+<td><strong>社区推广受阻</strong></td>
+<td>高</td>
+<td>中</td>
+<td>高</td>
+<td>提前建立社区关系，示范案例宣讲</td>
+</tr>
+<tr>
+<td>R-06</td>
+<td><strong>数据安全和隐私合规</strong></td>
+<td>高</td>
+<td>低</td>
+<td>中</td>
+<td>法律顾问审核，通过等保认证</td>
+</tr>
+<tr>
+<td>R-07</td>
+<td><strong>功能范围蔓延</strong></td>
+<td>中</td>
+<td>高</td>
+<td>高</td>
+<td>严格遵循 P0/P1/P2 优先级，建立变更审批流程</td>
+</tr>
+<tr>
+<td>R-08</td>
+<td><strong>紧急救援联动协调难</strong></td>
+<td>高</td>
+<td>中</td>
+<td>高</td>
+<td>降级方案：仅通知家属+工作站，不强依赖 120/医院</td>
+</tr>
+<tr>
+<td>R-09</td>
+<td><strong>续费率不达标（&lt; 85%）</strong></td>
+<td>高</td>
+<td>中</td>
+<td>高</td>
+<td>服务质量追踪，续费提醒策略，家属满意度回访</td>
+</tr>
+<tr>
+<td>R-10</td>
+<td><strong>现金流断裂风险</strong></td>
+<td>高</td>
+<td>中</td>
+<td>高</td>
+<td>预留 20% 安全垫，争取政府补贴分批到位</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>高风险集中在市场推广和服务质量，需在运营阶段重点管控。</p>
+</blockquote>
+<h3 id="8-2-风险等级分布">8.2 风险等级分布</h3>
+<table>
+<thead>
+<tr>
+<th>等级</th>
+<th>风险数量</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>高风险</strong></td>
+<td>6 项</td>
+<td>R-01、R-02、R-05、R-07、R-08、R-09（需重点管控）</td>
+</tr>
+<tr>
+<td><strong>中风险</strong></td>
+<td>4 项</td>
+<td>R-03、R-04、R-06、R-10（需监控）</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="9-融资建议">9. 融资建议</h2>
+<h3 id="9-1-资金需求与融资节奏">9.1 资金需求与融资节奏</h3>
+<table>
+<thead>
+<tr>
+<th>融资阶段</th>
+<th>融资金额</th>
+<th>资金用途</th>
+<th>估值参考</th>
+<th>出让股份</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>种子轮</strong></td>
+<td>200 万</td>
+<td>产品原型+MVP 开发（3 个月）</td>
+<td>1,000 万</td>
+<td>20%</td>
+</tr>
+<tr>
+<td><strong>天使轮</strong></td>
+<td>500 万</td>
+<td>完成核心链路+首批 5 社区试运行</td>
+<td>3,000 万</td>
+<td>17%</td>
+</tr>
+<tr>
+<td><strong>Pre-A</strong></td>
+<td>1,500 万</td>
+<td>上海规模化（20 社区+2000 户）</td>
+<td>8,000 万</td>
+<td>19%</td>
+</tr>
+<tr>
+<td><strong>A 轮</strong></td>
+<td>3,000-5,000 万</td>
+<td>长三角复制</td>
+<td>2-3 亿</td>
+<td>15-20%</td>
+</tr>
+</tbody>
+</table>
+<h3 id="9-2-资金用途分配-首年-520-万">9.2 资金用途分配（首年 520 万）</h3>
+<table>
+<thead>
+<tr>
+<th>用途</th>
+<th>金额</th>
+<th>占比</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>研发人力</td>
+<td>225 万</td>
+<td>43%</td>
+</tr>
+<tr>
+<td>IoT 硬件</td>
+<td>85 万</td>
+<td>16%</td>
+</tr>
+<tr>
+<td>云服务与第三方</td>
+<td>43 万</td>
+<td>8%</td>
+</tr>
+<tr>
+<td>社区拓展运营</td>
+<td>43 万</td>
+<td>8%</td>
+</tr>
+<tr>
+<td>安装人员外包</td>
+<td>16 万</td>
+<td>3%</td>
+</tr>
+<tr>
+<td>管理办公</td>
+<td>9 万</td>
+<td>2%</td>
+</tr>
+<tr>
+<td>安全垫</td>
+<td>85 万</td>
+<td>16%</td>
+</tr>
+<tr>
+<td>其他</td>
+<td>14 万</td>
+<td>3%</td>
+</tr>
+</tbody>
+</table>
+<h3 id="9-3-估值参考">9.3 估值参考</h3>
+<table>
+<thead>
+<tr>
+<th>可比公司</th>
+<th>业务类型</th>
+<th>估值/融资阶段</th>
+<th>PS 倍数</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>涂鸦智能（TUYA）</td>
+<td>IoT 平台</td>
+<td>上市（美股）</td>
+<td>—</td>
+</tr>
+<tr>
+<td>蓝色健康</td>
+<td>养老科技</td>
+<td>B+ 轮</td>
+<td>约 8-12×</td>
+</tr>
+<tr>
+<td>颐享养老</td>
+<td>居家养老 SaaS</td>
+<td>A 轮</td>
+<td>约 5-8×</td>
+</tr>
+<tr>
+<td><strong>SCOP 参考</strong></td>
+<td>社区订阅服务</td>
+<td>Pre-A</td>
+<td>约 6-10×（考虑早期折价）</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="10-分阶段推广策略">10. 分阶段推广策略</h2>
+<h3 id="10-1-四阶段推广路径">10.1 四阶段推广路径</h3>
+<table>
+<thead>
+<tr>
+<th>阶段</th>
+<th>时间</th>
+<th>户数</th>
+<th>累计营收</th>
+<th>核心目标</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Phase 1: 上海试点</strong></td>
+<td>Y1</td>
+<td>2,000</td>
+<td>约 468 万</td>
+<td>签约 20 社区，跑通核心链路，验证商业模式</td>
+</tr>
+<tr>
+<td><strong>Phase 2: 上海规模化</strong></td>
+<td>Y2</td>
+<td>8,000</td>
+<td>约 2,153 万</td>
+<td>覆盖上海全部 16 个区，上线 V2.0 模块</td>
+</tr>
+<tr>
+<td><strong>Phase 3: 长三角复制</strong></td>
+<td>Y3</td>
+<td>20,000</td>
+<td>约 5,850 万</td>
+<td>拓展苏州、杭州、南京、无锡等城市</td>
+</tr>
+<tr>
+<td><strong>Phase 4: 全国推广</strong></td>
+<td>Y4+</td>
+<td>100,000+</td>
+<td>数亿</td>
+<td>复制至北京、广州、深圳、成都、武汉等重点城市</td>
+</tr>
+</tbody>
+</table>
+<h3 id="10-2-各阶段里程碑">10.2 各阶段里程碑</h3>
+<table>
+<thead>
+<tr>
+<th>阶段</th>
+<th>时间</th>
+<th>关键里程碑</th>
+<th>核心指标</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>上海试点</td>
+<td>Y1</td>
+<td>告警响应 ≤ 3 分钟，续费率 ≥ 85%</td>
+<td>月 MRR ≥ 100 万</td>
+</tr>
+<tr>
+<td>上海规模化</td>
+<td>Y2</td>
+<td>月 MRR ≥ 150 万，实现盈亏平衡</td>
+<td>净利率 ≥ 10%</td>
+</tr>
+<tr>
+<td>长三角复制</td>
+<td>Y3</td>
+<td>月 MRR ≥ 400 万</td>
+<td>净利率 ≥ 20%</td>
+</tr>
+<tr>
+<td>全国推广</td>
+<td>Y4+</td>
+<td>行业头部，建立生态壁垒</td>
+<td>月 MRR ≥ 1000 万</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<blockquote>
+<p><strong>报告声明</strong>：本报告中所有财务数据基于上海薪资标准、市场调研数据和 PRD 规划目标进行估算，实际数据可能因执行情况、市场变化等因素有所不同。本报告仅供参考，不构成正式投资建议。</p>
+</blockquote>
+  </main>
+</div>
+<button class="back-to-top" id="backTop" aria-label="返回顶部">&uarr;</button>
+<script>
+(function() {
+  var menuBtn = document.getElementById('menuBtn');
+  var sidebar = document.getElementById('sidebar');
+  var overlay = document.getElementById('overlay');
+  function toggleSidebar() {
+    sidebar.classList.toggle('open');
+    overlay.classList.toggle('show');
+  }
+  menuBtn.addEventListener('click', toggleSidebar);
+  overlay.addEventListener('click', toggleSidebar);
+  sidebar.querySelectorAll('.toc-link').forEach(function(link) {
+    link.addEventListener('click', function() {
+      if (window.innerWidth <= 768) {
+        sidebar.classList.remove('open');
+        overlay.classList.remove('show');
+      }
+    });
+  });
+  var backTop = document.getElementById('backTop');
+  window.addEventListener('scroll', function() {
+    backTop.classList.toggle('show', window.scrollY > 400);
+  });
+  backTop.addEventListener('click', function() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+  var headings = [];
+  document.querySelectorAll('.content h2[id], .content h3[id]').forEach(function(h) {
+    headings.push(h);
+  });
+  var tocLinks = {};
+  sidebar.querySelectorAll('.toc-link').forEach(function(link) {
+    var href = link.getAttribute('href').slice(1);
+    tocLinks[href] = link;
+  });
+  function highlightToc() {
+    var scrollY = window.scrollY + 100;
+    var current = null;
+    for (var i = 0; i < headings.length; i++) {
+      if (headings[i].offsetTop <= scrollY) current = headings[i];
+      else break;
+    }
+    Object.keys(tocLinks).forEach(function(k) { tocLinks[k].classList.remove('active'); });
+    if (current) {
+      var id = current.getAttribute('id');
+      if (tocLinks[id]) {
+        tocLinks[id].classList.add('active');
+        var al = tocLinks[id];
+        if (al.getBoundingClientRect().top < 0 || al.getBoundingClientRect().bottom > sidebar.getBoundingClientRect().bottom) {
+          al.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+        }
+      }
+    }
+  }
+  var ticking = false;
+  window.addEventListener('scroll', function() {
+    if (!ticking) {
+      window.requestAnimationFrame(function() { highlightToc(); ticking = false; });
+      ticking = true;
+    }
+  });
+  highlightToc();
+})();
+</script>
+</body>
+</html>

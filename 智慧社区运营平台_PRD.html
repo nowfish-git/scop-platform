@@ -1,0 +1,3255 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{title}</title>
+<style>
+/* ============ 基础重置 ============ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB",
+    "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 15px;
+  line-height: 1.8;
+  color: #1f2937;
+  background: #f9fafb;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ============ 顶部标题栏 ============ */
+.topbar {
+  position: sticky; top: 0; z-index: 100;
+  background: #fff;
+  border-bottom: 1px solid #e5e7eb;
+  padding: 14px 24px;
+  display: flex; align-items: center; gap: 14px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+}
+.topbar .menu-btn {
+  display: none;
+  background: none; border: none; cursor: pointer;
+  font-size: 22px; color: #4b5563; padding: 4px 8px;
+  border-radius: 6px;
+}
+.topbar .menu-btn:hover { background: #f3f4f6; }
+.topbar h1 {
+  font-size: 18px; font-weight: 600; color: #111827;
+  flex: 1; min-width: 0;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.badge-ver {
+  display: inline-block; padding: 2px 10px;
+  background: #2563eb; color: #fff; border-radius: 20px;
+  font-size: 12px; font-weight: 600; white-space: nowrap;
+}
+.badge-status {
+  display: inline-block; padding: 2px 10px;
+  background: #fef3c7; color: #92400e; border-radius: 20px;
+  font-size: 12px; font-weight: 600; white-space: nowrap;
+  border: 1px solid #fde68a;
+}
+
+/* ============ 布局 ============ */
+.layout {
+  display: flex;
+  max-width: 1400px;
+  margin: 0 auto;
+  gap: 0;
+}
+
+/* ============ 侧边栏目录 ============ */
+.sidebar {
+  width: 280px;
+  flex-shrink: 0;
+  position: sticky;
+  top: 61px;
+  height: calc(100vh - 61px);
+  overflow-y: auto;
+  padding: 24px 16px 40px 24px;
+  background: #fff;
+  border-right: 1px solid #e5e7eb;
+}
+.sidebar-title {
+  font-size: 12px; font-weight: 600; color: #9ca3af;
+  text-transform: uppercase; letter-spacing: 0.05em;
+  margin-bottom: 12px; padding-left: 10px;
+}
+.toc-link {
+  display: block;
+  padding: 6px 10px;
+  font-size: 13.5px; color: #4b5563;
+  text-decoration: none;
+  border-radius: 6px;
+  border-left: 2px solid transparent;
+  transition: all 0.15s ease;
+  margin-bottom: 1px;
+  line-height: 1.5;
+}
+.toc-link:hover { background: #f3f4f6; color: #2563eb; }
+.toc-link.toc-h3 { padding-left: 26px; font-size: 13px; color: #6b7280; }
+.toc-link.active {
+  background: #eff6ff;
+  color: #2563eb;
+  border-left-color: #2563eb;
+  font-weight: 500;
+}
+
+/* ============ 主内容区 ============ */
+.content {
+  flex: 1;
+  min-width: 0;
+  padding: 40px 56px 80px;
+  max-width: 920px;
+}
+.content > *:first-child { margin-top: 0; }
+
+/* 标题 */
+.content h2 {
+  font-size: 26px; font-weight: 700; color: #111827;
+  margin: 48px 0 20px; padding-bottom: 12px;
+  border-bottom: 2px solid #e5e7eb;
+  scroll-margin-top: 80px;
+}
+.content h2:first-of-type { margin-top: 0; }
+.content h3 {
+  font-size: 19px; font-weight: 600; color: #1f2937;
+  margin: 32px 0 14px;
+  scroll-margin-top: 80px;
+}
+.content h4 {
+  font-size: 16px; font-weight: 600; color: #374151;
+  margin: 22px 0 10px;
+}
+
+/* 段落 */
+.content p { margin: 12px 0; }
+.content strong { color: #111827; font-weight: 600; }
+.content em { color: #6b7280; }
+
+/* 列表 */
+.content ul, .content ol { margin: 12px 0; padding-left: 24px; }
+.content li { margin: 6px 0; }
+.content li > ul, .content li > ol { margin: 6px 0; }
+
+/* ============ 表格 ============ */
+.content table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  margin: 20px 0;
+  font-size: 14px;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  overflow: hidden;
+}
+.content thead { background: #eff6ff; }
+.content thead th {
+  padding: 11px 14px;
+  text-align: left;
+  font-weight: 600;
+  color: #1e40af;
+  border-bottom: 2px solid #bfdbfe;
+  white-space: nowrap;
+}
+.content tbody td {
+  padding: 10px 14px;
+  border-bottom: 1px solid #f3f4f6;
+  vertical-align: top;
+}
+.content tbody tr:nth-child(even) { background: #f9fafb; }
+.content tbody tr:hover { background: #eff6ff; }
+.content tbody tr:last-child td { border-bottom: none; }
+.content td code, .content th code {
+  font-family: "SF Mono", "Fira Code", "Consolas", monospace;
+  font-size: 13px;
+}
+
+/* ============ 代码块 ============ */
+.content pre {
+  background: #1e293b;
+  color: #e2e8f0;
+  padding: 18px 20px;
+  border-radius: 10px;
+  overflow-x: auto;
+  margin: 18px 0;
+  font-size: 13px;
+  line-height: 1.6;
+}
+.content pre code {
+  font-family: "SF Mono", "Fira Code", "Consolas", "Courier New", monospace;
+  white-space: pre;
+  background: none;
+  color: inherit;
+  padding: 0;
+}
+.content code {
+  font-family: "SF Mono", "Fira Code", "Consolas", monospace;
+  background: #f1f5f9;
+  color: #db2777;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 13px;
+}
+
+/* ============ 引用块 ============ */
+.content blockquote {
+  margin: 18px 0;
+  padding: 12px 18px;
+  background: #f0f9ff;
+  border-left: 4px solid #2563eb;
+  border-radius: 0 8px 8px 0;
+  color: #1e40af;
+}
+.content blockquote p { margin: 4px 0; }
+
+/* ============ 分隔线 ============ */
+.content hr {
+  border: none;
+  border-top: 1px solid #e5e7eb;
+  margin: 36px 0;
+}
+
+/* ============ EARS 标签 Badge ============ */
+.ears-badge {
+  display: inline-block;
+  padding: 1px 9px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 600;
+  margin-right: 4px;
+  vertical-align: middle;
+}
+.ears-ubi { background: #dbeafe; color: #1e40af; }
+.ears-event { background: #dcfce7; color: #166534; }
+.ears-state { background: #fef9c3; color: #854d0e; }
+.ears-opt { background: #f3e8ff; color: #6b21a8; }
+.ears-unwanted { background: #fee2e2; color: #991b1b; }
+
+/* ============ 优先级标签 ============ */
+.pri {
+  display: inline-block;
+  padding: 0 6px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 700;
+  font-family: "SF Mono", monospace;
+}
+.pri-p0 { background: #fee2e2; color: #b91c1c; }
+.pri-p1 { background: #fed7aa; color: #c2410c; }
+.pri-p2 { background: #fef9c3; color: #a16207; }
+
+/* ============ 返回顶部 ============ */
+.back-to-top {
+  position: fixed;
+  right: 32px; bottom: 32px;
+  width: 44px; height: 44px;
+  background: #2563eb;
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  font-size: 20px;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(37,99,235,0.4);
+  opacity: 0; visibility: hidden;
+  transition: all 0.25s ease;
+  z-index: 90;
+}
+.back-to-top.show { opacity: 1; visibility: visible; }
+.back-to-top:hover { background: #1d4ed8; transform: translateY(-2px); }
+
+/* ============ 响应式 ============ */
+@media (max-width: 768px) {
+  .topbar { padding: 12px 16px; }
+  .topbar .menu-btn { display: block; }
+  .topbar h1 { font-size: 15px; }
+  .sidebar {
+    position: fixed;
+    left: -300px; top: 57px;
+    width: 280px;
+    height: calc(100vh - 57px);
+    z-index: 200;
+    transition: left 0.25s ease;
+    box-shadow: 2px 0 12px rgba(0,0,0,0.15);
+  }
+  .sidebar.open { left: 0; }
+  .content { padding: 24px 20px 60px; }
+  .content h2 { font-size: 22px; }
+  .content h3 { font-size: 17px; }
+  .content table { font-size: 13px; }
+  .content pre { font-size: 12px; padding: 14px; }
+  .back-to-top { right: 20px; bottom: 20px; }
+}
+
+/* ============ 遮罩层（移动端） ============ */
+.overlay {
+  display: none;
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.3);
+  z-index: 150;
+}
+.overlay.show { display: block; }
+
+/* ============ 打印样式 ============ */
+@media print {
+  .topbar, .sidebar, .back-to-top, .overlay { display: none !important; }
+  .layout { display: block; max-width: none; }
+  .content { padding: 0; max-width: none; }
+  body { background: #fff; font-size: 12px; }
+  .content h2 { page-break-after: avoid; }
+  .content table, .content pre { page-break-inside: avoid; }
+  .content pre { background: #f1f5f9 !important; color: #1f2937 !important; }
+  .ears-badge, .pri { border: 1px solid #999; }
+}
+</style>
+</head>
+<body>
+
+<!-- 顶部标题栏 -->
+<div class="topbar">
+  <button class="menu-btn" id="menuBtn" aria-label="目录">&#9776;</button>
+  <h1>智慧社区运营平台 — 产品需求文档（PRD）</h1>
+  <span class="badge-ver">V2.0（整合版）</span>
+  <span class="badge-status">初稿 / 待评审</span>
+</div>
+
+<div class="layout">
+  <!-- 侧边栏目录 -->
+  <nav class="sidebar" id="sidebar">
+    <div class="sidebar-title">目录</div>
+    <a href="#1-文档信息" class="toc-link toc-h2"><span>1. 文档信息</span></a>
+<a href="#2-需求背景" class="toc-link toc-h2"><span>2. 需求背景</span></a>
+<a href="#2-1-行业背景" class="toc-link toc-h3"><span>2.1 行业背景</span></a>
+<a href="#2-2-用户痛点" class="toc-link toc-h3"><span>2.2 用户痛点</span></a>
+<a href="#2-3-市场机会" class="toc-link toc-h3"><span>2.3 市场机会</span></a>
+<a href="#3-产品定位与架构" class="toc-link toc-h2"><span>3. 产品定位与架构</span></a>
+<a href="#3-1-产品命名" class="toc-link toc-h3"><span>3.1 产品命名</span></a>
+<a href="#3-2-产品定位" class="toc-link toc-h3"><span>3.2 产品定位</span></a>
+<a href="#3-3-核心转型目标" class="toc-link toc-h3"><span>3.3 核心转型目标</span></a>
+<a href="#3-4-五端体系" class="toc-link toc-h3"><span>3.4 五端体系</span></a>
+<a href="#3-5-十大中心架构" class="toc-link toc-h3"><span>3.5 十大中心架构</span></a>
+<a href="#4-产品目标" class="toc-link toc-h2"><span>4. 产品目标</span></a>
+<a href="#4-1-业务目标" class="toc-link toc-h3"><span>4.1 业务目标</span></a>
+<a href="#4-2-用户目标" class="toc-link toc-h3"><span>4.2 用户目标</span></a>
+<a href="#4-3-第一阶段目标-v1-0" class="toc-link toc-h3"><span>4.3 第一阶段目标（V1.0）</span></a>
+<a href="#5-用户画像与故事" class="toc-link toc-h2"><span>5. 用户画像与故事</span></a>
+<a href="#5-1-社区家庭老人" class="toc-link toc-h3"><span>5.1 社区家庭老人</span></a>
+<a href="#5-2-社区工作站人员" class="toc-link toc-h3"><span>5.2 社区工作站人员</span></a>
+<a href="#5-3-平台运营者" class="toc-link toc-h3"><span>5.3 平台运营者</span></a>
+<a href="#5-4-老人家属-子女" class="toc-link toc-h3"><span>5.4 老人家属/子女</span></a>
+<a href="#5-5-物业人员-新增" class="toc-link toc-h3"><span>5.5 物业人员（新增）</span></a>
+<a href="#5-6-服务商-新增" class="toc-link toc-h3"><span>5.6 服务商（新增）</span></a>
+<a href="#6-功能清单-第一阶段-v1-0" class="toc-link toc-h2"><span>6. 功能清单（第一阶段 V1.0）</span></a>
+<a href="#6-1-p0-核心功能-mvp-必备" class="toc-link toc-h3"><span>6.1 P0 核心功能（MVP 必备）</span></a>
+<a href="#6-2-p1-重要功能-v1-0-后期或-v1-1" class="toc-link toc-h3"><span>6.2 P1 重要功能（V1.0 后期或 V1.1）</span></a>
+<a href="#6-3-p2-增强功能-v1-2" class="toc-link toc-h3"><span>6.3 P2 增强功能（V1.2+）</span></a>
+<a href="#7-核心流程说明" class="toc-link toc-h2"><span>7. 核心流程说明</span></a>
+<a href="#7-1-老人注册与设备安装流程" class="toc-link toc-h3"><span>7.1 老人注册与设备安装流程</span></a>
+<a href="#7-2-告警处理流程" class="toc-link toc-h3"><span>7.2 告警处理流程</span></a>
+<a href="#7-3-健康数据采集流程" class="toc-link toc-h3"><span>7.3 健康数据采集流程</span></a>
+<a href="#8-功能详细说明" class="toc-link toc-h2"><span>8. 功能详细说明</span></a>
+<a href="#8-1-居家安全模块" class="toc-link toc-h3"><span>8.1 居家安全模块</span></a>
+<a href="#8-2-健康监测模块" class="toc-link toc-h3"><span>8.2 健康监测模块</span></a>
+<a href="#8-3-用户端" class="toc-link toc-h3"><span>8.3 用户端</span></a>
+<a href="#8-4-工作站端-web后台" class="toc-link toc-h3"><span>8.4 工作站端（Web后台）</span></a>
+<a href="#8-5-运营后台-web后台" class="toc-link toc-h3"><span>8.5 运营后台（Web后台）</span></a>
+<a href="#8-6-紧急救援联动-新增" class="toc-link toc-h3"><span>8.6 紧急救援联动（新增）</span></a>
+<a href="#9-ai-与-iot-能力" class="toc-link toc-h2"><span>9. AI 与 IoT 能力</span></a>
+<a href="#9-1-iot-能力规划" class="toc-link toc-h3"><span>9.1 IoT 能力规划</span></a>
+<a href="#9-2-ai-能力规划" class="toc-link toc-h3"><span>9.2 AI 能力规划</span></a>
+<a href="#10-商业模式" class="toc-link toc-h2"><span>10. 商业模式</span></a>
+<a href="#10-1-多元收入体系" class="toc-link toc-h3"><span>10.1 多元收入体系</span></a>
+<a href="#10-2-订阅套餐设计-第一阶段" class="toc-link toc-h3"><span>10.2 订阅套餐设计（第一阶段）</span></a>
+<a href="#11-平台运营体系" class="toc-link toc-h2"><span>11. 平台运营体系</span></a>
+<a href="#11-1-五大运营体系" class="toc-link toc-h3"><span>11.1 五大运营体系</span></a>
+<a href="#11-2-运营飞轮" class="toc-link toc-h3"><span>11.2 运营飞轮</span></a>
+<a href="#12-数据指标与埋点" class="toc-link toc-h2"><span>12. 数据指标与埋点</span></a>
+<a href="#12-1-核心业务指标-北极星指标" class="toc-link toc-h3"><span>12.1 核心业务指标（北极星指标）</span></a>
+<a href="#12-2-埋点事件清单" class="toc-link toc-h3"><span>12.2 埋点事件清单</span></a>
+<a href="#13-验收标准" class="toc-link toc-h2"><span>13. 验收标准</span></a>
+<a href="#13-1-设备管理" class="toc-link toc-h3"><span>13.1 设备管理</span></a>
+<a href="#13-2-告警中心" class="toc-link toc-h3"><span>13.2 告警中心</span></a>
+<a href="#13-3-健康监测" class="toc-link toc-h3"><span>13.3 健康监测</span></a>
+<a href="#13-4-用户端" class="toc-link toc-h3"><span>13.4 用户端</span></a>
+<a href="#13-5-工作站端" class="toc-link toc-h3"><span>13.5 工作站端</span></a>
+<a href="#13-6-运营后台" class="toc-link toc-h3"><span>13.6 运营后台</span></a>
+<a href="#13-7-紧急救援-新增" class="toc-link toc-h3"><span>13.7 紧急救援（新增）</span></a>
+<a href="#13-8-商家端-新增" class="toc-link toc-h3"><span>13.8 商家端（新增）</span></a>
+<a href="#14-非功能需求" class="toc-link toc-h2"><span>14. 非功能需求</span></a>
+<a href="#14-1-性能需求" class="toc-link toc-h3"><span>14.1 性能需求</span></a>
+<a href="#14-2-安全需求" class="toc-link toc-h3"><span>14.2 安全需求</span></a>
+<a href="#14-3-兼容性需求" class="toc-link toc-h3"><span>14.3 兼容性需求</span></a>
+<a href="#14-4-可用性需求" class="toc-link toc-h3"><span>14.4 可用性需求</span></a>
+<a href="#15-项目排期建议" class="toc-link toc-h2"><span>15. 项目排期建议</span></a>
+<a href="#第一阶段里程碑" class="toc-link toc-h3"><span>第一阶段里程碑</span></a>
+<a href="#16-风险与依赖" class="toc-link toc-h2"><span>16. 风险与依赖</span></a>
+<a href="#16-1-风险清单" class="toc-link toc-h3"><span>16.1 风险清单</span></a>
+<a href="#16-2-外部依赖" class="toc-link toc-h3"><span>16.2 外部依赖</span></a>
+<a href="#17-第二阶段展望" class="toc-link toc-h2"><span>17. 第二阶段展望</span></a>
+<a href="#17-1-餐饮服务模块-v2-0-规划" class="toc-link toc-h3"><span>17.1 餐饮服务模块（V2.0 规划）</span></a>
+<a href="#17-2-活动报名模块-v2-0-规划" class="toc-link toc-h3"><span>17.2 活动报名模块（V2.0 规划）</span></a>
+<a href="#17-3-家政服务模块-v2-0-规划" class="toc-link toc-h3"><span>17.3 家政服务模块（V2.0 规划）</span></a>
+<a href="#17-4-紧急救援模块-v2-0-完整版" class="toc-link toc-h3"><span>17.4 紧急救援模块（V2.0 完整版）</span></a>
+<a href="#17-5-第二阶段里程碑规划-简要" class="toc-link toc-h3"><span>17.5 第二阶段里程碑规划（简要）</span></a>
+<a href="#附录" class="toc-link toc-h2"><span>附录</span></a>
+<a href="#a-术语表" class="toc-link toc-h3"><span>A. 术语表</span></a>
+<a href="#b-竞品参考" class="toc-link toc-h3"><span>B. 竞品参考</span></a>
+  </nav>
+
+  <!-- 遮罩层 -->
+  <div class="overlay" id="overlay"></div>
+
+  <!-- 主内容 -->
+  <main class="content">
+    
+<blockquote>
+<p><strong>SCOP（Smart Community Operation Platform）</strong> —— 以家庭为核心单元的智慧社区运营平台</p>
+</blockquote>
+<hr />
+<h2 id="1-文档信息">1. 文档信息</h2>
+<table>
+<thead>
+<tr>
+<th>项目</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>文档名称</strong></td>
+<td>智慧社区运营平台 PRD</td>
+</tr>
+<tr>
+<td><strong>版本号</strong></td>
+<td>V2.0（整合版）</td>
+</tr>
+<tr>
+<td><strong>文档状态</strong></td>
+<td>初稿 / 待评审</td>
+</tr>
+<tr>
+<td><strong>创建日期</strong></td>
+<td>2026-07-01</td>
+</tr>
+<tr>
+<td><strong>作者</strong></td>
+<td>产品团队</td>
+</tr>
+<tr>
+<td><strong>审核人</strong></td>
+<td>待定</td>
+</tr>
+<tr>
+<td><strong>批准人</strong></td>
+<td>待定</td>
+</tr>
+<tr>
+<td><strong>变更记录</strong></td>
+<td>V1.0 初版创建；V2.0 整合 SCOP 讨论总结版，补充产品定位与架构、AI/IoT 能力、商业模式、平台运营体系等内容，扩充用户画像、功能清单、验收标准、风险依赖等章节</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="2-需求背景">2. 需求背景</h2>
+<h3 id="2-1-行业背景">2.1 行业背景</h3>
+<p>中国正处于深度老龄化社会加速期。截至2025年底，全国60岁及以上老年人口已达3.2亿，占总人口的22.8%。国家推行"9073"养老格局——90%居家养老、7%社区养老、3%机构养老，居家社区养老是绝对主战场。</p>
+<p>政策层面，"十四五"国家老龄事业发展和养老服务体系规划明确提出：推动智慧健康养老产业发展，建设基本养老服务综合平台，推进智能产品在养老领域的深度应用。"十五五"规划进一步将智慧养老列为银发经济核心赛道。</p>
+<p>技术层面，物联网（IoT）、5G、人工智能、云计算技术的成熟，使低成本、规模化部署智能养老设备成为可能。烟感报警器、门磁传感器、紧急呼叫按钮、智能穿戴设备等硬件成本持续下降，为社区级养老安全监测方案的落地提供了基础条件。</p>
+<h3 id="2-2-用户痛点">2.2 用户痛点</h3>
+<table>
+<thead>
+<tr>
+<th>用户角色</th>
+<th>核心痛点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>社区家庭老人</strong></td>
+<td>独居或空巢时缺乏安全感，突发疾病或摔倒无法及时求助；对智能设备操作不熟练，子女不在身边缺乏照护</td>
+</tr>
+<tr>
+<td><strong>社区工作站人员</strong></td>
+<td>辖区内老人数量多、分布散，无法实时掌握老人安全状况；工单管理靠纸质或Excel，效率低下；服务派单缺乏系统化工具</td>
+</tr>
+<tr>
+<td><strong>平台运营者</strong></td>
+<td>缺乏数据驱动的运营决策能力；服务商管理混乱；套餐和订阅管理缺乏统一平台</td>
+</tr>
+<tr>
+<td><strong>老人家属/子女</strong></td>
+<td>无法实时了解父母健康状况；担心父母发生意外却不知情；缺乏与社区服务联动的渠道</td>
+</tr>
+<tr>
+<td><strong>物业</strong></td>
+<td>缺乏与服务请求对接的统一渠道，巡检和上门服务依赖人工指派，效率低、过程不可追溯；与社区工作站、服务商协同成本高</td>
+</tr>
+<tr>
+<td><strong>服务商</strong></td>
+<td>缺乏稳定的订单来源和精准的服务匹配渠道；服务过程缺乏数据沉淀，难以形成口碑和复购；结算与对账分散在多个线下流程</td>
+</tr>
+</tbody>
+</table>
+<h3 id="2-3-市场机会">2.3 市场机会</h3>
+<ul>
+<li><strong>市场规模</strong>：2025年中国智慧养老市场规模约5000亿元人民币，年复合增长率超20%</li>
+<li><strong>竞争格局</strong>：涂鸦智慧养老偏重IoT平台能力，蓝色健康覆盖全场景但以机构养老为主，社村通侧重系统平台建设——在"社区级居家安全+健康监测+家属联动"这一细分组合上，仍有差异化机会</li>
+<li><strong>差异化切入点</strong>：以订阅制商业模式降低用户门槛，硬件+平台+服务一体化交付，强调家属端的远程关怀能力；并以家庭为单元建立数字化运营体系（FDOS），形成可持续运营的社区生活服务基础设施</li>
+</ul>
+<hr />
+<h2 id="3-产品定位与架构">3. 产品定位与架构</h2>
+<h3 id="3-1-产品命名">3.1 产品命名</h3>
+<p><strong>SCOP（Smart Community Operation Platform）智慧社区运营平台</strong>。</p>
+<h3 id="3-2-产品定位">3.2 产品定位</h3>
+<p>以家庭为服务单元，以老年群体为核心用户，以订阅式社区生活服务为商业模式，以 AI 和 IoT 为技术底座，构建可持续运营的智慧社区服务生态。</p>
+<p>SCOP 不是传统智慧社区软件，而是社区生活服务基础设施：通过家庭数字化运营 + AI + IoT 构建持续增长的社区生态系统，连接居民家庭、社区工作站、物业及服务商，提供订阅式社区生活服务。</p>
+<h3 id="3-3-核心转型目标">3.3 核心转型目标</h3>
+<p>实现社区从"建设型智慧社区"向"运营型社区服务平台"转型，建立以家庭为中心的数字化运营体系（<strong>FDOS，Family Digital Operation System</strong>），形成"感知 → 告警 → 服务 → 评价 → 沉淀"的持续服务闭环。</p>
+<h3 id="3-4-五端体系">3.4 五端体系</h3>
+<table>
+<thead>
+<tr>
+<th>端</th>
+<th>面向用户</th>
+<th>核心定位</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>家庭端（老人端）</strong></td>
+<td>社区老人</td>
+<td>极简操作，安全求助，健康查看</td>
+</tr>
+<tr>
+<td><strong>家属端</strong></td>
+<td>老人家属/子女</td>
+<td>远程关怀，健康监控，费用支付</td>
+</tr>
+<tr>
+<td><strong>社区端（工作站端）</strong></td>
+<td>社区工作站人员</td>
+<td>告警处理，工单管理，老人档案</td>
+</tr>
+<tr>
+<td><strong>商家端</strong></td>
+<td>服务商/商户</td>
+<td>接单服务，商品管理，订单处理</td>
+</tr>
+<tr>
+<td><strong>运营端（运营后台）</strong></td>
+<td>平台运营者</td>
+<td>平台配置，数据分析，运营决策</td>
+</tr>
+</tbody>
+</table>
+<h3 id="3-5-十大中心架构">3.5 十大中心架构</h3>
+<table>
+<thead>
+<tr>
+<th>中心</th>
+<th>职责</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>用户中心</strong></td>
+<td>账号体系、身份认证、权限管理</td>
+</tr>
+<tr>
+<td><strong>家庭中心</strong></td>
+<td>家庭档案、成员关系、订阅管理</td>
+</tr>
+<tr>
+<td><strong>服务中心</strong></td>
+<td>工单流转、服务调度、满意度评价</td>
+</tr>
+<tr>
+<td><strong>社区中心</strong></td>
+<td>社区信息、网格管理、活动管理</td>
+</tr>
+<tr>
+<td><strong>商城中心</strong></td>
+<td>商品服务上架、订单交易、服务抽佣</td>
+</tr>
+<tr>
+<td><strong>IoT 中心</strong></td>
+<td>设备接入、数据采集、告警引擎</td>
+</tr>
+<tr>
+<td><strong>AI 中心</strong></td>
+<td>风险预警、健康分析、服务推荐、运营分析</td>
+</tr>
+<tr>
+<td><strong>消息中心</strong></td>
+<td>多渠道通知（微信/短信/站内）、消息模板管理</td>
+</tr>
+<tr>
+<td><strong>支付中心</strong></td>
+<td>订阅支付、服务结算、退款处理</td>
+</tr>
+<tr>
+<td><strong>数据中心</strong></td>
+<td>数据采集、指标计算、可视化看板、报表导出</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>五端体系对外触达不同角色，十大中心对内提供统一的领域服务能力，两者共同构成 SCOP 平台的总体产品架构。</p>
+</blockquote>
+<hr />
+<h2 id="4-产品目标">4. 产品目标</h2>
+<h3 id="4-1-业务目标">4.1 业务目标</h3>
+<ul>
+<li><strong>第一年目标</strong>：签约不少于20个社区，覆盖不少于2000户老人家庭，月活跃用户留存率 ≥ 85%</li>
+<li><strong>订阅收入目标</strong>：首年实现月度经常性收入（MRR）突破100万元</li>
+<li><strong>告警响应时效</strong>：紧急告警的平均响应时间 ≤ 3分钟（从触发到工作站人员确认）</li>
+</ul>
+<h3 id="4-2-用户目标">4.2 用户目标</h3>
+<table>
+<thead>
+<tr>
+<th>用户角色</th>
+<th>核心目标</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>社区老人</td>
+<td>居家安全有保障，紧急情况能快速获得帮助，健康状况可被关注</td>
+</tr>
+<tr>
+<td>社区工作站</td>
+<td>高效管理辖区内老人，快速响应告警，工单流转可追溯</td>
+</tr>
+<tr>
+<td>平台运营者</td>
+<td>数据可视化运营，服务商统一管理，套餐灵活配置</td>
+</tr>
+<tr>
+<td>老人家属</td>
+<td>远程查看父母健康与安全状态，接收实时告警通知</td>
+</tr>
+<tr>
+<td><strong>物业</strong></td>
+<td>高效执行社区服务指令，降低人工巡检成本</td>
+</tr>
+<tr>
+<td><strong>服务商</strong></td>
+<td>获得稳定订单来源，提升服务效率和收入</td>
+</tr>
+</tbody>
+</table>
+<h3 id="4-3-第一阶段目标-v1-0">4.3 第一阶段目标（V1.0）</h3>
+<p>聚焦 <strong>居家安全 + 健康监测</strong> 两大核心板块：</p>
+<ul>
+<li><strong>居家安全</strong>：烟感告警、门磁异常、紧急按钮SOS、智能穿戴设备告警的全链路闭环</li>
+<li><strong>健康监测</strong>：血压、心率、血氧、睡眠等健康数据的采集、展示与异常告警</li>
+<li><strong>用户端</strong>：老人端小程序（极简模式）+ 家属端小程序</li>
+<li><strong>工作站端</strong>：Web后台，含告警处理、工单管理、老人档案管理</li>
+<li><strong>运营后台</strong>：平台配置、服务商管理、套餐管理、数据看板</li>
+</ul>
+<hr />
+<h2 id="5-用户画像与故事">5. 用户画像与故事</h2>
+<h3 id="5-1-社区家庭老人">5.1 社区家庭老人</h3>
+<p><strong>画像描述</strong></p>
+<ul>
+<li><strong>姓名</strong>：王奶奶</li>
+<li><strong>年龄</strong>：72岁</li>
+<li><strong>居住情况</strong>：独居，子女在外地工作</li>
+<li><strong>健康状况</strong>：有高血压，腿脚不便</li>
+<li><strong>技术能力</strong>：会使用微信的基本功能，对复杂APP操作不熟练</li>
+<li><strong>核心诉求</strong>：在家中有安全感，摔倒或身体不适时能快速求助</li>
+</ul>
+<p><strong>核心用户故事</strong></p>
+<table>
+<thead>
+<tr>
+<th>编号</th>
+<th>用户故事</th>
+<th>验收条件</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>US-E01</td>
+<td>作为独居老人，当我在家中感到身体不适时，按下紧急按钮，社区工作人员能在3分钟内回拨电话确认我的情况</td>
+<td>按下按钮 → 告警推送工作站 → 工作人员电话确认</td>
+</tr>
+<tr>
+<td>US-E02</td>
+<td>作为独居老人，当家中发生烟雾异常时，系统自动通知社区工作站，避免我因听不见或行动不便而无法逃生</td>
+<td>烟感触发 → 自动告警 → 工作站收到通知并上门查看</td>
+</tr>
+<tr>
+<td>US-E03</td>
+<td>作为高龄老人，我希望每天只需简单操作就能查看自己的健康数据，不需要复杂的设置</td>
+<td>打开小程序 → 首页大字显示今日健康摘要</td>
+</tr>
+</tbody>
+</table>
+<h3 id="5-2-社区工作站人员">5.2 社区工作站人员</h3>
+<p><strong>画像描述</strong></p>
+<ul>
+<li><strong>姓名</strong>：小李</li>
+<li><strong>年龄</strong>：28岁</li>
+<li><strong>岗位</strong>：社区网格员</li>
+<li><strong>工作内容</strong>：管理辖区内约100-150位老人的日常服务</li>
+<li><strong>技术能力</strong>：熟练使用电脑和手机，但需要高效的工具</li>
+<li><strong>核心诉求</strong>：高效处理告警和工单，清楚了解每位老人的状况</li>
+</ul>
+<p><strong>核心用户故事</strong></p>
+<table>
+<thead>
+<tr>
+<th>编号</th>
+<th>用户故事</th>
+<th>验收条件</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>US-W01</td>
+<td>作为网格员，当收到老人紧急告警时，我能在工作台上一键查看告警详情（老人姓名、地址、联系方式、历史告警记录），并快速确认处理</td>
+<td>告警弹窗 → 查看详情 → 确认处理 / 派单</td>
+</tr>
+<tr>
+<td>US-W02</td>
+<td>作为网格员，我需要为老人创建上门服务工单，并能跟踪工单的处理状态</td>
+<td>创建工单 → 分配人员 → 跟踪状态 → 完结评价</td>
+</tr>
+<tr>
+<td>US-W03</td>
+<td>作为网格员，我需要查看辖区内所有老人的健康异常列表，优先关注高风险老人</td>
+<td>健康异常列表 → 按风险等级排序 → 点击查看详情</td>
+</tr>
+</tbody>
+</table>
+<h3 id="5-3-平台运营者">5.3 平台运营者</h3>
+<p><strong>画像描述</strong></p>
+<ul>
+<li><strong>姓名</strong>：张经理</li>
+<li><strong>年龄</strong>：35岁</li>
+<li><strong>岗位</strong>：运营总监</li>
+<li><strong>工作内容</strong>：负责平台整体运营、服务商管理、数据分析</li>
+<li><strong>核心诉求</strong>：全局数据可视化，灵活配置套餐和服务商</li>
+</ul>
+<p><strong>核心用户故事</strong></p>
+<table>
+<thead>
+<tr>
+<th>编号</th>
+<th>用户故事</th>
+<th>验收条件</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>US-O01</td>
+<td>作为运营总监，我需要查看各社区的运营数据看板（老人数量、设备在线率、告警处理率、满意度等），支持按社区/时间段筛选</td>
+<td>数据看板 → 筛选条件 → 实时数据展示</td>
+</tr>
+<tr>
+<td>US-O02</td>
+<td>作为运营总监，我需要管理服务商（新增、停用、服务范围设置），并查看各服务商的服务质量</td>
+<td>服务商列表 → 增删改查 → 服务评价数据</td>
+</tr>
+<tr>
+<td>US-O03</td>
+<td>作为运营总监，我需要配置订阅套餐（服务包内容、价格、有效期），支持按月/按年两种模式</td>
+<td>套餐列表 → 新建套餐 → 设置价格和服务包</td>
+</tr>
+</tbody>
+</table>
+<h3 id="5-4-老人家属-子女">5.4 老人家属/子女</h3>
+<p><strong>画像描述</strong></p>
+<ul>
+<li><strong>姓名</strong>：王先生</li>
+<li><strong>年龄</strong>：42岁</li>
+<li><strong>居住情况</strong>：在外地城市工作，父母独居老家</li>
+<li><strong>技术能力</strong>：熟练使用各类APP</li>
+<li><strong>核心诉求</strong>：随时了解父母安全和健康状态，第一时间收到异常通知</li>
+</ul>
+<p><strong>核心用户故事</strong></p>
+<table>
+<thead>
+<tr>
+<th>编号</th>
+<th>用户故事</th>
+<th>验收条件</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>US-F01</td>
+<td>作为子女，我能通过小程序实时查看父母的心率、血压、睡眠等健康数据，数据以直观的图表展示</td>
+<td>选择查看的父母 → 健康数据图表 → 按日/周/月切换</td>
+</tr>
+<tr>
+<td>US-F02</td>
+<td>作为子女，当父母触发紧急告警时，我能通过微信服务通知和短信双通道收到告警信息</td>
+<td>告警触发 → 微信通知 + 短信 → 查看告警详情</td>
+</tr>
+<tr>
+<td>US-F03</td>
+<td>作为子女，我能查看父母家中设备的在线状态，设备离线时收到提醒</td>
+<td>设备列表 → 在线/离线状态 → 离线自动提醒</td>
+</tr>
+</tbody>
+</table>
+<h3 id="5-5-物业人员-新增">5.5 物业人员（新增）</h3>
+<p><strong>画像描述</strong></p>
+<ul>
+<li><strong>姓名</strong>：陈师傅</li>
+<li><strong>年龄</strong>：45岁</li>
+<li><strong>岗位</strong>：社区物业维修工</li>
+<li><strong>工作内容</strong>：负责社区公共设施维护和上门维修，承接社区工作站派发的维修类工单</li>
+<li><strong>技术能力</strong>：熟练使用手机，习惯使用微信群接收派工</li>
+<li><strong>核心诉求</strong>：清晰看到派发工单，处理过程可记录、可追溯</li>
+</ul>
+<p><strong>核心用户故事</strong></p>
+<table>
+<thead>
+<tr>
+<th>编号</th>
+<th>用户故事</th>
+<th>验收条件</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>US-P01</td>
+<td>作为物业人员，我收到工作站派发的上门维修工单后，能查看工单详情并确认接单</td>
+<td>接单 → 上门处理 → 完成反馈</td>
+</tr>
+<tr>
+<td>US-P02</td>
+<td>作为物业人员，我能查看我的工单列表和处理记录</td>
+<td>工单列表 → 状态筛选 → 查看详情</td>
+</tr>
+</tbody>
+</table>
+<h3 id="5-6-服务商-新增">5.6 服务商（新增）</h3>
+<p><strong>画像描述</strong></p>
+<ul>
+<li><strong>姓名</strong>：刘老板</li>
+<li><strong>年龄</strong>：38岁</li>
+<li><strong>岗位</strong>：社区周边家政服务公司负责人</li>
+<li><strong>工作内容</strong>：经营一家小型家政公司，提供保洁、陪护、维修等服务</li>
+<li><strong>技术能力</strong>：熟练使用电脑和手机，关注订单和结算</li>
+<li><strong>核心诉求</strong>：稳定订单来源、清晰的服务流程和结算明细</li>
+</ul>
+<p><strong>核心用户故事</strong></p>
+<table>
+<thead>
+<tr>
+<th>编号</th>
+<th>用户故事</th>
+<th>验收条件</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>US-S01</td>
+<td>作为服务商，我能在商家端接收平台派发的服务订单并安排人员处理</td>
+<td>接单 → 排班 → 派人上门 → 完成确认</td>
+</tr>
+<tr>
+<td>US-S02</td>
+<td>作为服务商，我能查看月度服务统计和结算明细</td>
+<td>统计报表 → 按月查看 → 导出明细</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="6-功能清单-第一阶段-v1-0">6. 功能清单（第一阶段 V1.0）</h2>
+<h3 id="6-1-p0-核心功能-mvp-必备">6.1 <span class="pri pri-p0">P0</span> 核心功能（MVP 必备）</h3>
+<table>
+<thead>
+<tr>
+<th>编号</th>
+<th>功能模块</th>
+<th>功能点</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>F-001</td>
+<td>设备管理</td>
+<td>设备注册与绑定</td>
+<td>支持烟感、门磁、紧急按钮、智能穿戴设备的扫码绑定</td>
+</tr>
+<tr>
+<td>F-002</td>
+<td>设备管理</td>
+<td>设备数据采集</td>
+<td>实时采集设备上报的状态数据与告警信号</td>
+</tr>
+<tr>
+<td>F-003</td>
+<td>设备管理</td>
+<td>设备状态监控</td>
+<td>设备在线/离线/低电量状态的实时监控与告警</td>
+</tr>
+<tr>
+<td>F-004</td>
+<td>告警中心</td>
+<td>告警规则引擎</td>
+<td>定义不同设备类型的告警触发规则与告警等级</td>
+</tr>
+<tr>
+<td>F-005</td>
+<td>告警中心</td>
+<td>告警通知推送</td>
+<td>向工作站推送实时告警（弹窗+声音），向家属推送微信通知</td>
+</tr>
+<tr>
+<td>F-006</td>
+<td>告警中心</td>
+<td>告警处理闭环</td>
+<td>告警确认 → 处理 → 回访 → 关闭的完整流程</td>
+</tr>
+<tr>
+<td>F-007</td>
+<td>告警中心</td>
+<td>告警升级机制</td>
+<td>超时未处理的告警自动升级（通知上级/增加通知渠道）</td>
+</tr>
+<tr>
+<td>F-008</td>
+<td>老人档案</td>
+<td>老人基本信息管理</td>
+<td>姓名、年龄、住址、联系方式、紧急联系人等</td>
+</tr>
+<tr>
+<td>F-009</td>
+<td>老人档案</td>
+<td>健康档案管理</td>
+<td>病史、用药记录、过敏信息、健康评估等级</td>
+</tr>
+<tr>
+<td>F-010</td>
+<td>老人档案</td>
+<td>设备关联管理</td>
+<td>关联已绑定的设备列表</td>
+</tr>
+<tr>
+<td>F-011</td>
+<td>健康监测</td>
+<td>健康数据采集</td>
+<td>血压、心率、血氧、睡眠数据的自动采集（来自穿戴设备）</td>
+</tr>
+<tr>
+<td>F-012</td>
+<td>健康监测</td>
+<td>健康异常告警</td>
+<td>健康指标超过阈值时的自动告警</td>
+</tr>
+<tr>
+<td>F-013</td>
+<td>健康监测</td>
+<td>健康数据展示</td>
+<td>老人端和家属端以图表形式展示健康趋势</td>
+</tr>
+<tr>
+<td>F-014</td>
+<td>工单管理</td>
+<td>工单创建与派发</td>
+<td>工作站创建服务工单并指派处理人员</td>
+</tr>
+<tr>
+<td>F-015</td>
+<td>工单管理</td>
+<td>工单状态跟踪</td>
+<td>待处理 → 处理中 → 已完成 → 已关闭的状态流转</td>
+</tr>
+<tr>
+<td>F-016</td>
+<td>用户端（老人）</td>
+<td>极简模式首页</td>
+<td>大字体、大按钮，核心功能一键触达</td>
+</tr>
+<tr>
+<td>F-017</td>
+<td>用户端（老人）</td>
+<td>SOS一键求助</td>
+<td>首页醒目位置的一键紧急求助按钮</td>
+</tr>
+<tr>
+<td>F-018</td>
+<td>用户端（家属）</td>
+<td>老人安全状态查看</td>
+<td>查看父母设备的在线状态和最近告警记录</td>
+</tr>
+<tr>
+<td>F-019</td>
+<td>用户端（家属）</td>
+<td>健康数据查看</td>
+<td>以图表形式查看父母健康趋势</td>
+</tr>
+<tr>
+<td>F-020</td>
+<td>运营后台</td>
+<td>套餐与订阅管理</td>
+<td>创建套餐、管理用户订阅、续费提醒</td>
+</tr>
+<tr>
+<td>F-021</td>
+<td>运营后台</td>
+<td>社区管理</td>
+<td>添加/管理社区信息、绑定工作站人员</td>
+</tr>
+<tr>
+<td>F-022</td>
+<td>运营后台</td>
+<td>数据看板</td>
+<td>核心运营指标的实时展示</td>
+</tr>
+</tbody>
+</table>
+<h3 id="6-2-p1-重要功能-v1-0-后期或-v1-1">6.2 <span class="pri pri-p1">P1</span> 重要功能（V1.0 后期或 V1.1）</h3>
+<table>
+<thead>
+<tr>
+<th>编号</th>
+<th>功能模块</th>
+<th>功能点</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>F-101</td>
+<td>告警中心</td>
+<td>告警统计报表</td>
+<td>按社区、设备类型、时间段统计告警趋势</td>
+</tr>
+<tr>
+<td>F-102</td>
+<td>告警中心</td>
+<td>误报标记与学习</td>
+<td>标记误报，优化告警规则</td>
+</tr>
+<tr>
+<td>F-103</td>
+<td>健康监测</td>
+<td>健康报告生成</td>
+<td>按周/月自动生成老人健康报告，推送给家属</td>
+</tr>
+<tr>
+<td>F-104</td>
+<td>健康监测</td>
+<td>慢病管理提醒</td>
+<td>用药提醒、复诊提醒、健康任务提醒</td>
+</tr>
+<tr>
+<td>F-105</td>
+<td>工单管理</td>
+<td>工单满意度评价</td>
+<td>服务完成后老人/家属对服务进行评价</td>
+</tr>
+<tr>
+<td>F-106</td>
+<td>工单管理</td>
+<td>服务人员管理</td>
+<td>服务人员的排班、服务范围管理</td>
+</tr>
+<tr>
+<td>F-107</td>
+<td>用户端（老人）</td>
+<td>语音播报</td>
+<td>健康数据语音播报，适配视力不佳的老人</td>
+</tr>
+<tr>
+<td>F-108</td>
+<td>用户端（家属）</td>
+<td>多老人管理</td>
+<td>一个家属账号绑定多位老人</td>
+</tr>
+<tr>
+<td>F-109</td>
+<td>运营后台</td>
+<td>服务商管理</td>
+<td>服务商入驻、资质审核、服务评价</td>
+</tr>
+<tr>
+<td>F-110</td>
+<td>运营后台</td>
+<td>运营报表导出</td>
+<td>支持核心运营数据的Excel导出</td>
+</tr>
+<tr>
+<td><strong>F-111</strong></td>
+<td><strong>商家端</strong></td>
+<td><strong>服务商入驻与接单</strong></td>
+<td>服务商注册、资质审核、在线接单</td>
+</tr>
+<tr>
+<td><strong>F-112</strong></td>
+<td><strong>紧急救援</strong></td>
+<td><strong>紧急救援联动</strong></td>
+<td>SOS告警联动120急救、社区医院</td>
+</tr>
+</tbody>
+</table>
+<h3 id="6-3-p2-增强功能-v1-2">6.3 <span class="pri pri-p2">P2</span> 增强功能（V1.2+）</h3>
+<table>
+<thead>
+<tr>
+<th>编号</th>
+<th>功能模块</th>
+<th>功能点</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>F-201</td>
+<td>健康监测</td>
+<td>AI健康风险评估</td>
+<td>基于历史健康数据的AI风险预测</td>
+</tr>
+<tr>
+<td>F-202</td>
+<td>健康监测</td>
+<td>跌倒检测算法</td>
+<td>基于穿戴设备加速度传感器的跌倒检测</td>
+</tr>
+<tr>
+<td>F-203</td>
+<td>告警中心</td>
+<td>智能告警降噪</td>
+<td>基于AI的告警聚合与降噪，减少无效告警</td>
+</tr>
+<tr>
+<td>F-204</td>
+<td>用户端</td>
+<td>视频通话</td>
+<td>老人与家属/工作站人员的视频通话</td>
+</tr>
+<tr>
+<td>F-205</td>
+<td>运营后台</td>
+<td>智能运营建议</td>
+<td>基于数据的智能运营策略推荐</td>
+</tr>
+<tr>
+<td><strong>F-206</strong></td>
+<td><strong>家政服务</strong></td>
+<td><strong>家政服务预约</strong></td>
+<td>保洁、维修、陪护等家政服务在线预约</td>
+</tr>
+<tr>
+<td><strong>F-207</strong></td>
+<td><strong>紧急救援</strong></td>
+<td><strong>救援资源调度</strong></td>
+<td>联动社区医院、120急救、家属的救援资源调度</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="7-核心流程说明">7. 核心流程说明</h2>
+<h3 id="7-1-老人注册与设备安装流程">7.1 老人注册与设备安装流程</h3>
+<pre><code>[运营后台]                [工作站]                 [安装人员]              [老人/家属]
+    |                        |                        |                      |
+    |-- 创建社区信息 -------&gt;|                        |                      |
+    |-- 创建工作站账号 -----&gt;|                        |                      |
+    |                        |-- 录入老人档案 -------&gt;|                      |
+    |                        |-- 创建订阅订单 -------&gt;|                      |
+    |                        |                        |-- 预约安装时间 -----&gt;|
+    |                        |                        |&lt;-- 确认时间 ----------|
+    |                        |                        |-- 上门安装设备 -----&gt;|
+    |                        |                        |-- 扫码绑定设备 -----&gt;|
+    |                        |                        |-- 测试设备告警 -----&gt;|
+    |                        |                        |-- 指导老人使用 -----&gt;|
+    |                        |&lt;-- 确认安装完成 -------|                      |
+    |                        |-- 激活订阅 -----------&gt;|                      |
+    |&lt;-- 设备在线确认 -------|                        |                      |
+    |                        |                        |                      |-- 家属绑定 ---&gt;|
+</code></pre>
+<p><strong>关键节点说明</strong>：
+1. 运营后台先创建社区和分配工作站账号
+2. 工作站人员录入老人档案信息并创建订阅订单
+3. 安装人员上门安装设备，扫码将设备与老人绑定
+4. 安装完成后进行告警测试（模拟触发），确认链路通畅
+5. 工作站确认安装完成后激活订阅
+6. 家属通过小程序扫码绑定老人，建立关联关系</p>
+<h3 id="7-2-告警处理流程">7.2 告警处理流程</h3>
+<pre><code>[IoT设备]           [平台]                [工作站]                [家属]             [服务人员]
+   |                  |                      |                      |                   |
+   |-- 触发告警 -----&gt;|                      |                      |                   |
+   |                  |-- 告警规则匹配 -----&gt;|                      |                   |
+   |                  |-- 生成告警工单 -----&gt;|                      |                   |
+   |                  |-- 推送告警通知 -----&gt;|                      |                   |
+   |                  |-- 推送家属通知 ---------------------------------&gt;|              |
+   |                  |                      |-- 弹窗+声音提醒       |                   |
+   |                  |                      |-- 查看告警详情        |                   |
+   |                  |                      |-- 电话确认老人状况    |                   |
+   |                  |                      |-- [判断] 是否需要上门  |                   |
+   |                  |                      |                      |                   |
+   |                  |                      |-- [需要] 创建服务工单 ------------------------&gt;|
+   |                  |                      |                      |                   |-- 上门处理
+   |                  |                      |                      |                   |-- 完成反馈
+   |                  |                      |&lt;-- 确认处理完成 -------------------------------|
+   |                  |                      |-- [不需要] 直接关闭   |                   |
+   |                  |                      |-- 回访确认老人状态    |                   |
+   |                  |&lt;-- 告警关闭 ---------|                      |                   |
+   |                  |-- 更新告警统计 ------|                      |                   |
+</code></pre>
+<p><strong>告警升级规则</strong>：</p>
+<table>
+<thead>
+<tr>
+<th>告警等级</th>
+<th>触发条件</th>
+<th>通知渠道</th>
+<th>响应时效</th>
+<th>升级规则</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="pri pri-p0">P0</span>-紧急</td>
+<td>紧急按钮SOS、烟感触发、穿戴设备SOS</td>
+<td>工作站弹窗+声音+短信+家属微信+短信</td>
+<td>≤ 3分钟</td>
+<td>3分钟未确认 → 通知工作站主管；5分钟未确认 → 通知平台运营</td>
+</tr>
+<tr>
+<td><span class="pri pri-p1">P1</span>-重要</td>
+<td>门磁异常（深夜开启）、健康指标严重异常</td>
+<td>工作站弹窗+家属微信通知</td>
+<td>≤ 10分钟</td>
+<td>10分钟未确认 → 通知工作站主管</td>
+</tr>
+<tr>
+<td><span class="pri pri-p2">P2</span>-一般</td>
+<td>设备离线、低电量、健康指标轻度异常</td>
+<td>工作站消息列表+家属微信通知</td>
+<td>≤ 60分钟</td>
+<td>不升级</td>
+</tr>
+</tbody>
+</table>
+<h3 id="7-3-健康数据采集流程">7.3 健康数据采集流程</h3>
+<pre><code>[穿戴设备]              [IoT平台]               [业务平台]              [用户端]
+    |                      |                        |                      |
+    |-- 定时上报 ---------&gt;|                        |                      |
+    |   (心率/血压/血氧    |                        |                      |
+    |    睡眠/步数)        |-- 数据解析与清洗 -----&gt;|                      |
+    |                      |-- 数据存储              |                      |
+    |                      |                        |-- 阈值检查           |
+    |                      |                        |-- [正常] 存储并展示   |
+    |                      |                        |-- [异常] 生成健康告警  |
+    |                      |                        |                      |-- 图表展示
+    |                      |                        |                      |-- 异常标记
+</code></pre>
+<p><strong>健康数据采集频率</strong>：</p>
+<table>
+<thead>
+<tr>
+<th>数据类型</th>
+<th>采集频率</th>
+<th>上报频率</th>
+<th>异常判定</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>心率</td>
+<td>每5分钟</td>
+<td>每15分钟</td>
+<td>静息心率 &gt; 100 或 &lt; 50 bpm 持续30分钟</td>
+</tr>
+<tr>
+<td>血压</td>
+<td>每30分钟</td>
+<td>每30分钟</td>
+<td>收缩压 &gt; 160 或 &lt; 90 mmHg</td>
+</tr>
+<tr>
+<td>血氧</td>
+<td>每5分钟</td>
+<td>每15分钟</td>
+<td>SpO2 &lt; 92% 持续10分钟</td>
+</tr>
+<tr>
+<td>睡眠</td>
+<td>睡眠期间</td>
+<td>次日早晨</td>
+<td>深睡时长 &lt; 1小时</td>
+</tr>
+<tr>
+<td>步数</td>
+<td>实时</td>
+<td>每小时</td>
+<td>连续3天步数 &lt; 100</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="8-功能详细说明">8. 功能详细说明</h2>
+<blockquote>
+<p>本章节使用 <strong>EARS（Easy Approach to Requirements Syntax）</strong> 原则撰写功能需求描述。
+EARS 标签格式：<strong><span class="ears-badge ears-ubi">通用性</span></strong> <strong><span class="ears-badge ears-event">事件驱动</span></strong> <strong><span class="ears-badge ears-state">状态驱动</span></strong> <strong><span class="ears-badge ears-opt">可选特性</span></strong> <strong><span class="ears-badge ears-unwanted">异常行为</span></strong></p>
+</blockquote>
+<h3 id="8-1-居家安全模块">8.1 居家安全模块</h3>
+<h4 id="8-1-1-设备管理">8.1.1 设备管理</h4>
+<p><strong>F-001 设备注册与绑定</strong></p>
+<table>
+<thead>
+<tr>
+<th>属性</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>优先级</td>
+<td><span class="pri pri-p0">P0</span></td>
+</tr>
+<tr>
+<td>用户角色</td>
+<td>安装人员、工作站人员</td>
+</tr>
+</tbody>
+</table>
+<p><strong>EARS 需求描述</strong>：</p>
+<ul>
+<li><strong><span class="ears-badge ears-ubi">通用性</span></strong> 系统应支持烟感报警器、门磁传感器、紧急呼叫按钮、智能穿戴手环四种设备类型的注册。</li>
+<li><strong><span class="ears-badge ears-event">事件驱动</span></strong> 当安装人员使用工作站端扫描设备二维码时，系统应自动识别设备类型并进入设备绑定流程。</li>
+<li><strong><span class="ears-badge ears-state">状态驱动</span></strong> 在设备绑定流程未完成的情况下，系统应阻止该设备上报数据进入正式告警通道，所有上报数据标记为"测试模式"。</li>
+<li><strong><span class="ears-badge ears-event">事件驱动</span></strong> 当设备绑定成功时，系统应将设备状态设置为"在线"，并将设备与指定老人档案自动关联。</li>
+<li><strong><span class="ears-badge ears-unwanted">异常行为</span></strong> 如果扫描的二维码已被其他老人绑定，那么系统应提示"设备已被绑定，请先解绑"，并阻止重复绑定。</li>
+<li><strong><span class="ears-badge ears-unwanted">异常行为</span></strong> 如果设备在绑定后30分钟内未上报任何数据，那么系统应将该设备标记为"待确认"状态，并向工作站发送确认提醒。</li>
+</ul>
+<p><strong>交互边界</strong>：
+- 一个老人可绑定多个设备（最多：烟感2个、门磁3个、紧急按钮3个、穿戴设备1个）
+- 一个设备同一时间只能绑定一位老人
+- 设备解绑需要工作站人员权限，解绑后设备数据保留30天</p>
+<p><strong>异常场景</strong>：
+| 场景 | 处理方式 |
+|------|----------|
+| 扫码时网络断开 | 提示"网络异常，请检查网络连接后重试"，支持离线缓存，网络恢复后自动提交 |
+| 设备类型无法识别 | 提示"无法识别设备类型，请确认二维码是否正确"，并记录异常日志 |
+| 绑定过程中设备断电 | 绑定流程暂停，设备恢复供电后自动继续绑定流程 |</p>
+<h4 id="8-1-2-告警中心">8.1.2 告警中心</h4>
+<p><strong>F-004 告警规则引擎</strong></p>
+<table>
+<thead>
+<tr>
+<th>属性</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>优先级</td>
+<td><span class="pri pri-p0">P0</span></td>
+</tr>
+<tr>
+<td>用户角色</td>
+<td>系统自动、运营后台配置</td>
+</tr>
+</tbody>
+</table>
+<p><strong>EARS 需求描述</strong>：</p>
+<ul>
+<li><strong><span class="ears-badge ears-ubi">通用性</span></strong> 告警规则引擎应支持按设备类型、告警等级、生效时间段三个维度配置告警规则。</li>
+<li><strong><span class="ears-badge ears-event">事件驱动</span></strong> 当IoT平台接收到设备上报的告警信号时，告警规则引擎应在500毫秒内完成规则匹配并生成告警记录。</li>
+<li><strong><span class="ears-badge ears-state">状态驱动</span></strong> 在告警规则被运营后台禁用的情况下，该规则不应触发任何告警通知。</li>
+<li><strong><span class="ears-badge ears-opt">可选特性</span></strong> 在启用告警静默时段功能的条件下，在静默时段（如22:00-06:00）内，<span class="pri pri-p2">P2</span>-一般告警应仅记录不推送通知，<span class="pri pri-p0">P0</span>/P1告警应正常推送。</li>
+<li><strong><span class="ears-badge ears-unwanted">异常行为</span></strong> 如果同一设备在5分钟内重复上报相同类型的告警信号，那么系统应合并为一条告警记录，并在告警详情中记录重复次数。</li>
+<li><strong><span class="ears-badge ears-unwanted">异常行为</span></strong> 如果告警规则引擎服务不可用，那么系统应将所有收到的告警信号暂存至消息队列，待服务恢复后逐条处理。</li>
+</ul>
+<p><strong>告警等级定义</strong>：</p>
+<table>
+<thead>
+<tr>
+<th>等级</th>
+<th>标识</th>
+<th>颜色</th>
+<th>典型场景</th>
+<th>通知方式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="pri pri-p0">P0</span>-紧急</td>
+<td>CRITICAL</td>
+<td>红色</td>
+<td>紧急按钮按下、烟感触发、穿戴设备SOS</td>
+<td>工作站弹窗+声音+短信、家属微信+短信</td>
+</tr>
+<tr>
+<td><span class="pri pri-p1">P1</span>-重要</td>
+<td>MAJOR</td>
+<td>橙色</td>
+<td>门磁深夜异常开启、健康指标严重异常</td>
+<td>工作站弹窗、家属微信通知</td>
+</tr>
+<tr>
+<td><span class="pri pri-p2">P2</span>-一般</td>
+<td>MINOR</td>
+<td>黄色</td>
+<td>设备离线超过1小时、设备低电量、健康轻度异常</td>
+<td>工作站消息列表、家属微信通知</td>
+</tr>
+</tbody>
+</table>
+<p><strong>F-005 告警处理闭环</strong></p>
+<table>
+<thead>
+<tr>
+<th>属性</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>优先级</td>
+<td><span class="pri pri-p0">P0</span></td>
+</tr>
+<tr>
+<td>用户角色</td>
+<td>工作站人员</td>
+</tr>
+</tbody>
+</table>
+<p><strong>EARS 需求描述</strong>：</p>
+<ul>
+<li><strong><span class="ears-badge ears-event">事件驱动</span></strong> 当工作站人员确认收到告警时，系统应将告警状态从"待确认"变更为"处理中"，并记录确认人和确认时间。</li>
+<li><strong><span class="ears-badge ears-event">事件驱动</span></strong> 当工作站人员完成告警处理并提交处理结果时，系统应将告警状态变更为"已完成"，并自动生成回访任务。</li>
+<li><strong><span class="ears-badge ears-event">事件驱动</span></strong> 当回访任务完成且老人确认问题已解决时，系统应将告警状态变更为"已关闭"。</li>
+<li><strong><span class="ears-badge ears-unwanted">异常行为</span></strong> 如果P0-紧急告警在3分钟内未被任何工作站人员确认，那么系统应自动将告警升级，通知工作站主管，并再次推送告警。</li>
+<li><strong><span class="ears-badge ears-unwanted">异常行为</span></strong> 如果P0-紧急告警在5分钟内未被确认，那么系统应通知平台运营人员，并自动拨打预设的紧急联系人电话。</li>
+<li><strong><span class="ears-badge ears-state">状态驱动</span></strong> 在告警状态为"已关闭"的情况下，系统应禁止对该告警进行任何修改操作。</li>
+</ul>
+<p><strong>告警处理状态机</strong>：</p>
+<pre><code>待确认 ──(确认)──&gt; 处理中 ──(完成)──&gt; 待回访 ──(回访确认)──&gt; 已关闭
+   │                  │                    │
+   └──(超时升级)──────┘                    └──(回访异常)──&gt; 处理中（重新处理）
+</code></pre>
+<h3 id="8-2-健康监测模块">8.2 健康监测模块</h3>
+<p><strong>F-011 健康数据采集</strong></p>
+<table>
+<thead>
+<tr>
+<th>属性</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>优先级</td>
+<td><span class="pri pri-p0">P0</span></td>
+</tr>
+<tr>
+<td>用户角色</td>
+<td>系统自动</td>
+</tr>
+</tbody>
+</table>
+<p><strong>EARS 需求描述</strong>：</p>
+<ul>
+<li><strong><span class="ears-badge ears-ubi">通用性</span></strong> 系统应支持心率（bpm）、血压（mmHg）、血氧饱和度（%）、睡眠数据（深睡/浅睡/清醒时长）、步数（步）五种健康指标的采集。</li>
+<li><strong><span class="ears-badge ears-event">事件驱动</span></strong> 当IoT平台收到穿戴设备上报的健康数据时，系统应校验数据合法性（范围检查），合法数据写入健康数据表，非法数据标记为异常并记录日志。</li>
+<li><strong><span class="ears-badge ears-state">状态驱动</span></strong> 在设备被标记为"测试模式"的情况下，系统应采集健康数据但不应纳入正式健康分析，数据前端展示应标记"测试数据"水印。</li>
+<li><strong><span class="ears-badge ears-unwanted">异常行为</span></strong> 如果健康数据上报中断超过2小时，那么系统应生成一条设备数据中断告警（<span class="pri pri-p2">P2</span>-一般），并通知家属端。</li>
+</ul>
+<p><strong>健康数据校验规则</strong>：</p>
+<table>
+<thead>
+<tr>
+<th>数据类型</th>
+<th>合法范围</th>
+<th>异常处理</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>心率</td>
+<td>30-250 bpm</td>
+<td>超出范围标记为无效数据，不参与展示和告警</td>
+</tr>
+<tr>
+<td>收缩压</td>
+<td>60-260 mmHg</td>
+<td>超出范围标记为无效数据</td>
+</tr>
+<tr>
+<td>舒张压</td>
+<td>30-160 mmHg</td>
+<td>超出范围标记为无效数据</td>
+</tr>
+<tr>
+<td>血氧</td>
+<td>50-100%</td>
+<td>超出范围标记为无效数据</td>
+</tr>
+<tr>
+<td>步数</td>
+<td>0-100000 步/天</td>
+<td>超过上限按上限值记录</td>
+</tr>
+</tbody>
+</table>
+<p><strong>F-012 健康异常告警</strong></p>
+<table>
+<thead>
+<tr>
+<th>属性</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>优先级</td>
+<td><span class="pri pri-p0">P0</span></td>
+</tr>
+<tr>
+<td>用户角色</td>
+<td>系统自动、工作站人员</td>
+</tr>
+</tbody>
+</table>
+<p><strong>EARS 需求描述</strong>：</p>
+<ul>
+<li><strong><span class="ears-badge ears-event">事件驱动</span></strong> 当系统检测到健康指标超过预设阈值并持续满足告警条件时，系统应自动生成健康异常告警。</li>
+<li><strong><span class="ears-badge ears-state">状态驱动</span></strong> 在老人被标记为"住院"或"外出"状态的情况下，健康异常告警应仅记录不推送通知。</li>
+<li><strong><span class="ears-badge ears-opt">可选特性</span></strong> 在启用个性化阈值功能的条件下，系统应优先使用为该老人单独设置的阈值，而非系统默认阈值。</li>
+<li><strong><span class="ears-badge ears-unwanted">异常行为</span></strong> 如果同一老人在1小时内连续触发同一类型的健康告警，那么系统应合并告警并在详情中标注"频发告警"。</li>
+</ul>
+<p><strong>默认健康阈值</strong>：</p>
+<table>
+<thead>
+<tr>
+<th>指标</th>
+<th>异常条件</th>
+<th>告警等级</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>静息心率</td>
+<td>&gt; 100 bpm 或 &lt; 50 bpm，持续30分钟</td>
+<td><span class="pri pri-p1">P1</span>-重要</td>
+</tr>
+<tr>
+<td>收缩压</td>
+<td>&gt; 160 mmHg，持续1小时</td>
+<td><span class="pri pri-p1">P1</span>-重要</td>
+</tr>
+<tr>
+<td>收缩压</td>
+<td>&lt; 90 mmHg，持续1小时</td>
+<td><span class="pri pri-p1">P1</span>-重要</td>
+</tr>
+<tr>
+<td>血氧</td>
+<td>&lt; 92%，持续10分钟</td>
+<td><span class="pri pri-p1">P1</span>-重要</td>
+</tr>
+<tr>
+<td>深睡时长</td>
+<td>&lt; 1小时，连续3天</td>
+<td><span class="pri pri-p2">P2</span>-一般</td>
+</tr>
+</tbody>
+</table>
+<h3 id="8-3-用户端">8.3 用户端</h3>
+<h4 id="8-3-1-老人端小程序">8.3.1 老人端小程序</h4>
+<p><strong>F-016 极简模式首页</strong></p>
+<table>
+<thead>
+<tr>
+<th>属性</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>优先级</td>
+<td><span class="pri pri-p0">P0</span></td>
+</tr>
+<tr>
+<td>用户角色</td>
+<td>社区老人</td>
+</tr>
+</tbody>
+</table>
+<p><strong>设计原则</strong>：
+- 字体大小不低于 18px（正文），关键信息使用 24px 以上
+- 按钮触控区域不小于 44x44px（符合iOS/Android人机界面指南）
+- 页面层级不超过2层（首页 → 详情页）
+- 颜色对比度符合 WCAG 2.1 AA 级标准</p>
+<p><strong>EARS 需求描述</strong>：</p>
+<ul>
+<li><strong><span class="ears-badge ears-ubi">通用性</span></strong> 老人端小程序首页应展示以下核心信息：今日健康摘要（心率、血压）、SOS紧急求助按钮（醒目红色，占据页面中央显著位置）、最近一条安全状态提示。</li>
+<li><strong><span class="ears-badge ears-event">事件驱动</span></strong> 当老人点击SOS按钮时，系统应触发确认弹窗"确认紧急求助？"，确认后立即生成P0-紧急告警并推送工作站。</li>
+<li><strong><span class="ears-badge ears-state">状态驱动</span></strong> 在SOS告警已触发且未被关闭的情况下，SOS按钮应显示"已求助，请等待"状态，并禁用重复点击。</li>
+<li><strong><span class="ears-badge ears-unwanted">异常行为</span></strong> 如果老人在30秒内连续点击SOS按钮超过3次，那么系统应仅生成一条告警，并在告警详情中标注"连续触发"。</li>
+</ul>
+<p><strong>页面布局示意</strong>：</p>
+<pre><code>┌─────────────────────────────┐
+│       智慧社区 · 居家守护      │
+├─────────────────────────────┤
+│                             │
+│    ┌─────────────────┐      │
+│    │                 │      │
+│    │   SOS 紧急求助   │      │  ← 醒目红色按钮
+│    │   长按或点击求助  │      │
+│    │                 │      │
+│    └─────────────────┘      │
+│                             │
+│  今日健康                    │
+│  ┌──────────────────────┐   │
+│  │ 心率 72 bpm  正常     │   │
+│  │ 血压 128/82  正常     │   │
+│  └──────────────────────┘   │
+│                             │
+│  设备状态: ● 全部在线        │
+│                             │
+│  [健康详情]    [联系家属]     │
+└─────────────────────────────┘
+</code></pre>
+<h4 id="8-3-2-家属端小程序">8.3.2 家属端小程序</h4>
+<p><strong>F-019 健康数据查看</strong></p>
+<table>
+<thead>
+<tr>
+<th>属性</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>优先级</td>
+<td><span class="pri pri-p0">P0</span></td>
+</tr>
+<tr>
+<td>用户角色</td>
+<td>老人家属/子女</td>
+</tr>
+</tbody>
+</table>
+<p><strong>EARS 需求描述</strong>：</p>
+<ul>
+<li><strong><span class="ears-badge ears-ubi">通用性</span></strong> 家属端应支持以折线图形式展示老人近7天/30天的心率、血压、血氧、睡眠趋势数据。</li>
+<li><strong><span class="ears-badge ears-event">事件驱动</span></strong> 当家属切换查看的老人时（多老人绑定场景），系统应加载该老人的健康数据并刷新图表。</li>
+<li><strong><span class="ears-badge ears-state">状态驱动</span></strong> 在健康数据加载中的情况下，系统应展示骨架屏加载动画，而非空白页面。</li>
+<li><strong><span class="ears-badge ears-unwanted">异常行为</span></strong> 如果请求的健康数据为空（新绑定老人尚无数据），那么系统应展示空状态提示："暂无健康数据，请等待设备上报"，并显示设备在线状态。</li>
+</ul>
+<p><strong>F-018 告警通知</strong></p>
+<table>
+<thead>
+<tr>
+<th>属性</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>优先级</td>
+<td><span class="pri pri-p0">P0</span></td>
+</tr>
+<tr>
+<td>用户角色</td>
+<td>老人家属</td>
+</tr>
+</tbody>
+</table>
+<p><strong>EARS 需求描述</strong>：</p>
+<ul>
+<li><strong><span class="ears-badge ears-event">事件驱动</span></strong> 当老人触发P0-紧急或P1-重要告警时，系统应通过微信服务通知和短信双通道向绑定的家属发送告警信息。</li>
+<li><strong><span class="ears-badge ears-ubi">通用性</span></strong> 告警通知内容应包含：老人姓名、告警类型、告警时间、告警设备、工作站联系方式。</li>
+<li><strong><span class="ears-badge ears-event">事件驱动</span></strong> 当家属点击微信服务通知时，系统应直接跳转到该告警的详情页面。</li>
+<li><strong><span class="ears-badge ears-unwanted">异常行为</span></strong> 如果微信服务通知发送失败（如用户未订阅），那么系统应仅通过短信发送告警，并在告警日志中记录微信通知失败原因。</li>
+</ul>
+<h3 id="8-4-工作站端-web后台">8.4 工作站端（Web后台）</h3>
+<p><strong>F-005 告警处理工作台</strong></p>
+<table>
+<thead>
+<tr>
+<th>属性</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>优先级</td>
+<td><span class="pri pri-p0">P0</span></td>
+</tr>
+<tr>
+<td>用户角色</td>
+<td>社区工作站人员</td>
+</tr>
+</tbody>
+</table>
+<p><strong>EARS 需求描述</strong>：</p>
+<ul>
+<li><strong><span class="ears-badge ears-ubi">通用性</span></strong> 告警工作台应分为"待处理告警"和"已处理告警"两个Tab，待处理告警按告警等级（<span class="pri pri-p0">P0</span> &gt; <span class="pri pri-p1">P1</span> &gt; <span class="pri pri-p2">P2</span>）和时间倒序排列。</li>
+<li><strong><span class="ears-badge ears-event">事件驱动</span></strong> 当新的P0-紧急告警到达时，系统应在页面顶部弹出红色告警横幅（含声音提示），横幅在用户点击确认前持续显示。</li>
+<li><strong><span class="ears-badge ears-event">事件驱动</span></strong> 当工作站人员点击某条告警时，系统应展示告警详情面板，包含：老人基本信息、告警类型与时间、设备位置、历史告警记录（近30天）、一键拨号按钮、快速处理按钮。</li>
+<li><strong><span class="ears-badge ears-state">状态驱动</span></strong> 在告警处于"处理中"状态下，告警详情面板应显示当前处理人和已处理时长。</li>
+<li><strong><span class="ears-badge ears-unwanted">异常行为</span></strong> 如果工作站人员试图关闭浏览器或离开页面时有未确认的P0告警，那么系统应弹出确认提示"有未处理的紧急告警，确定离开？"</li>
+</ul>
+<p><strong>F-009 老人档案管理</strong></p>
+<table>
+<thead>
+<tr>
+<th>属性</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>优先级</td>
+<td><span class="pri pri-p0">P0</span></td>
+</tr>
+<tr>
+<td>用户角色</td>
+<td>社区工作站人员</td>
+</tr>
+</tbody>
+</table>
+<p><strong>EARS 需求描述</strong>：</p>
+<ul>
+<li><strong><span class="ears-badge ears-ubi">通用性</span></strong> 老人档案应包含以下信息组：基本信息（姓名、性别、年龄、身份证号、联系电话、住址）、健康信息（病史、用药记录、过敏史、血型、健康评估等级）、紧急联系人（姓名、关系、电话）、关联设备（设备列表及在线状态）、订阅信息（套餐类型、有效期）。</li>
+<li><strong><span class="ears-badge ears-event">事件驱动</span></strong> 当工作站人员修改老人档案信息时，系统应在保存成功后记录操作日志（操作人、操作时间、修改字段、修改前后值）。</li>
+<li><strong><span class="ears-badge ears-state">状态驱动</span></strong> 在老人订阅已过期的情况下，老人档案应显示"订阅已过期"标记，关联设备应显示"服务暂停"状态。</li>
+<li><strong><span class="ears-badge ears-unwanted">异常行为</span></strong> 如果修改的老人联系电话与系统中其他老人重复，那么系统应提示"该电话号码已被其他老人使用"并阻止保存。</li>
+</ul>
+<h3 id="8-5-运营后台-web后台">8.5 运营后台（Web后台）</h3>
+<p><strong>F-020 套餐与订阅管理</strong></p>
+<table>
+<thead>
+<tr>
+<th>属性</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>优先级</td>
+<td><span class="pri pri-p0">P0</span></td>
+</tr>
+<tr>
+<td>用户角色</td>
+<td>平台运营者</td>
+</tr>
+</tbody>
+</table>
+<p><strong>EARS 需求描述</strong>：</p>
+<ul>
+<li><strong><span class="ears-badge ears-ubi">通用性</span></strong> 套餐管理应支持创建、编辑、上架、下架四种操作。每个套餐包含：套餐名称、服务包内容描述、价格（月价/年价）、包含的硬件设备列表、有效期。</li>
+<li><strong><span class="ears-badge ears-event">事件驱动</span></strong> 当运营人员创建一个新套餐时，系统应自动生成套餐编号（格式：PKG-年月日-序号），并设置初始状态为"草稿"。</li>
+<li><strong><span class="ears-badge ears-event">事件驱动</span></strong> 当运营人员将套餐从"草稿"变更为"已上架"时，系统应校验套餐所有必填字段是否完整，校验不通过则阻止上架并提示缺失字段。</li>
+<li><strong><span class="ears-badge ears-state">状态驱动</span></strong> 在套餐状态为"已上架"且有用户订阅的情况下，系统应禁止直接删除该套餐，仅允许"下架"（不再接受新订阅，已订阅用户不受影响）。</li>
+<li><strong><span class="ears-badge ears-unwanted">异常行为</span></strong> 如果套餐价格被修改，那么系统应仅对新订阅用户生效，已有订阅按原价格执行至当前周期结束。</li>
+</ul>
+<p><strong>F-022 数据看板</strong></p>
+<table>
+<thead>
+<tr>
+<th>属性</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>优先级</td>
+<td><span class="pri pri-p0">P0</span></td>
+</tr>
+<tr>
+<td>用户角色</td>
+<td>平台运营者</td>
+</tr>
+</tbody>
+</table>
+<p><strong>EARS 需求描述</strong>：</p>
+<ul>
+<li><strong><span class="ears-badge ears-ubi">通用性</span></strong> 数据看板应展示以下核心指标卡片：服务老人总数、今日告警总数（按等级分类）、告警处理率、设备在线率、活跃订阅数、本月新增老人数。</li>
+<li><strong><span class="ears-badge ears-opt">可选特性</span></strong> 在运营人员选择特定社区筛选的条件下，所有指标卡片应仅展示该社区的数据。</li>
+<li><strong><span class="ears-badge ears-event">事件驱动</span></strong> 当运营人员切换时间范围（今日/本周/本月/自定义）时，所有指标应重新计算并刷新展示。</li>
+<li><strong><span class="ears-badge ears-unwanted">异常行为</span></strong> 如果数据查询超时（超过10秒），那么系统应展示"数据加载超时，请缩小查询范围或稍后重试"提示，并保留上次成功加载的数据。</li>
+</ul>
+<h3 id="8-6-紧急救援联动-新增">8.6 紧急救援联动（新增）</h3>
+<p><strong>F-112 紧急救援联动</strong></p>
+<table>
+<thead>
+<tr>
+<th>属性</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>优先级</td>
+<td><span class="pri pri-p1">P1</span></td>
+</tr>
+<tr>
+<td>用户角色</td>
+<td>系统自动、社区工作站、社区医院、120 急救、家属</td>
+</tr>
+</tbody>
+</table>
+<p><strong>功能说明</strong>：
+当 <span class="pri pri-p0">P0</span> 紧急告警超时未确认且系统判断可能涉及生命安全时，自动启动紧急救援联动流程，将告警升级为救援事件，多通道通知社区医院、120 急救中心、家属，并全程追踪救援过程。</p>
+<p><strong>EARS 需求描述</strong>：</p>
+<ul>
+<li><strong><span class="ears-badge ears-event">事件驱动</span></strong> 当 <span class="pri pri-p0">P0</span>-紧急告警在 5 分钟内未被工作站确认，且系统判断可能涉及生命安全时，系统应自动启动紧急救援联动流程，通知社区医院和 120 急救中心。</li>
+<li><strong><span class="ears-badge ears-event">事件驱动</span></strong> 当紧急救援联动启动时，系统应同时向家属推送救援通知，包含老人位置、健康状况摘要和已通知的救援方。</li>
+<li><strong><span class="ears-badge ears-unwanted">异常行为</span></strong> 如果社区医院联系方式未配置或不可达，系统应跳过医院通知直接联系 120 急救中心。</li>
+<li><strong><span class="ears-badge ears-state">状态驱动</span></strong> 在救援联动已启动且未关闭的情况下，工作站告警详情面板应置顶展示救援进度时间线，并禁用"关闭告警"操作，仅允许"救援完成"或"误报取消"两种结束操作。</li>
+<li><strong><span class="ears-badge ears-unwanted">异常行为</span></strong> 如果 120 急救通知通道调用失败，系统应自动重试 3 次（间隔 30 秒），仍失败时降级为电话语音播报并通知平台运营人员介入。</li>
+<li><strong><span class="ears-badge ears-ubi">通用性</span></strong> 救援联动全程关键节点（启动、医院通知、120 通知、家属通知、抵达、完成）均应记入救援事件时间线，并作为救援复盘报告的数据来源。</li>
+</ul>
+<p><strong>交互边界</strong>：
+- 救援联动是告警升级流程的延伸，不影响原有 <span class="pri pri-p0">P0</span> 告警的弹窗、声音、短信通知逻辑
+- 救援事件与原告警通过 <code>alert_id</code> 关联，一个告警最多生成一个救援事件
+- 救援事件关闭后，原告警自动流转为"已关闭"，并在告警详情中标注"经救援联动关闭"</p>
+<hr />
+<h2 id="9-ai-与-iot-能力">9. AI 与 IoT 能力</h2>
+<h3 id="9-1-iot-能力规划">9.1 IoT 能力规划</h3>
+<table>
+<thead>
+<tr>
+<th>能力</th>
+<th>说明</th>
+<th>第一阶段</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>设备接入</td>
+<td>门锁、烟感、燃气、水浸、雷达、穿戴设备</td>
+<td>烟感、门磁、SOS 按钮、穿戴（<span class="pri pri-p0">P0</span>）</td>
+</tr>
+<tr>
+<td>数据采集</td>
+<td>设备状态、环境数据、健康数据实时采集</td>
+<td>健康数据采集（<span class="pri pri-p0">P0</span>）</td>
+</tr>
+<tr>
+<td>告警引擎</td>
+<td>多维度告警规则、分级告警、静默时段</td>
+<td>告警规则引擎（<span class="pri pri-p0">P0</span>）</td>
+</tr>
+<tr>
+<td>设备管理</td>
+<td>设备注册、绑定、OTA 升级、远程诊断</td>
+<td>注册绑定（<span class="pri pri-p0">P0</span>）、OTA（<span class="pri pri-p1">P1</span>）</td>
+</tr>
+</tbody>
+</table>
+<h3 id="9-2-ai-能力规划">9.2 AI 能力规划</h3>
+<table>
+<thead>
+<tr>
+<th>能力</th>
+<th>说明</th>
+<th>阶段</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>风险预警</td>
+<td>基于 IoT 数据和健康数据的跌倒、走失、突发疾病风险预警</td>
+<td><span class="pri pri-p2">P2</span></td>
+</tr>
+<tr>
+<td>健康分析</td>
+<td>健康趋势分析、慢病风险评估、个性化健康建议</td>
+<td><span class="pri pri-p2">P2</span></td>
+</tr>
+<tr>
+<td>服务推荐</td>
+<td>基于老人画像和健康状态的个性化服务推荐</td>
+<td><span class="pri pri-p2">P2</span></td>
+</tr>
+<tr>
+<td>运营分析</td>
+<td>社区运营数据智能分析、异常预警、运营策略建议</td>
+<td><span class="pri pri-p2">P2</span></td>
+</tr>
+<tr>
+<td>告警降噪</td>
+<td>AI 告警聚合与降噪，减少无效告警</td>
+<td><span class="pri pri-p2">P2</span></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>AI 能力以"数据先沉淀、模型再迭代"为原则，第一阶段优先保障 IoT 数据采集与健康/告警数据的完整性，为 <span class="pri pri-p2">P2</span> 阶段 AI 模型训练奠定基础。</p>
+</blockquote>
+<hr />
+<h2 id="10-商业模式">10. 商业模式</h2>
+<h3 id="10-1-多元收入体系">10.1 多元收入体系</h3>
+<table>
+<thead>
+<tr>
+<th>收入类型</th>
+<th>说明</th>
+<th>第一阶段</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>家庭订阅服务</td>
+<td>按月/按年订阅安全+健康服务包，硬件包含在内</td>
+<td><span class="pri pri-p0">P0</span> 核心</td>
+</tr>
+<tr>
+<td>服务抽佣</td>
+<td>平台撮合家政、餐饮等服务交易，按订单金额抽佣</td>
+<td>V2.0</td>
+</tr>
+<tr>
+<td>SaaS 平台收费</td>
+<td>向社区/物业收取平台使用费</td>
+<td>V2.0</td>
+</tr>
+<tr>
+<td>IoT 设备销售/租赁</td>
+<td>设备单独销售或租赁给非订阅用户</td>
+<td>V2.0</td>
+</tr>
+<tr>
+<td>AI 增值服务</td>
+<td>AI 健康报告、风险评估等高级功能付费</td>
+<td>V2.0+</td>
+</tr>
+<tr>
+<td>社区运营服务</td>
+<td>为社区提供运营代运营、数据分析等增值服务</td>
+<td>V2.0+</td>
+</tr>
+</tbody>
+</table>
+<h3 id="10-2-订阅套餐设计-第一阶段">10.2 订阅套餐设计（第一阶段）</h3>
+<p>第一阶段以家庭订阅服务为核心收入来源，硬件包含在订阅服务包内，降低用户首次使用门槛。</p>
+<p><strong>典型订阅套餐示意</strong>：</p>
+<table>
+<thead>
+<tr>
+<th>套餐名称</th>
+<th>月价</th>
+<th>年价</th>
+<th>包含硬件</th>
+<th>服务内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>安全守护包</td>
+<td>99 元/月</td>
+<td>999 元/年</td>
+<td>烟感 + 门磁 + SOS 按钮</td>
+<td>居家安全告警、工作站响应、家属通知</td>
+</tr>
+<tr>
+<td>健康守护包</td>
+<td>199 元/月</td>
+<td>1999 元/年</td>
+<td>智能穿戴手环</td>
+<td>健康数据采集、异常告警、健康趋势报告</td>
+</tr>
+<tr>
+<td>全能守护包</td>
+<td>299 元/月</td>
+<td>2999 元/年</td>
+<td>安全 + 健康全套硬件</td>
+<td>安全 + 健康全链路服务、专属客户经理</td>
+</tr>
+</tbody>
+</table>
+<p><strong>订阅管理要点</strong>：
+- 订阅周期支持按月/按年两种模式，年付享优惠
+- 订阅到期前 7 天、3 天、1 天分别通过微信和短信提醒家属续费
+- 订阅过期后设备进入"服务暂停"状态，30 天内续费可恢复全部数据与告警服务
+- 套餐价格调整仅对新订阅生效，已有订阅按原价格执行至当前周期结束</p>
+<hr />
+<h2 id="11-平台运营体系">11. 平台运营体系</h2>
+<h3 id="11-1-五大运营体系">11.1 五大运营体系</h3>
+<table>
+<thead>
+<tr>
+<th>运营体系</th>
+<th>核心内容</th>
+<th>关键指标</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>用户运营</td>
+<td>老人拉新、激活、留存、家属转化</td>
+<td>注册转化率、月活率、续费率</td>
+</tr>
+<tr>
+<td>服务运营</td>
+<td>服务质量监控、满意度管理、服务标准化</td>
+<td>工单完成率、满意度、响应时效</td>
+</tr>
+<tr>
+<td>商家运营</td>
+<td>服务商招募、资质管理、评价体系</td>
+<td>商家数量、活跃商家率</td>
+</tr>
+<tr>
+<td>社区运营</td>
+<td>社区拓展、社区活动、社区关系维护</td>
+<td>签约社区数、社区活跃度</td>
+</tr>
+<tr>
+<td>数据运营</td>
+<td>数据采集、分析、决策支持、增长实验</td>
+<td>数据覆盖率、报表使用率</td>
+</tr>
+</tbody>
+</table>
+<h3 id="11-2-运营飞轮">11.2 运营飞轮</h3>
+<p>老人服务体验提升 → 口碑传播 → 更多家庭入驻 → 数据积累 → AI 能力增强 → 服务精准度提升 → 体验进一步提升。</p>
+<p>运营飞轮的关键在于：
+- <strong>体验驱动口碑</strong>：以告警响应时效、工单满意度为核心体验指标
+- <strong>数据反哺能力</strong>：IoT 与健康数据持续沉淀，训练 AI 风险预警与服务推荐模型
+- <strong>能力反哺体验</strong>：AI 能力提升后服务更精准、更主动，进一步降低误报率与漏报率，提升老人与家属体验</p>
+<hr />
+<h2 id="12-数据指标与埋点">12. 数据指标与埋点</h2>
+<h3 id="12-1-核心业务指标-北极星指标">12.1 核心业务指标（北极星指标）</h3>
+<table>
+<thead>
+<tr>
+<th>指标分类</th>
+<th>指标名称</th>
+<th>计算方式</th>
+<th>目标值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>用户规模</strong></td>
+<td>服务老人总数</td>
+<td>去重老人数</td>
+<td>首年 ≥ 2000</td>
+</tr>
+<tr>
+<td><strong>用户规模</strong></td>
+<td>月活跃老人数</td>
+<td>当月至少登录1次小程序的老人数</td>
+<td>≥ 80% 服务老人数</td>
+</tr>
+<tr>
+<td><strong>安全指标</strong></td>
+<td>告警响应时间（P50）</td>
+<td>P0告警从触发到确认的50分位数</td>
+<td>≤ 60秒</td>
+</tr>
+<tr>
+<td><strong>安全指标</strong></td>
+<td>告警响应时间（P99）</td>
+<td>P0告警从触发到确认的99分位数</td>
+<td>≤ 3分钟</td>
+</tr>
+<tr>
+<td><strong>安全指标</strong></td>
+<td>告警处理率</td>
+<td>已关闭告警数 / 总告警数</td>
+<td>≥ 99%</td>
+</tr>
+<tr>
+<td><strong>设备指标</strong></td>
+<td>设备在线率</td>
+<td>在线设备数 / 总设备数</td>
+<td>≥ 95%</td>
+</tr>
+<tr>
+<td><strong>设备指标</strong></td>
+<td>设备数据上报率</td>
+<td>按时上报数据的设备数 / 总设备数</td>
+<td>≥ 90%</td>
+</tr>
+<tr>
+<td><strong>收入指标</strong></td>
+<td>MRR（月度经常性收入）</td>
+<td>当月有效订阅收入总和</td>
+<td>首年 ≥ 100万</td>
+</tr>
+<tr>
+<td><strong>收入指标</strong></td>
+<td>订阅续费率</td>
+<td>到期后续费的用户数 / 到期用户数</td>
+<td>≥ 85%</td>
+</tr>
+<tr>
+<td><strong>满意度</strong></td>
+<td>工单满意度</td>
+<td>评分 ≥ 4分的工单数 / 已评价工单数</td>
+<td>≥ 90%</td>
+</tr>
+</tbody>
+</table>
+<h3 id="12-2-埋点事件清单">12.2 埋点事件清单</h3>
+<h4 id="12-2-1-老人端小程序埋点">12.2.1 老人端小程序埋点</h4>
+<table>
+<thead>
+<tr>
+<th>事件ID</th>
+<th>事件名称</th>
+<th>触发时机</th>
+<th>关键属性</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>elder_home_view</td>
+<td>首页浏览</td>
+<td>进入首页</td>
+<td>user_id, device_type</td>
+</tr>
+<tr>
+<td>elder_sos_click</td>
+<td>SOS点击</td>
+<td>点击SOS按钮</td>
+<td>user_id, click_count</td>
+</tr>
+<tr>
+<td>elder_sos_confirm</td>
+<td>SOS确认</td>
+<td>确认紧急求助</td>
+<td>user_id, timestamp</td>
+</tr>
+<tr>
+<td>elder_health_view</td>
+<td>健康数据查看</td>
+<td>进入健康详情页</td>
+<td>user_id, view_type(daily/weekly)</td>
+</tr>
+<tr>
+<td>elder_family_call</td>
+<td>联系家属</td>
+<td>点击联系家属按钮</td>
+<td>user_id, call_success</td>
+</tr>
+<tr>
+<td>elder_page_duration</td>
+<td>页面停留时长</td>
+<td>离开页面时</td>
+<td>user_id, page_name, duration</td>
+</tr>
+</tbody>
+</table>
+<h4 id="12-2-2-家属端小程序埋点">12.2.2 家属端小程序埋点</h4>
+<table>
+<thead>
+<tr>
+<th>事件ID</th>
+<th>事件名称</th>
+<th>触发时机</th>
+<th>关键属性</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>family_home_view</td>
+<td>首页浏览</td>
+<td>进入首页</td>
+<td>user_id, elder_count</td>
+</tr>
+<tr>
+<td>family_health_view</td>
+<td>健康数据查看</td>
+<td>查看老人健康数据</td>
+<td>user_id, elder_id, view_period</td>
+</tr>
+<tr>
+<td>family_alert_click</td>
+<td>告警通知点击</td>
+<td>点击告警通知</td>
+<td>user_id, alert_id, alert_level</td>
+</tr>
+<tr>
+<td>family_device_check</td>
+<td>设备状态查看</td>
+<td>查看设备列表</td>
+<td>user_id, elder_id</td>
+</tr>
+<tr>
+<td>family_bind_elder</td>
+<td>绑定老人</td>
+<td>完成老人绑定</td>
+<td>user_id, bind_method(scan/manual)</td>
+</tr>
+</tbody>
+</table>
+<h4 id="12-2-3-工作站端埋点">12.2.3 工作站端埋点</h4>
+<table>
+<thead>
+<tr>
+<th>事件ID</th>
+<th>事件名称</th>
+<th>触发时机</th>
+<th>关键属性</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>station_alert_confirm</td>
+<td>告警确认</td>
+<td>确认告警</td>
+<td>operator_id, alert_id, alert_level, response_seconds</td>
+</tr>
+<tr>
+<td>station_alert_complete</td>
+<td>告警处理完成</td>
+<td>完成告警处理</td>
+<td>operator_id, alert_id, handle_seconds</td>
+</tr>
+<tr>
+<td>station_order_create</td>
+<td>工单创建</td>
+<td>创建服务工单</td>
+<td>operator_id, order_type, elder_id</td>
+</tr>
+<tr>
+<td>station_order_dispatch</td>
+<td>工单派发</td>
+<td>派发工单给服务人员</td>
+<td>operator_id, order_id, staff_id</td>
+</tr>
+<tr>
+<td>station_elder_search</td>
+<td>老人搜索</td>
+<td>搜索老人档案</td>
+<td>operator_id, search_keyword</td>
+</tr>
+<tr>
+<td>station_elder_edit</td>
+<td>老人档案编辑</td>
+<td>修改老人信息</td>
+<td>operator_id, elder_id, edit_fields</td>
+</tr>
+</tbody>
+</table>
+<h4 id="12-2-4-商家端埋点-新增">12.2.4 商家端埋点（新增）</h4>
+<table>
+<thead>
+<tr>
+<th>事件ID</th>
+<th>事件名称</th>
+<th>触发时机</th>
+<th>关键属性</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>merchant_order_receive</td>
+<td>接单</td>
+<td>服务商接收订单</td>
+<td>merchant_id, order_id, order_type</td>
+</tr>
+<tr>
+<td>merchant_order_complete</td>
+<td>完成服务</td>
+<td>服务商完成订单</td>
+<td>merchant_id, order_id, duration</td>
+</tr>
+<tr>
+<td>merchant_stats_view</td>
+<td>统计查看</td>
+<td>查看服务统计</td>
+<td>merchant_id, view_period</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="13-验收标准">13. 验收标准</h2>
+<h3 id="13-1-设备管理">13.1 设备管理</h3>
+<table>
+<thead>
+<tr>
+<th>编号</th>
+<th>验收条件</th>
+<th>验证方式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>AC-D01</td>
+<td>支持4种设备类型的扫码绑定，扫码到绑定成功耗时 ≤ 10秒</td>
+<td>功能测试</td>
+</tr>
+<tr>
+<td>AC-D02</td>
+<td>设备绑定后30秒内，平台能收到设备首次上报数据</td>
+<td>集成测试</td>
+</tr>
+<tr>
+<td>AC-D03</td>
+<td>设备离线超过15分钟，平台自动生成离线告警</td>
+<td>自动化测试</td>
+</tr>
+<tr>
+<td>AC-D04</td>
+<td>重复扫码绑定时，系统正确拦截并提示</td>
+<td>功能测试</td>
+</tr>
+<tr>
+<td>AC-D05</td>
+<td>单老人绑定设备数量不超过上限（烟感2、门磁3、按钮3、穿戴1）</td>
+<td>边界测试</td>
+</tr>
+</tbody>
+</table>
+<h3 id="13-2-告警中心">13.2 告警中心</h3>
+<table>
+<thead>
+<tr>
+<th>编号</th>
+<th>验收条件</th>
+<th>验证方式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>AC-A01</td>
+<td>设备触发告警到工作站弹窗显示的端到端延迟 ≤ 3秒</td>
+<td>性能测试</td>
+</tr>
+<tr>
+<td>AC-A02</td>
+<td>P0告警3分钟未确认自动升级，5分钟未确认通知平台运营</td>
+<td>自动化测试</td>
+</tr>
+<tr>
+<td>AC-A03</td>
+<td>同设备5分钟内重复告警自动合并</td>
+<td>自动化测试</td>
+</tr>
+<tr>
+<td>AC-A04</td>
+<td>告警处理完整状态流转（待确认→处理中→待回访→已关闭）可执行</td>
+<td>流程测试</td>
+</tr>
+<tr>
+<td>AC-A05</td>
+<td>家属微信通知到达率 ≥ 95%</td>
+<td>集成测试</td>
+</tr>
+<tr>
+<td>AC-A06</td>
+<td>告警静默时段内P2告警不推送通知</td>
+<td>配置测试</td>
+</tr>
+</tbody>
+</table>
+<h3 id="13-3-健康监测">13.3 健康监测</h3>
+<table>
+<thead>
+<tr>
+<th>编号</th>
+<th>验收条件</th>
+<th>验证方式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>AC-H01</td>
+<td>健康数据从设备上报到前端展示延迟 ≤ 30秒</td>
+<td>性能测试</td>
+</tr>
+<tr>
+<td>AC-H02</td>
+<td>超出合法范围的数据被正确拦截和标记</td>
+<td>边界测试</td>
+</tr>
+<tr>
+<td>AC-H03</td>
+<td>健康指标超阈值持续满足条件时正确触发告警</td>
+<td>自动化测试</td>
+</tr>
+<tr>
+<td>AC-H04</td>
+<td>健康趋势图正确展示7天/30天数据，支持缩放</td>
+<td>UI测试</td>
+</tr>
+<tr>
+<td>AC-H05</td>
+<td>数据中断超2小时正确生成告警</td>
+<td>自动化测试</td>
+</tr>
+</tbody>
+</table>
+<h3 id="13-4-用户端">13.4 用户端</h3>
+<table>
+<thead>
+<tr>
+<th>编号</th>
+<th>验收条件</th>
+<th>验证方式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>AC-U01</td>
+<td>老人端首页SOS按钮在触发后正确变为"已求助"状态并禁用</td>
+<td>功能测试</td>
+</tr>
+<tr>
+<td>AC-U02</td>
+<td>老人端字体 ≥ 18px，按钮触控区域 ≥ 44x44px</td>
+<td>UI审查</td>
+</tr>
+<tr>
+<td>AC-U03</td>
+<td>家属端健康数据图表支持日/周/月切换</td>
+<td>功能测试</td>
+</tr>
+<tr>
+<td>AC-U04</td>
+<td>家属端能正确接收P0/P1告警的微信通知</td>
+<td>集成测试</td>
+</tr>
+<tr>
+<td>AC-U05</td>
+<td>家属端支持绑定多位老人并正确切换</td>
+<td>功能测试</td>
+</tr>
+</tbody>
+</table>
+<h3 id="13-5-工作站端">13.5 工作站端</h3>
+<table>
+<thead>
+<tr>
+<th>编号</th>
+<th>验收条件</th>
+<th>验证方式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>AC-W01</td>
+<td>告警列表正确按优先级和时间排序</td>
+<td>功能测试</td>
+</tr>
+<tr>
+<td>AC-W02</td>
+<td>告警详情面板包含所有必要信息和操作按钮</td>
+<td>UI审查</td>
+</tr>
+<tr>
+<td>AC-W03</td>
+<td>工单创建到关闭的完整流程可执行</td>
+<td>流程测试</td>
+</tr>
+<tr>
+<td>AC-W04</td>
+<td>老人档案修改后操作日志正确记录</td>
+<td>功能测试</td>
+</tr>
+<tr>
+<td>AC-W05</td>
+<td>订阅过期老人档案正确显示"已过期"标记</td>
+<td>状态测试</td>
+</tr>
+</tbody>
+</table>
+<h3 id="13-6-运营后台">13.6 运营后台</h3>
+<table>
+<thead>
+<tr>
+<th>编号</th>
+<th>验收条件</th>
+<th>验证方式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>AC-O01</td>
+<td>套餐创建→上架→下架的完整流程可执行</td>
+<td>流程测试</td>
+</tr>
+<tr>
+<td>AC-O02</td>
+<td>数据看板指标卡片数据与实际数据一致（误差 ≤ 1%）</td>
+<td>数据验证</td>
+</tr>
+<tr>
+<td>AC-O03</td>
+<td>数据看板支持按社区和时间范围筛选</td>
+<td>功能测试</td>
+</tr>
+<tr>
+<td>AC-O04</td>
+<td>已有人订阅的套餐不可删除</td>
+<td>边界测试</td>
+</tr>
+</tbody>
+</table>
+<h3 id="13-7-紧急救援-新增">13.7 紧急救援（新增）</h3>
+<table>
+<thead>
+<tr>
+<th>编号</th>
+<th>验收条件</th>
+<th>验证方式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>AC-E01</td>
+<td><span class="pri pri-p0">P0</span> 告警 5 分钟未确认时自动启动救援联动</td>
+<td>自动化测试</td>
+</tr>
+<tr>
+<td>AC-E02</td>
+<td>救援联动通知包含老人位置和健康摘要</td>
+<td>功能测试</td>
+</tr>
+<tr>
+<td>AC-E03</td>
+<td>社区医院不可达时跳过直接联系 120</td>
+<td>异常测试</td>
+</tr>
+</tbody>
+</table>
+<h3 id="13-8-商家端-新增">13.8 商家端（新增）</h3>
+<table>
+<thead>
+<tr>
+<th>编号</th>
+<th>验收条件</th>
+<th>验证方式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>AC-S01</td>
+<td>服务商入驻 → 审核 → 接单流程可执行</td>
+<td>流程测试</td>
+</tr>
+<tr>
+<td>AC-S02</td>
+<td>商家端统计报表数据准确</td>
+<td>数据验证</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="14-非功能需求">14. 非功能需求</h2>
+<h3 id="14-1-性能需求">14.1 性能需求</h3>
+<table>
+<thead>
+<tr>
+<th>指标</th>
+<th>目标值</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>告警端到端延迟</td>
+<td>≤ 3秒（P99）</td>
+<td>从设备触发到工作站弹窗显示</td>
+</tr>
+<tr>
+<td>健康数据展示延迟</td>
+<td>≤ 30秒</td>
+<td>从设备上报到前端图表刷新</td>
+</tr>
+<tr>
+<td>页面加载时间</td>
+<td>≤ 2秒（首屏）</td>
+<td>工作站端和运营后台页面</td>
+</tr>
+<tr>
+<td>小程序启动时间</td>
+<td>≤ 3秒（冷启动）</td>
+<td>老人端和家属端</td>
+</tr>
+<tr>
+<td>并发告警处理</td>
+<td>≥ 1000条/秒</td>
+<td>峰值告警处理能力</td>
+</tr>
+<tr>
+<td>数据看板查询</td>
+<td>≤ 5秒</td>
+<td>查询一个社区一个月的数据</td>
+</tr>
+<tr>
+<td>API响应时间</td>
+<td>≤ 500ms（P95）</td>
+<td>非统计类API接口</td>
+</tr>
+</tbody>
+</table>
+<h3 id="14-2-安全需求">14.2 安全需求</h3>
+<table>
+<thead>
+<tr>
+<th>需求编号</th>
+<th>需求描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>SEC-01</td>
+<td>所有API接口必须使用HTTPS加密传输</td>
+</tr>
+<tr>
+<td>SEC-02</td>
+<td>用户密码存储必须使用bcrypt或等效算法加密，禁止明文存储</td>
+</tr>
+<tr>
+<td>SEC-03</td>
+<td>敏感数据（老人身份证号、联系电话、健康数据）在数据库中必须加密存储</td>
+</tr>
+<tr>
+<td>SEC-04</td>
+<td>接口调用必须进行身份认证（JWT Token），Token有效期不超过24小时</td>
+</tr>
+<tr>
+<td>SEC-05</td>
+<td>操作日志必须记录所有敏感操作（查看/修改老人档案、处理告警、修改套餐），日志不可删除</td>
+</tr>
+<tr>
+<td>SEC-06</td>
+<td>数据权限隔离：工作站人员仅可查看本社区数据，家属仅可查看绑定老人的数据</td>
+</tr>
+<tr>
+<td>SEC-07</td>
+<td>SQL注入、XSS、CSRF攻击防护</td>
+</tr>
+</tbody>
+</table>
+<h3 id="14-3-兼容性需求">14.3 兼容性需求</h3>
+<table>
+<thead>
+<tr>
+<th>终端</th>
+<th>兼容范围</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>工作站端 Web</td>
+<td>Chrome 最新两个版本、Edge 最新两个版本（分辨率 ≥ 1366x768）</td>
+</tr>
+<tr>
+<td>运营后台 Web</td>
+<td>Chrome 最新两个版本、Edge 最新两个版本（分辨率 ≥ 1440x900）</td>
+</tr>
+<tr>
+<td>老人端小程序</td>
+<td>微信小程序，iOS 14+ / Android 8.0+</td>
+</tr>
+<tr>
+<td>家属端小程序</td>
+<td>微信小程序，iOS 14+ / Android 8.0+</td>
+</tr>
+</tbody>
+</table>
+<h3 id="14-4-可用性需求">14.4 可用性需求</h3>
+<table>
+<thead>
+<tr>
+<th>指标</th>
+<th>目标值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>系统可用性</td>
+<td>99.9%（告警处理链路）；99.5%（其他功能）</td>
+</tr>
+<tr>
+<td>数据备份</td>
+<td>每日全量备份，保留30天</td>
+</tr>
+<tr>
+<td>灾难恢复</td>
+<td>RPO ≤ 1小时，RTO ≤ 4小时</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="15-项目排期建议">15. 项目排期建议</h2>
+<h3 id="第一阶段里程碑">第一阶段里程碑</h3>
+<table>
+<thead>
+<tr>
+<th>里程碑</th>
+<th>时间</th>
+<th>交付物</th>
+<th>关键验收</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>M0 - 项目启动</strong></td>
+<td>第1-2周</td>
+<td>技术选型确认、架构设计评审通过、开发环境搭建</td>
+<td>技术方案评审通过</td>
+</tr>
+<tr>
+<td><strong>M1 - 基础框架</strong></td>
+<td>第3-6周</td>
+<td>用户体系、权限管理、老人档案管理、设备注册绑定（工作站端）</td>
+<td>设备注册绑定流程可跑通</td>
+</tr>
+<tr>
+<td><strong>M2 - 告警核心链路</strong></td>
+<td>第7-10周</td>
+<td>告警规则引擎、告警通知推送、告警处理闭环（工作站端+家属端通知）</td>
+<td>端到端告警链路延迟 ≤ 3秒</td>
+</tr>
+<tr>
+<td><strong>M3 - 健康监测</strong></td>
+<td>第11-13周</td>
+<td>健康数据采集与存储、健康异常告警、健康数据图表展示（老人端+家属端）</td>
+<td>健康数据从上报到展示 ≤ 30秒</td>
+</tr>
+<tr>
+<td><strong>M4 - 用户端</strong></td>
+<td>第14-16周</td>
+<td>老人端小程序（极简模式）、家属端小程序完整功能</td>
+<td>小程序通过微信审核</td>
+</tr>
+<tr>
+<td><strong>M5 - 运营后台</strong></td>
+<td>第17-19周</td>
+<td>套餐与订阅管理、数据看板、服务商管理、商家端入驻接单</td>
+<td>套餐创建到订阅的全流程可跑通</td>
+</tr>
+<tr>
+<td><strong>M6 - 联调与测试</strong></td>
+<td>第20-22周</td>
+<td>全链路集成测试、性能测试、安全测试、UAT</td>
+<td>所有P0功能验收通过</td>
+</tr>
+<tr>
+<td><strong>M7 - 试运行</strong></td>
+<td>第23-24周</td>
+<td>选择2-3个社区试运行，收集反馈并修复问题</td>
+<td>试运行期间无P0级故障</td>
+</tr>
+<tr>
+<td><strong>M8 - 正式上线</strong></td>
+<td>第25-26周</td>
+<td>正式发布V1.0，开始规模化推广</td>
+<td>服务首批20个社区</td>
+</tr>
+</tbody>
+</table>
+<p><strong>总工期</strong>：约6个月（26周）</p>
+<p><strong>团队配置建议</strong>：
+- 后端开发：3人（IoT对接1人 + 业务逻辑2人）
+- 前端开发：2人（Web端1人 + 小程序1人）
+- 测试：1人
+- 产品经理：1人
+- UI/UX设计师：1人
+- 项目经理：1人（可兼任）
+- 运维/DevOps：1人</p>
+<blockquote>
+<p>排期说明：V2.0 整合版在 M5 阶段纳入商家端入驻接单（F-111）作为 V1.0 后期补充功能；紧急救援联动（F-112）作为 <span class="pri pri-p1">P1</span> 功能在 M2 告警核心链路完成后增量交付，可在 M6 联调阶段并入主线。</p>
+</blockquote>
+<hr />
+<h2 id="16-风险与依赖">16. 风险与依赖</h2>
+<h3 id="16-1-风险清单">16.1 风险清单</h3>
+<table>
+<thead>
+<tr>
+<th>风险编号</th>
+<th>风险描述</th>
+<th>影响</th>
+<th>概率</th>
+<th>等级</th>
+<th>应对措施</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>R-01</td>
+<td>IoT硬件供应商交付延迟或设备质量不达标</td>
+<td>高</td>
+<td>中</td>
+<td>高</td>
+<td>提前选定2-3家备选供应商，签订SLA协议，预留测试缓冲期</td>
+</tr>
+<tr>
+<td>R-02</td>
+<td>老人对智能设备接受度低，使用率不达预期</td>
+<td>高</td>
+<td>中</td>
+<td>高</td>
+<td>极简设计、语音交互、安装时一对一指导、社区定期回访</td>
+</tr>
+<tr>
+<td>R-03</td>
+<td>告警链路延迟不满足3秒要求</td>
+<td>高</td>
+<td>低</td>
+<td>中</td>
+<td>架构设计时预留性能优化空间，使用消息队列削峰，端到端压测</td>
+</tr>
+<tr>
+<td>R-04</td>
+<td>微信小程序审核不通过</td>
+<td>中</td>
+<td>中</td>
+<td>中</td>
+<td>提前了解审核规范，准备隐私政策和用户协议，预留审核时间</td>
+</tr>
+<tr>
+<td>R-05</td>
+<td>社区推广受阻，签约进度不达预期</td>
+<td>高</td>
+<td>中</td>
+<td>高</td>
+<td>提前与目标社区建立合作关系，准备示范案例和宣讲材料</td>
+</tr>
+<tr>
+<td>R-06</td>
+<td>数据安全和隐私合规风险</td>
+<td>高</td>
+<td>低</td>
+<td>中</td>
+<td>聘请法律顾问审核合规性，数据加密存储，通过等保认证</td>
+</tr>
+<tr>
+<td>R-07</td>
+<td>第一阶段功能范围蔓延</td>
+<td>中</td>
+<td>高</td>
+<td>高</td>
+<td>严格遵循P0/<span class="pri pri-p1">P1</span>/P2优先级划分，建立需求变更审批流程</td>
+</tr>
+<tr>
+<td><strong>R-08</strong></td>
+<td><strong>紧急救援联动涉及 120/医院对接，协调难度大</strong></td>
+<td><strong>高</strong></td>
+<td><strong>中</strong></td>
+<td><strong>高</strong></td>
+<td><strong>提前与社区医院建立合作，设计降级方案（仅通知家属+工作站）</strong></td>
+</tr>
+</tbody>
+</table>
+<h3 id="16-2-外部依赖">16.2 外部依赖</h3>
+<table>
+<thead>
+<tr>
+<th>依赖编号</th>
+<th>依赖项</th>
+<th>依赖说明</th>
+<th>影响范围</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>D-01</td>
+<td>IoT设备供应商</td>
+<td>提供设备硬件、设备端SDK、设备云平台API</td>
+<td>设备注册、数据采集、告警触发</td>
+</tr>
+<tr>
+<td>D-02</td>
+<td>微信开放平台</td>
+<td>小程序注册与审核、微信服务通知模板申请</td>
+<td>用户端小程序、告警通知</td>
+</tr>
+<tr>
+<td>D-03</td>
+<td>短信服务商</td>
+<td>提供短信发送API</td>
+<td>告警短信通知</td>
+</tr>
+<tr>
+<td>D-04</td>
+<td>云服务商</td>
+<td>提供服务器、数据库、CDN等基础设施</td>
+<td>整体系统运行</td>
+</tr>
+<tr>
+<td>D-05</td>
+<td>第三方地图API</td>
+<td>提供地址解析和位置服务</td>
+<td>老人地址标准化、工单导航</td>
+</tr>
+<tr>
+<td><strong>D-06</strong></td>
+<td><strong>社区医院 / 120 急救</strong></td>
+<td><strong>提供紧急救援联动对接接口或联络机制</strong></td>
+<td><strong>紧急救援联动（F-112）</strong></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="17-第二阶段展望">17. 第二阶段展望</h2>
+<h3 id="17-1-餐饮服务模块-v2-0-规划">17.1 餐饮服务模块（V2.0 规划）</h3>
+<p><strong>核心场景</strong>：为社区老人提供在线订餐、社区食堂对接、送餐上门服务。</p>
+<table>
+<thead>
+<tr>
+<th>功能点</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>食堂管理</td>
+<td>社区食堂入驻、菜单发布（支持文字+图片）、营业时间设置</td>
+</tr>
+<tr>
+<td>在线订餐</td>
+<td>老人/家属小程序下单，支持今日菜单和预约订餐，支持特殊饮食需求标记（低糖、低盐、软食）</td>
+</tr>
+<tr>
+<td>订单管理</td>
+<td>食堂端接单、备餐状态更新、取餐/送餐确认</td>
+</tr>
+<tr>
+<td>送餐管理</td>
+<td>送餐员派单、路线规划、送达确认</td>
+</tr>
+<tr>
+<td>餐费管理</td>
+<td>支持订阅套餐内含餐次数、单独购买、月度结算</td>
+</tr>
+<tr>
+<td>营养分析</td>
+<td>基于老人健康档案的个性化饮食建议</td>
+</tr>
+</tbody>
+</table>
+<h3 id="17-2-活动报名模块-v2-0-规划">17.2 活动报名模块（V2.0 规划）</h3>
+<p><strong>核心场景</strong>：社区工作站发布活动（健康讲座、兴趣班、节日活动等），老人线上报名参与。</p>
+<table>
+<thead>
+<tr>
+<th>功能点</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>活动发布</td>
+<td>工作站发布活动信息（标题、时间、地点、人数上限、封面图、详情）</td>
+</tr>
+<tr>
+<td>活动分类</td>
+<td>健康养生、文体娱乐、节日庆典、志愿服务等</td>
+</tr>
+<tr>
+<td>在线报名</td>
+<td>老人/家属端查看活动列表、报名、取消报名</td>
+</tr>
+<tr>
+<td>报名管理</td>
+<td>工作站查看报名列表、导出名单、签到核销</td>
+</tr>
+<tr>
+<td>活动提醒</td>
+<td>活动开始前自动推送微信提醒给已报名老人和家属</td>
+</tr>
+<tr>
+<td>活动回顾</td>
+<td>活动结束后发布图文回顾，展示活动照片和参与情况</td>
+</tr>
+</tbody>
+</table>
+<h3 id="17-3-家政服务模块-v2-0-规划">17.3 家政服务模块（V2.0 规划）</h3>
+<p><strong>核心场景</strong>：为社区老人提供保洁、维修、陪护、助浴等家政服务的在线预约、匹配与上门服务闭环。</p>
+<table>
+<thead>
+<tr>
+<th>功能点</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>服务目录</td>
+<td>保洁、维修、陪护、助浴等服务标准化上架</td>
+</tr>
+<tr>
+<td>在线预约</td>
+<td>老人/家属小程序预约，支持按时段预约</td>
+</tr>
+<tr>
+<td>服务匹配</td>
+<td>按服务类型、地理位置、评价自动匹配服务商</td>
+</tr>
+<tr>
+<td>上门服务</td>
+<td>服务人员签到、服务过程记录、完成确认</td>
+</tr>
+<tr>
+<td>服务评价</td>
+<td>服务完成后老人/家属评价，影响服务商排名</td>
+</tr>
+</tbody>
+</table>
+<h3 id="17-4-紧急救援模块-v2-0-完整版">17.4 紧急救援模块（V2.0 完整版）</h3>
+<p><strong>核心场景</strong>：在 V1.0 紧急救援联动（F-112）基础上，扩展为完整的救援资源管理与救援闭环。</p>
+<table>
+<thead>
+<tr>
+<th>功能点</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>救援资源管理</td>
+<td>社区医院、120急救、家属联系方式统一管理</td>
+</tr>
+<tr>
+<td>一键救援</td>
+<td>SOS触发后自动启动救援流程，多通道通知</td>
+</tr>
+<tr>
+<td>救援追踪</td>
+<td>救援过程实时追踪，状态同步家属和工作站</td>
+</tr>
+<tr>
+<td>救援复盘</td>
+<td>救援结束后生成复盘报告，优化救援流程</td>
+</tr>
+</tbody>
+</table>
+<h3 id="17-5-第二阶段里程碑规划-简要">17.5 第二阶段里程碑规划（简要）</h3>
+<table>
+<thead>
+<tr>
+<th>里程碑</th>
+<th>预估时间</th>
+<th>关键交付</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>家政服务模块</td>
+<td>V1.0上线后+4周</td>
+<td>家政服务预约→匹配→上门→评价全流程闭环</td>
+</tr>
+<tr>
+<td>餐饮服务模块</td>
+<td>V1.0上线后+8周</td>
+<td>订餐→接单→送餐全流程闭环</td>
+</tr>
+<tr>
+<td>活动报名模块</td>
+<td>V1.0上线后+12周</td>
+<td>活动发布→报名→签到→回顾全流程闭环</td>
+</tr>
+<tr>
+<td>紧急救援完整版</td>
+<td>V1.0上线后+14周</td>
+<td>救援资源管理→一键救援→追踪→复盘全流程闭环</td>
+</tr>
+<tr>
+<td>二期联调上线</td>
+<td>V1.0上线后+16周</td>
+<td>家政+餐饮+活动+紧急救援四大模块正式上线</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="附录">附录</h2>
+<h3 id="a-术语表">A. 术语表</h3>
+<table>
+<thead>
+<tr>
+<th>术语</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>SCOP</strong></td>
+<td>Smart Community Operation Platform，智慧社区运营平台</td>
+</tr>
+<tr>
+<td><strong>FDOS</strong></td>
+<td>Family Digital Operation System，家庭数字化运营体系</td>
+</tr>
+<tr>
+<td>IoT</td>
+<td>Internet of Things，物联网</td>
+</tr>
+<tr>
+<td>SOS</td>
+<td>紧急求助信号</td>
+</tr>
+<tr>
+<td>MRR</td>
+<td>Monthly Recurring Revenue，月度经常性收入</td>
+</tr>
+<tr>
+<td>SLA</td>
+<td>Service Level Agreement，服务等级协议</td>
+</tr>
+<tr>
+<td>RPO</td>
+<td>Recovery Point Objective，恢复点目标</td>
+</tr>
+<tr>
+<td>RTO</td>
+<td>Recovery Time Objective，恢复时间目标</td>
+</tr>
+<tr>
+<td><span class="pri pri-p0">P0</span>/<span class="pri pri-p1">P1</span>/<span class="pri pri-p2">P2</span></td>
+<td>优先级等级，P0最高</td>
+</tr>
+<tr>
+<td>UAT</td>
+<td>User Acceptance Testing，用户验收测试</td>
+</tr>
+<tr>
+<td>WCAG</td>
+<td>Web Content Accessibility Guidelines，网页内容无障碍指南</td>
+</tr>
+<tr>
+<td>EARS</td>
+<td>Easy Approach to Requirements Syntax，需求语句规范</td>
+</tr>
+</tbody>
+</table>
+<h3 id="b-竞品参考">B. 竞品参考</h3>
+<table>
+<thead>
+<tr>
+<th>竞品</th>
+<th>核心能力</th>
+<th>优势</th>
+<th>不足</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>涂鸦智慧养老</td>
+<td>IoT平台+健康数据中心</td>
+<td>IoT生态丰富，设备接入能力强</td>
+<td>偏平台能力输出，缺乏完整的社区运营闭环</td>
+</tr>
+<tr>
+<td>蓝色健康</td>
+<td>系统+硬件+终端全覆盖</td>
+<td>居家/社区/机构全场景覆盖</td>
+<td>偏重机构养老，社区居家场景深度不足</td>
+</tr>
+<tr>
+<td>社村通</td>
+<td>居家养老系统平台</td>
+<td>智能设备对接能力强</td>
+<td>产品化程度低，用户体验待提升</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<blockquote>
+<p><strong>文档结束</strong> — V2.0 整合版，融合 SCOP 讨论总结版战略内容与详细需求规格。后续将根据评审意见持续迭代更新。</p>
+</blockquote>
+  </main>
+</div>
+
+<!-- 返回顶部 -->
+<button class="back-to-top" id="backTop" aria-label="返回顶部">&uarr;</button>
+
+<script>
+(function() {
+  // ---- 移动端侧边栏切换 ----
+  var menuBtn = document.getElementById('menuBtn');
+  var sidebar = document.getElementById('sidebar');
+  var overlay = document.getElementById('overlay');
+  
+  function toggleSidebar() {
+    sidebar.classList.toggle('open');
+    overlay.classList.toggle('show');
+  }
+  menuBtn.addEventListener('click', toggleSidebar);
+  overlay.addEventListener('click', toggleSidebar);
+  
+  // 点击目录链接后关闭侧边栏（移动端）
+  sidebar.querySelectorAll('.toc-link').forEach(function(link) {
+    link.addEventListener('click', function() {
+      if (window.innerWidth <= 768) {
+        sidebar.classList.remove('open');
+        overlay.classList.remove('show');
+      }
+    });
+  });
+
+  // ---- 返回顶部 ----
+  var backTop = document.getElementById('backTop');
+  window.addEventListener('scroll', function() {
+    if (window.scrollY > 400) {
+      backTop.classList.add('show');
+    } else {
+      backTop.classList.remove('show');
+    }
+  });
+  backTop.addEventListener('click', function() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  // ---- 滚动联动高亮目录 ----
+  var headings = [];
+  document.querySelectorAll('.content h2[id], .content h3[id]').forEach(function(h) {
+    headings.push(h);
+  });
+  
+  var tocLinks = {};
+  sidebar.querySelectorAll('.toc-link').forEach(function(link) {
+    var href = link.getAttribute('href').slice(1);
+    tocLinks[href] = link;
+  });
+
+  function highlightToc() {
+    var scrollY = window.scrollY + 100;
+    var current = null;
+    for (var i = 0; i < headings.length; i++) {
+      if (headings[i].offsetTop <= scrollY) {
+        current = headings[i];
+      } else {
+        break;
+      }
+    }
+    // 清除所有 active
+    Object.keys(tocLinks).forEach(function(k) {
+      tocLinks[k].classList.remove('active');
+    });
+    // 高亮当前
+    if (current) {
+      var id = current.getAttribute('id');
+      if (tocLinks[id]) {
+        tocLinks[id].classList.add('active');
+        // 滚动侧边栏让 active 项可见
+        var activeLink = tocLinks[id];
+        var sidebarRect = sidebar.getBoundingClientRect();
+        var linkRect = activeLink.getBoundingClientRect();
+        if (linkRect.top < sidebarRect.top || linkRect.bottom > sidebarRect.bottom) {
+          activeLink.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+        }
+      }
+    }
+  }
+  
+  // 节流
+  var ticking = false;
+  window.addEventListener('scroll', function() {
+    if (!ticking) {
+      window.requestAnimationFrame(function() {
+        highlightToc();
+        ticking = false;
+      });
+      ticking = true;
+    }
+  });
+  highlightToc();
+})();
+</script>
+</body>
+</html>
