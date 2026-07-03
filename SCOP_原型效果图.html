@@ -75,7 +75,7 @@
   /* 手机端 TabBar */
   .phone-tabbar {
     display: flex; height: 50px; border-top: 1px solid #f0f0f0;
-    background: #fff; flex-shrink: 0; width: 100%;
+    background: #fff; flex-shrink: 0;
   }
   .phone-tabbar .tab-item {
     flex: 1; display: flex; flex-direction: column; align-items: center;
@@ -87,7 +87,7 @@
 
   /* 小程序页面容器 */
   .miniapp-page { display: none; height: 100%; overflow-y: auto; }
-  .miniapp-page.active { display: flex; flex-direction: column; }
+  .miniapp-page.active { display: flex; flex-direction: column; height: 100%; }
 
   @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
 
@@ -332,16 +332,6 @@
                     </div>
                   </div>
                 </div>
-                <!-- 今日打卡 -->
-                <div class="px-4 mb-3">
-                  <div class="bg-gradient-to-r from-yellow-50 to-orange-50 rounded-xl p-3 flex items-center justify-between" id="checkinCard">
-                    <div>
-                      <div class="text-sm font-medium text-gray-700"><i class="fas fa-check-circle text-green-500 mr-1"></i> 今日打卡</div>
-                      <div class="text-xs text-gray-500 mt-1" id="checkinStreak">已连续打卡 23 天</div>
-                    </div>
-                    <div class="bg-orange-500 text-white text-xs px-3 py-1 rounded-full cursor-pointer" id="checkinBtn" onclick="doCheckin()">签到</div>
-                  </div>
-                </div>
                 <!-- 待办事项 -->
                 <div class="px-4 mb-3">
                   <div class="text-sm font-medium text-gray-700 mb-2">待办事项</div>
@@ -371,7 +361,18 @@
                       <div class="text-xs text-gray-400 todo-status">未完成</div>
                     </div>
                   </div>
-              </div><!-- /mp-elder-home -->
+                </div>
+                <!-- 每日打卡 -->
+                <div class="px-4 mb-4">
+                  <div class="bg-gradient-to-r from-yellow-50 to-orange-50 rounded-xl p-3 flex items-center justify-between">
+                    <div>
+                      <div class="text-sm font-medium text-gray-700"><i class="fas fa-check-circle text-green-500 mr-1"></i> 今日打卡</div>
+                      <div class="text-xs text-gray-500 mt-1">已连续打卡 23 天</div>
+                    </div>
+                    <div class="bg-orange-500 text-white text-xs px-3 py-1 rounded-full">签到</div>
+                  </div>
+                </div>
+              </div>
 
               <!-- 老人端子页面: 健康 -->
               <div class="miniapp-page" id="mp-elder-health">
@@ -1184,11 +1185,7 @@ function switchEndpoint(name) {
 function switchMiniappTab(prefix, btn, pages) {
   var parent = btn.closest('.phone-mockup');
   if (!parent) return;
-  // 更精确：只选择当前 TabBar 的 tab-item
-  var tabbar = btn.closest('.phone-tabbar');
-  if (tabbar) {
-    Array.from(tabbar.querySelectorAll('.tab-item')).forEach(function(t) { t.classList.remove('active'); });
-  }
+  Array.from(parent.querySelectorAll('.phone-tabbar .tab-item')).forEach(function(t) { t.classList.remove('active'); });
   btn.classList.add('active');
   var idx = Array.from(btn.parentNode.children).indexOf(btn);
   Array.from(parent.querySelectorAll('.miniapp-page')).forEach(function(p) { p.classList.remove('active'); });
@@ -1341,47 +1338,6 @@ document.addEventListener('DOMContentLoaded', function() {
   if (alertEntry) {
     alertEntry.onclick = function() { navigateToElderPage('mp-elder-alert-list'); };
   }
-});
-
-// ===== 老人端深化：今日打卡 =====
-var checkinDone = false;
-function doCheckin() {
-  if (checkinDone) return;
-  checkinDone = true;
-  var btn = document.getElementById('checkinBtn');
-  var streak = document.getElementById('checkinStreak');
-  var card = document.getElementById('checkinCard');
-  if (btn) {
-    btn.textContent = '已签到 ✓';
-    btn.classList.remove('bg-orange-500');
-    btn.classList.add('bg-green-500');
-    btn.style.cursor = 'default';
-  }
-  if (streak) {
-    // 23 + 1 = 24
-    streak.textContent = '已连续打卡 24 天 🎉';
-    streak.classList.remove('text-gray-500');
-    streak.classList.add('text-green-600');
-  }
-  if (card) {
-    card.classList.remove('from-yellow-50', 'to-orange-50');
-    card.classList.add('from-green-50', 'to-emerald-50');
-  }
-  // 弹出提示
-  var tip = document.createElement('div');
-  tip.className = 'alert-banner';
-  tip.style.background = 'linear-gradient(90deg, #22c55e, #16a34a)';
-  tip.innerHTML = '<i class="fas fa-check-circle animate-pulse"></i><span>打卡成功！已连续打卡 24 天 🎉</span>';
-  tip.id = 'checkinToast';
-  var phoneBody = document.querySelector('#mp-elder-home').closest('.phone-body');
-  if (phoneBody) {
-    phoneBody.insertBefore(tip, phoneBody.firstChild);
-    setTimeout(function() { tip.style.display = 'none'; }, 4000);
-  }
-}
-// 初始化打卡按钮状态（演示：默认未打卡）
-document.addEventListener('DOMContentLoaded', function() {
-  checkinDone = false;
 });
 
 // 3秒后自动关闭告警弹窗（演示用）
