@@ -332,6 +332,26 @@
                     </div>
                   </div>
                 </div>
+                <!-- 今日打卡 -->
+                <div class="px-4 mb-3">
+                  <div class="bg-gradient-to-r from-yellow-50 to-orange-50 rounded-xl p-4 shadow-sm" id="checkinCard">
+                    <div class="flex items-center justify-between mb-3">
+                      <div>
+                        <div class="text-base font-bold text-gray-800"><i class="fas fa-calendar-check text-orange-500 mr-2"></i>今日打卡</div>
+                        <div class="text-xs text-gray-500 mt-1">已连续打卡 <span class="font-bold text-orange-500" id="checkinDays">23</span> 天</div>
+                      </div>
+                      <div id="checkinBtn" class="bg-orange-500 text-white text-sm px-4 py-2 rounded-full font-medium cursor-pointer hover:bg-orange-600 transition-colors" onclick="doCheckin()">
+                        <i class="fas fa-check mr-1"></i>签到
+                      </div>
+                    </div>
+                    <div class="flex items-center gap-2 text-xs text-gray-500">
+                      <div class="flex-1 bg-orange-100 rounded-full h-2">
+                        <div class="bg-orange-500 rounded-full h-2 transition-all duration-500" id="checkinProgress" style="width: 23%"></div>
+                      </div>
+                      <span id="checkinMilestone">再打卡 7 天获得勋章</span>
+                    </div>
+                  </div>
+                </div>
                 <!-- 待办事项 -->
                 <div class="px-4 mb-3">
                   <div class="text-sm font-medium text-gray-700 mb-2">待办事项</div>
@@ -360,16 +380,6 @@
                       </div>
                       <div class="text-xs text-gray-400 todo-status">未完成</div>
                     </div>
-                  </div>
-                </div>
-                <!-- 每日打卡 -->
-                <div class="px-4 mb-4">
-                  <div class="bg-gradient-to-r from-yellow-50 to-orange-50 rounded-xl p-3 flex items-center justify-between">
-                    <div>
-                      <div class="text-sm font-medium text-gray-700"><i class="fas fa-check-circle text-green-500 mr-1"></i> 今日打卡</div>
-                      <div class="text-xs text-gray-500 mt-1">已连续打卡 23 天</div>
-                    </div>
-                    <div class="bg-orange-500 text-white text-xs px-3 py-1 rounded-full">签到</div>
                   </div>
                 </div>
               </div>
@@ -1239,6 +1249,48 @@ function goBackElderPage() {
   if (!prevPageId || ['mp-elder-home','mp-elder-health','mp-elder-device','mp-elder-my'].indexOf(prevPageId) !== -1) {
     var tabbar = document.querySelector('#page-elder .phone-tabbar');
     if (tabbar) tabbar.style.display = '';
+  }
+}
+
+// ===== 老人端深化：今日打卡 =====
+var __elderCheckedIn = false;
+function doCheckin() {
+  if (__elderCheckedIn) return;
+  __elderCheckedIn = true;
+  var btn = document.getElementById('checkinBtn');
+  var daysEl = document.getElementById('checkinDays');
+  var progressEl = document.getElementById('checkinProgress');
+  var milestoneEl = document.getElementById('checkinMilestone');
+  if (!btn || !daysEl) return;
+  // 更新天数
+  var days = parseInt(daysEl.textContent) + 1;
+  daysEl.textContent = days;
+  // 更新进度条
+  var pct = Math.min(days, 30) / 30 * 100;
+  if (progressEl) progressEl.style.width = pct + '%';
+  // 里程碑提示
+  if (milestoneEl) {
+    if (days % 30 === 0) {
+      milestoneEl.innerHTML = '<i class="fas fa-trophy text-yellow-500 mr-1"></i> 已获得连续打卡30天勋章！';
+    } else if (days % 7 === 0) {
+      milestoneEl.innerHTML = '<i class="fas fa-medal text-orange-500 mr-1"></i> 已获得连续打卡' + days + '天勋章！';
+    } else {
+      var nextMilestone = days < 7 ? 7 : days < 30 ? 30 : 30;
+      var remaining = nextMilestone - (days % nextMilestone);
+      milestoneEl.textContent = '再打卡 ' + remaining + ' 天获得勋章';
+    }
+  }
+  // 按钮变为已签到
+  btn.classList.remove('bg-orange-500', 'hover:bg-orange-600');
+  btn.classList.add('bg-gray-300', 'text-gray-600', 'cursor-default');
+  btn.innerHTML = '<i class="fas fa-check-circle mr-1"></i>已签到';
+  btn.onclick = null;
+  // 卡片动画
+  var card = document.getElementById('checkinCard');
+  if (card) {
+    card.style.transition = 'transform 0.3s';
+    card.style.transform = 'scale(1.02)';
+    setTimeout(function() { card.style.transform = 'scale(1)'; }, 300);
   }
 }
 
