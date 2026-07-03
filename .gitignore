@@ -1,0 +1,12 @@
+# === WorkBuddy / IDE 缓存 (根目录级) ===
+.workbuddy/
+.codebuddy/
+
+# === OS ===
+.DS_Store
+Thumbs.db
+
+# === 原始资源 (不纳入版本控制的大文件) ===
+*.psd
+*.ai
+*.sketch

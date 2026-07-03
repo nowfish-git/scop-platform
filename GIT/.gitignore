@@ -54,3 +54,6 @@ docker-compose.override.yml
 # === 日志 ===
 **/*.log
 !scripts/**/*.log
+
+# === Husky 9 内部目录 (不要提交 husky 内部状态) ===
+.husky/_/
