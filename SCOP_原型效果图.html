@@ -141,6 +141,94 @@
   .data-table tr:hover td { background: #f5f8ff; }
 
   /* 响应式 */
+  /* ===== 老人端深化：弹窗系统 ===== */
+  .modal-overlay {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.5); z-index: 1000;
+    display: flex; align-items: center; justify-content: center;
+    animation: fadeIn 0.2s ease;
+  }
+  .modal-overlay.hidden { display: none; }
+  .modal-dialog {
+    background: #fff; border-radius: 20px; padding: 28px 24px; width: 320px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3); text-align: center;
+    animation: scaleIn 0.25s ease;
+  }
+  @keyframes scaleIn { from { transform: scale(0.85); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+  .modal-dialog .modal-icon { font-size: 48px; margin-bottom: 16px; }
+  .modal-dialog .modal-title { font-size: 18px; font-weight: 600; color: #1a1a2e; margin-bottom: 8px; }
+  .modal-dialog .modal-desc { font-size: 14px; color: #666; margin-bottom: 20px; line-height: 1.6; }
+  .modal-dialog .modal-actions { display: flex; gap: 12px; }
+  .modal-dialog .modal-btn {
+    flex: 1; padding: 12px 0; border-radius: 12px; font-size: 16px; font-weight: 500;
+    cursor: pointer; border: none; transition: all 0.2s;
+  }
+  .modal-btn-cancel { background: #f5f5f5; color: #666; }
+  .modal-btn-cancel:hover { background: #e8e8e8; }
+  .modal-btn-confirm { background: #ff4d4f; color: #fff; }
+  .modal-btn-confirm:hover { background: #ff7875; }
+  .modal-btn-primary { background: #1677ff; color: #fff; }
+  .modal-btn-primary:hover { background: #4096ff; }
+
+  /* ===== 老人端深化：页面导航 ===== */
+  .page-stack-container { position: relative; width: 100%; height: 100%; overflow: hidden; }
+  .page-stack-container .miniapp-page {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    overflow-y: auto; background: #f5f5f5;
+    transform: translateX(100%); opacity: 0;
+    transition: transform 0.3s ease, opacity 0.2s ease;
+  }
+  .page-stack-container .miniapp-page.active {
+    transform: translateX(0); opacity: 1;
+  }
+  .page-stack-container .miniapp-page.slide-out {
+    transform: translateX(-30%); opacity: 0;
+  }
+  .nav-back-btn {
+    display: flex; align-items: center; gap: 4px; padding: 8px 12px;
+    color: #1677ff; font-size: 16px; cursor: pointer; border: none; background: none;
+    min-height: 44px; min-width: 44px;
+  }
+  .nav-back-btn:active { opacity: 0.6; }
+
+  /* ===== 老人端深化：SOS 状态 ===== */
+  .sos-triggered {
+    background: linear-gradient(135deg, #fa8c16, #fa541c) !important;
+    box-shadow: 0 8px 25px rgba(250,140,22,0.4) !important;
+    animation: pulse-sos 1.5s ease-in-out infinite;
+  }
+  @keyframes pulse-sos {
+    0%, 100% { box-shadow: 0 8px 25px rgba(250,140,22,0.4); }
+    50% { box-shadow: 0 8px 40px rgba(250,140,22,0.7); }
+  }
+  .sos-disabled { opacity: 0.6; pointer-events: none; }
+
+  /* ===== 老人端深化：告警通知横幅 ===== */
+  .alert-banner {
+    position: absolute; top: 0; left: 0; width: 100%; z-index: 100;
+    background: linear-gradient(90deg, #ff4d4f, #ff7875); color: #fff;
+    padding: 12px 16px; font-size: 14px; display: none;
+    align-items: center; gap: 8px;
+  }
+  .alert-banner.show { display: flex; animation: slideDown 0.3s ease; }
+  @keyframes slideDown { from { transform: translateY(-100%); } to { transform: translateY(0); } }
+
+  /* ===== 老人端深化：骨架屏 ===== */
+  .skeleton {
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200% 100%; animation: skeleton-loading 1.5s infinite;
+    border-radius: 8px;
+  }
+  @keyframes skeleton-loading { from { background-position: 200% 0; } to { background-position: -200% 0; } }
+
+  /* ===== 老人端深化：空状态 ===== */
+  .empty-state {
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    padding: 40px 20px; color: #999;
+  }
+  .empty-state i { font-size: 48px; margin-bottom: 12px; color: #d9d9d9; }
+  .empty-state p { font-size: 14px; }
+
   @media (max-width: 900px) {
     .split-panel { flex-direction: column; }
     .split-panel .left-panel { width: 100%; }
@@ -189,6 +277,24 @@
               <span><i class="fas fa-signal mr-1"></i><i class="fas fa-wifi mr-1"></i><i class="fas fa-battery-full"></i></span>
             </div>
             <div class="phone-body">
+              <!-- SOS 确认弹窗 -->
+              <div class="modal-overlay hidden" id="sosModal">
+                <div class="modal-dialog">
+                  <div class="modal-icon">🆘</div>
+                  <div class="modal-title">确认紧急求助？</div>
+                  <div class="modal-desc">确认后将立即通知家属和工作站<br>请确认您确实需要紧急帮助</div>
+                  <div style="font-size:13px;color:#999;margin-bottom:16px;" id="sosCountdown">将在 <span style="color:#ff4d4f;font-weight:700;">3</span> 秒后自动确认</div>
+                  <div class="modal-actions">
+                    <button class="modal-btn modal-btn-cancel" onclick="closeSOSModal()">取消</button>
+                    <button class="modal-btn modal-btn-confirm" onclick="confirmSOS()">确认求助</button>
+                  </div>
+                </div>
+              </div>
+              <!-- 告警通知横幅 -->
+              <div class="alert-banner" id="alertBanner">
+                <i class="fas fa-bell animate-pulse"></i>
+                <span>工作站已收到您的求助，工作人员正在赶来...</span>
+              </div>
               <!-- 老人端子页面: 首页 -->
               <div class="miniapp-page active" id="mp-elder-home">
                 <!-- 天气问候 -->
@@ -198,29 +304,14 @@
                 </div>
                 <!-- SOS 大按钮 -->
                 <div class="px-6 py-4">
-                  <div class="bg-red-500 rounded-2xl p-6 text-center shadow-lg" style="box-shadow: 0 8px 25px rgba(239,68,68,0.4);">
+                  <div class="bg-red-500 rounded-2xl p-6 text-center shadow-lg cursor-pointer" id="sosBtn" onclick="showSOSModal()" style="box-shadow: 0 8px 25px rgba(239,68,68,0.4);">
                     <div class="text-5xl mb-2"><i class="fas fa-hand-paper"></i></div>
                     <div class="text-2xl font-bold text-white mb-1">紧急求助</div>
-                    <div class="text-sm text-red-100">长按或点击 S O S</div>
+                    <div class="text-sm text-red-100">点击 SOS 求助</div>
                     <div class="mt-3 flex justify-center gap-4 text-red-100 text-xs">
                       <span><i class="fas fa-ambulance mr-1"></i>自动通知家属</span>
                       <span><i class="fas fa-hospital mr-1"></i>联动工作站</span>
                     </div>
-                  </div>
-                </div>
-                <!-- 快捷入口 -->
-                <div class="px-4 grid grid-cols-3 gap-3 mb-3">
-                  <div class="bg-blue-50 rounded-xl p-3 text-center cursor-pointer">
-                    <div class="text-2xl text-blue-500"><i class="fas fa-heartbeat"></i></div>
-                    <div class="text-xs text-gray-700 mt-1">健康数据</div>
-                  </div>
-                  <div class="bg-green-50 rounded-xl p-3 text-center cursor-pointer">
-                    <div class="text-2xl text-green-500"><i class="fas fa-microchip"></i></div>
-                    <div class="text-xs text-gray-700 mt-1">我的设备</div>
-                  </div>
-                  <div class="bg-purple-50 rounded-xl p-3 text-center cursor-pointer">
-                    <div class="text-2xl text-purple-500"><i class="fas fa-user"></i></div>
-                    <div class="text-xs text-gray-700 mt-1">个人中心</div>
                   </div>
                 </div>
                 <!-- 健康概览 -->
@@ -238,6 +329,36 @@
                     <div class="bg-white rounded-xl p-3 text-center shadow-sm">
                       <div class="text-lg font-bold text-orange-500">118/78</div>
                       <div class="text-xs text-gray-500">血压 mmHg</div>
+                    </div>
+                  </div>
+                </div>
+                <!-- 待办事项 -->
+                <div class="px-4 mb-3">
+                  <div class="text-sm font-medium text-gray-700 mb-2">待办事项</div>
+                  <div class="space-y-2" id="elderTodoList">
+                    <div class="bg-white rounded-xl p-3 shadow-sm flex items-center gap-3 cursor-pointer todo-item" data-done="false" onclick="toggleTodo(this)">
+                      <div class="w-8 h-8 rounded-full bg-orange-100 flex items-center justify-center text-orange-500 flex-shrink-0 todo-icon"><i class="fas fa-pills"></i></div>
+                      <div class="flex-1">
+                        <div class="text-sm font-medium todo-text">按时服用降压药</div>
+                        <div class="text-xs text-gray-400">每天 08:00 · 早饭后</div>
+                      </div>
+                      <div class="text-xs text-gray-400 todo-status">未完成</div>
+                    </div>
+                    <div class="bg-white rounded-xl p-3 shadow-sm flex items-center gap-3 cursor-pointer todo-item" data-done="false" onclick="toggleTodo(this)">
+                      <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-500 flex-shrink-0 todo-icon"><i class="fas fa-walking"></i></div>
+                      <div class="flex-1">
+                        <div class="text-sm font-medium todo-text">饭后散步 30 分钟</div>
+                        <div class="text-xs text-gray-400">每天 14:00 · 建议完成</div>
+                      </div>
+                      <div class="text-xs text-gray-400 todo-status">未完成</div>
+                    </div>
+                    <div class="bg-white rounded-xl p-3 shadow-sm flex items-center gap-3 cursor-pointer todo-item" data-done="false" onclick="toggleTodo(this)">
+                      <div class="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center text-green-500 flex-shrink-0 todo-icon"><i class="fas fa-stethoscope"></i></div>
+                      <div class="flex-1">
+                        <div class="text-sm font-medium todo-text">测血压并记录</div>
+                        <div class="text-xs text-gray-400">每天 07:00 · 起床后</div>
+                      </div>
+                      <div class="text-xs text-gray-400 todo-status">未完成</div>
                     </div>
                   </div>
                 </div>
@@ -285,7 +406,7 @@
               </div>
 
               <!-- 老人端子页面: 我的 -->
-              <div class="miniapp-page" id="mp-elender-my">
+              <div class="miniapp-page" id="mp-elder-my">
                 <div class="px-4 pt-4 pb-2"><div class="text-lg font-medium text-gray-800">个人中心</div></div>
                 <div class="px-4">
                   <div class="bg-white rounded-2xl p-5 shadow-sm flex items-center gap-4 mb-4">
@@ -298,12 +419,12 @@
                       <div><div class="text-sm font-medium">我的家属</div><div class="text-xs text-gray-400">已绑定 2 位家属</div></div>
                       <div class="ml-auto text-gray-300"><i class="fas fa-chevron-right"></i></div>
                     </div>
-                    <div class="bg-white rounded-xl p-4 shadow-sm flex items-center gap-3 cursor-pointer">
+                    <div class="bg-white rounded-xl p-4 shadow-sm flex items-center gap-3 cursor-pointer" onclick="navigateToElderPage('mp-elder-device')">
                       <div class="w-10 h-10 bg-green-50 rounded-full flex items-center justify-center text-green-500"><i class="fas fa-microchip"></i></div>
                       <div><div class="text-sm font-medium">我的设备</div><div class="text-xs text-gray-400">已绑定 4 台设备</div></div>
                       <div class="ml-auto text-gray-300"><i class="fas fa-chevron-right"></i></div>
                     </div>
-                    <div class="bg-white rounded-xl p-4 shadow-sm flex items-center gap-3 cursor-pointer">
+                    <div class="bg-white rounded-xl p-4 shadow-sm flex items-center gap-3 cursor-pointer" onclick="navigateToElderPage('mp-elder-alert-list')">
                       <div class="w-10 h-10 bg-orange-50 rounded-full flex items-center justify-center text-orange-500"><i class="fas fa-bell"></i></div>
                       <div><div class="text-sm font-medium">告警记录</div><div class="text-xs text-gray-400">近30天 3 次告警</div></div>
                       <div class="ml-auto text-gray-300"><i class="fas fa-chevron-right"></i></div>
@@ -317,17 +438,164 @@
                 </div>
               </div>
 
+              <!-- 老人端子页面: 我的设备 -->
+              <div class="miniapp-page" id="mp-elder-device">
+                <div class="px-4 pt-4 pb-2"><div class="text-lg font-medium text-gray-800">我的设备</div></div>
+                <div class="px-4 space-y-3">
+                  <!-- 设备 1：手环 -->
+                  <div class="bg-white rounded-2xl p-4 shadow-sm">
+                    <div class="flex items-center gap-3 mb-3">
+                      <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center text-blue-500"><i class="fas fa-watch text-xl"></i></div>
+                      <div class="flex-1">
+                        <div class="text-sm font-medium">智能手环 Pro</div>
+                        <div class="text-xs text-gray-400">绑定于 2024-03-15</div>
+                      </div>
+                      <div class="w-2 h-2 bg-green-500 rounded-full" title="在线"></div>
+                    </div>
+                    <div class="grid grid-cols-3 gap-2 text-center">
+                      <div class="bg-blue-50 rounded-lg p-2">
+                        <div class="text-sm font-bold text-blue-600">72</div>
+                        <div class="text-xs text-gray-500">心率</div>
+                      </div>
+                      <div class="bg-green-50 rounded-lg p-2">
+                        <div class="text-sm font-bold text-green-600">9,832</div>
+                        <div class="text-xs text-gray-500">步数</div>
+                      </div>
+                      <div class="bg-orange-50 rounded-lg p-2">
+                        <div class="text-sm font-bold text-orange-600">98%</div>
+                        <div class="text-xs text-gray-500">电量</div>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- 设备 2：烟感 -->
+                  <div class="bg-white rounded-2xl p-4 shadow-sm">
+                    <div class="flex items-center gap-3">
+                      <div class="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center text-red-500"><i class="fas fa-smog text-xl"></i></div>
+                      <div class="flex-1">
+                        <div class="text-sm font-medium">智能烟感报警器</div>
+                        <div class="text-xs text-gray-400">安装于 客厅 · 绑定于 2024-02-20</div>
+                      </div>
+                      <div class="w-2 h-2 bg-green-500 rounded-full" title="在线"></div>
+                    </div>
+                  </div>
+                  <!-- 设备 3：门磁 -->
+                  <div class="bg-white rounded-2xl p-4 shadow-sm">
+                    <div class="flex items-center gap-3">
+                      <div class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center text-purple-500"><i class="fas fa-door-closed text-xl"></i></div>
+                      <div class="flex-1">
+                        <div class="text-sm font-medium">门磁传感器</div>
+                        <div class="text-xs text-gray-400">安装于 大门 · 绑定于 2024-02-20</div>
+                      </div>
+                      <div class="w-2 h-2 bg-green-500 rounded-full" title="在线"></div>
+                    </div>
+                  </div>
+                  <!-- 设备 4：SOS 按钮 -->
+                  <div class="bg-white rounded-2xl p-4 shadow-sm">
+                    <div class="flex items-center gap-3">
+                      <div class="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center text-orange-500"><i class="fas fa-hand-paper text-xl"></i></div>
+                      <div class="flex-1">
+                        <div class="text-sm font-medium">SOS 紧急按钮</div>
+                        <div class="text-xs text-gray-400">安装于 卧室床头 · 绑定于 2024-02-20</div>
+                      </div>
+                      <div class="w-2 h-2 bg-yellow-400 rounded-full" title="低电量"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 老人端子页面: 告警记录 -->
+              <div class="miniapp-page" id="mp-elder-alert-list">
+                <div class="flex items-center gap-3 px-4 pt-4 pb-2">
+                  <div class="text-lg cursor-pointer" onclick="goBackElderPage()"><i class="fas fa-arrow-left"></i></div>
+                  <div class="text-lg font-medium text-gray-800">告警记录</div>
+                </div>
+                <div class="px-4 mb-3 flex gap-2 text-xs">
+                  <div class="bg-red-500 text-white rounded-full px-3 py-1">全部</div>
+                  <div class="bg-gray-100 rounded-full px-3 py-1 text-gray-600">P0 紧急</div>
+                  <div class="bg-gray-100 rounded-full px-3 py-1 text-gray-600">P1 重要</div>
+                  <div class="bg-gray-100 rounded-full px-3 py-1 text-gray-600">P2 一般</div>
+                </div>
+                <div class="px-4 space-y-3">
+                  <div class="bg-white rounded-2xl p-4 shadow-sm border-l-4 border-red-500 cursor-pointer" onclick="navigateToElderPage('mp-elder-alert-detail')">
+                    <div class="flex items-center gap-2 mb-2">
+                      <div class="bg-red-100 text-red-600 text-xs px-2 py-0.5 rounded">P0</div>
+                      <div class="text-sm font-medium">烟感告警 · 客厅</div>
+                      <div class="ml-auto text-xs text-gray-400">10:32</div>
+                    </div>
+                    <div class="text-xs text-gray-500 mb-2">烟雾浓度超标，已自动通知工作站</div>
+                    <div class="flex gap-2">
+                      <div class="bg-orange-50 text-orange-600 text-xs px-2 py-1 rounded">处理中</div>
+                    </div>
+                  </div>
+                  <div class="bg-white rounded-2xl p-4 shadow-sm border-l-4 border-yellow-500">
+                    <div class="flex items-center gap-2 mb-2">
+                      <div class="bg-yellow-100 text-yellow-600 text-xs px-2 py-0.5 rounded">P1</div>
+                      <div class="text-sm font-medium">门窗异常 · 大门</div>
+                      <div class="ml-auto text-xs text-gray-400">昨天 22:15</div>
+                    </div>
+                    <div class="text-xs text-gray-500 mb-2">检测到夜间开门，已通知家属</div>
+                    <div class="flex gap-2">
+                      <div class="bg-green-50 text-green-600 text-xs px-2 py-1 rounded">已处理</div>
+                    </div>
+                  </div>
+                  <div class="bg-white rounded-2xl p-4 shadow-sm border-l-4 border-blue-500">
+                    <div class="flex items-center gap-2 mb-2">
+                      <div class="bg-blue-100 text-blue-600 text-xs px-2 py-0.5 rounded">P2</div>
+                      <div class="text-sm font-medium">设备低电量 · SOS按钮</div>
+                      <div class="ml-auto text-xs text-gray-400">前天 08:00</div>
+                    </div>
+                    <div class="text-xs text-gray-500 mb-2">SOS按钮电量低于 20%，请更换电池</div>
+                    <div class="flex gap-2">
+                      <div class="bg-green-50 text-green-600 text-xs px-2 py-1 rounded">已处理</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 老人端子页面: 告警详情 -->
+              <div class="miniapp-page" id="mp-elder-alert-detail">
+                <div class="flex items-center gap-3 px-4 pt-4 pb-2">
+                  <div class="text-lg cursor-pointer" onclick="goBackElderPage()"><i class="fas fa-arrow-left"></i></div>
+                  <div class="text-lg font-medium text-gray-800">告警详情</div>
+                </div>
+                <div class="px-4">
+                  <div class="bg-white rounded-2xl p-5 shadow-sm">
+                    <div class="flex items-center gap-3 mb-4">
+                      <div class="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center text-red-500"><i class="fas fa-smog text-xl"></i></div>
+                      <div>
+                        <div class="text-base font-bold">烟感告警</div>
+                        <div class="text-xs text-gray-400">客厅 · 2024-07-03 10:32</div>
+                      </div>
+                    </div>
+                    <div class="space-y-3 text-sm">
+                      <div class="flex justify-between"><span class="text-gray-500">告警类型</span><span class="font-medium">烟雾浓度超标</span></div>
+                      <div class="flex justify-between"><span class="text-gray-500">优先级</span><span class="text-red-500 font-medium">P0 紧急</span></div>
+                      <div class="flex justify-between"><span class="text-gray-500">设备位置</span><span class="font-medium">阳光花园 5栋203 客厅</span></div>
+                      <div class="flex justify-between"><span class="text-gray-500">告警数值</span><span class="font-medium">PM2.5: 285 μg/m³</span></div>
+                      <div class="flex justify-between"><span class="text-gray-500">处理状态</span><div class="bg-orange-100 text-orange-600 text-xs px-2 py-0.5 rounded">处理中</div></div>
+                      <div class="flex justify-between"><span class="text-gray-500">通知家属</span><span class="font-medium text-green-600"><i class="fas fa-check-circle mr-1"></i>已通知</span></div>
+                    </div>
+                    <div class="mt-4 bg-orange-50 rounded-xl p-3 text-xs text-orange-700">
+                      <i class="fas fa-info-circle mr-1"></i> 工作站工作人员正在赶来，预计 8 分钟内到达
+                    </div>
+                  </div>
+                </div>
+              </div>
+
             </div><!-- /phone-body -->
-            <!-- 老人端 TabBar -->
+            <!-- 老人端 TabBar（4 Tab） -->
             <div class="phone-tabbar">
-              <div class="tab-item active" onclick="switchMiniappTab('mp-elder-', this, ['home','health','my'])">
+              <div class="tab-item active" onclick="switchMiniappTab('mp-elder-', this, ['home','health','device','my'])">
                 <i class="fas fa-home"></i><span>首页</span>
               </div>
-              <div class="tab-item" onclick="switchMiniappTab('mp-elder-', this, ['home','health','my'])">
+              <div class="tab-item" onclick="switchMiniappTab('mp-elder-', this, ['home','health','device','my'])">
                 <i class="fas fa-heartbeat"></i><span>健康</span>
               </div>
-              <div class="tab-item" onclick="switchMiniappTab('mp-elder-', this, ['home','health','my'])">
-                <i class="fas fa-user"></i><span>我的</span>
+              <div class="tab-item" onclick="switchMiniappTab('mp-elder-', this, ['home','health','device','my'])">
+                <i class="fas fa-microchip"></i><span>我的设备</span>
+              </div>
+              <div class="tab-item" onclick="switchMiniappTab('mp-elder-', this, ['home','health','device','my'])">
+                <i class="fas fa-user"></i><span>个人中心</span>
               </div>
             </div>
             <div class="phone-bottom-bar"><div class="home-indicator"></div></div>
@@ -936,6 +1204,141 @@ function switchWebTab(endpoint, btn, pages) {
   var target = parent.querySelector('#ws-' + endpoint + '-' + pages[idx]);
   if (target) target.classList.add('active');
 }
+
+// ===== 老人端深化：页面导航 =====
+window.__elderPageStack = [];
+
+function navigateToElderPage(pageId) {
+  var currentPage = document.querySelector('#page-elder .miniapp-page.active');
+  if (currentPage) {
+    currentPage.classList.remove('active');
+    window.__elderPageStack.push(currentPage.id);
+  }
+  var targetPage = document.getElementById(pageId);
+  if (targetPage) {
+    targetPage.classList.add('active');
+    // 隐藏 TabBar
+    var tabbar = document.querySelector('#page-elder .phone-tabbar');
+    if (tabbar) tabbar.style.display = 'none';
+  }
+}
+
+function goBackElderPage() {
+  var prevPageId = window.__elderPageStack.pop();
+  var currentPage = document.querySelector('#page-elder .miniapp-page.active');
+  if (currentPage) currentPage.classList.remove('active');
+  if (prevPageId) {
+    var prevPage = document.getElementById(prevPageId);
+    if (prevPage) prevPage.classList.add('active');
+  } else {
+    // 回到首页
+    var homePage = document.getElementById('mp-elder-home');
+    if (homePage) homePage.classList.add('active');
+  }
+  // 显示 TabBar（如果回到主Tab页）
+  if (!prevPageId || ['mp-elder-home','mp-elder-health','mp-elder-device','mp-elder-my'].indexOf(prevPageId) !== -1) {
+    var tabbar = document.querySelector('#page-elder .phone-tabbar');
+    if (tabbar) tabbar.style.display = '';
+  }
+}
+
+// ===== 老人端深化：待办事项 =====
+function toggleTodo(el) {
+  var done = el.getAttribute('data-done') === 'true';
+  var icon = el.querySelector('.todo-icon');
+  var text = el.querySelector('.todo-text');
+  var status = el.querySelector('.todo-status');
+  if (!done) {
+    el.setAttribute('data-done', 'true');
+    el.style.opacity = '0.55';
+    if (icon) { icon.innerHTML = '<i class="fas fa-check"></i>'; icon.classList.remove('bg-orange-100','bg-blue-100','bg-green-100'); icon.classList.add('bg-green-100'); icon.classList.remove('text-orange-500','text-blue-500','text-green-500'); icon.classList.add('text-green-500'); }
+    if (text) { text.style.textDecoration = 'line-through'; text.classList.add('text-gray-400'); }
+    if (status) { status.textContent = '已完成'; status.classList.remove('text-gray-400'); status.classList.add('text-green-500'); }
+  } else {
+    el.setAttribute('data-done', 'false');
+    el.style.opacity = '1';
+    if (icon) { icon.innerHTML = el.getAttribute('data-orig-icon') || '<i class="fas fa-pills"></i>'; icon.className = (el.getAttribute('data-orig-bg') || 'bg-orange-100') + ' w-8 h-8 rounded-full flex items-center justify-center ' + (el.getAttribute('data-orig-color') || 'text-orange-500') + ' flex-shrink-0 todo-icon'; }
+    if (text) { text.style.textDecoration = ''; text.classList.remove('text-gray-400'); }
+    if (status) { status.textContent = '未完成'; status.classList.remove('text-green-500'); status.classList.add('text-gray-400'); }
+  }
+}
+// 保存原始图标类名（页面加载后执行）
+document.addEventListener('DOMContentLoaded', function() {
+  var items = document.querySelectorAll('#elderTodoList .todo-item');
+  items.forEach(function(item, i) {
+    var icon = item.querySelector('.todo-icon');
+    if (icon) {
+      item.setAttribute('data-orig-icon', icon.innerHTML);
+      var cls = icon.className;
+      var bg = (cls.match(/bg-\w+-100/) || ['bg-orange-100'])[0];
+      var color = (cls.match(/text-\w+-500/) || ['text-orange-500'])[0];
+      item.setAttribute('data-orig-bg', bg);
+      item.setAttribute('data-orig-color', color);
+    }
+  });
+});
+
+// ===== 老人端深化：SOS 交互 =====
+var sosCountdownTimer = null;
+
+function showSOSModal() {
+  var modal = document.getElementById('sosModal');
+  if (modal) modal.classList.remove('hidden');
+  // 3秒倒计时
+  var countdown = 3;
+  var countdownEl = document.getElementById('sosCountdown');
+  if (countdownEl) countdownEl.innerHTML = '将在 <span style="color:#ff4d4f;font-weight:700;">' + countdown + '</span> 秒后自动确认';
+  sosCountdownTimer = setInterval(function() {
+    countdown--;
+    if (countdown <= 0) {
+      clearInterval(sosCountdownTimer);
+      confirmSOS();
+    } else {
+      if (countdownEl) countdownEl.innerHTML = '将在 <span style="color:#ff4d4f;font-weight:700;">' + countdown + '</span> 秒后自动确认';
+    }
+  }, 1000);
+}
+
+function closeSOSModal() {
+  if (sosCountdownTimer) { clearInterval(sosCountdownTimer); sosCountdownTimer = null; }
+  var modal = document.getElementById('sosModal');
+  if (modal) modal.classList.add('hidden');
+}
+
+function confirmSOS() {
+  if (sosCountdownTimer) { clearInterval(sosCountdownTimer); sosCountdownTimer = null; }
+  closeSOSModal();
+  // SOS 按钮变橙色 + 脉冲动画
+  var sosBtn = document.getElementById('sosBtn');
+  if (sosBtn) {
+    sosBtn.classList.add('sos-triggered');
+    sosBtn.innerHTML = '<div class="text-5xl mb-2"><i class="fas fa-hands-helping"></i></div><div class="text-2xl font-bold text-white mb-1">已求助</div><div class="text-sm text-orange-100">等待工作站响应...</div>';
+    sosBtn.onclick = null; // 禁用点击
+  }
+  // 显示告警通知横幅
+  var banner = document.getElementById('alertBanner');
+  if (banner) {
+    banner.classList.add('show');
+    setTimeout(function() {
+      banner.classList.remove('show');
+      // 10秒后恢复 SOS 按钮
+      if (sosBtn) {
+        sosBtn.classList.remove('sos-triggered');
+        sosBtn.innerHTML = '<div class="text-5xl mb-2"><i class="fas fa-hand-paper"></i></div><div class="text-2xl font-bold text-white mb-1">紧急求助</div><div class="text-sm text-red-100">点击 SOS 求助</div><div class="mt-3 flex justify-center gap-4 text-red-100 text-xs"><span><i class="fas fa-ambulance mr-1"></i>自动通知家属</span><span><i class="fas fa-hospital mr-1"></i>联动工作站</span></div>';
+        sosBtn.onclick = showSOSModal;
+      }
+    }, 10000);
+  }
+}
+
+// ===== 老人端深化：个人中心入口点击 =====
+document.addEventListener('DOMContentLoaded', function() {
+  // 告警记录入口
+  var alertEntry = document.querySelector('#mp-elder-my .fa-bell')?.closest('.bg-white');
+  if (alertEntry) {
+    alertEntry.onclick = function() { navigateToElderPage('mp-elder-alert-list'); };
+  }
+});
 
 // 3秒后自动关闭告警弹窗（演示用）
 setTimeout(function() {
