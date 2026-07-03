@@ -90,6 +90,7 @@
   .miniapp-page.active { display: flex; flex-direction: column; height: 100%; }
 
   @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes scanLine { 0% { transform: translateY(0); } 50% { transform: translateY(80px); } 100% { transform: translateY(0); } }
 
   /* 手风琴/卡片 */
   .page-bg { background: #fff; border-radius: 12px; padding: 24px; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
@@ -295,6 +296,119 @@
                 <i class="fas fa-bell animate-pulse"></i>
                 <span>工作站已收到您的求助，工作人员正在赶来...</span>
               </div>
+
+              <!-- 拍照弹窗：血压计 -->
+              <div class="modal-overlay hidden" id="photoBpModal">
+                <div class="modal-dialog" style="max-width:340px;">
+                  <div class="modal-title"><i class="fas fa-tint text-orange-500 mr-2"></i>拍照识别血压计</div>
+                  <div class="modal-desc mb-3">将摄像头对准血压计屏幕</div>
+                  <!-- 模拟相机取景框 -->
+                  <div class="bg-gray-900 rounded-xl p-4 mb-4" style="aspect-ratio:4/3;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;">
+                    <div class="text-white text-xs mb-2 opacity-60">取景框</div>
+                    <div class="border-2 border-dashed border-orange-400 rounded-lg w-3/4 h-3/4 flex items-center justify-center">
+                      <div class="text-white text-center">
+                        <div class="text-3xl mb-2"><i class="fas fa-tint"></i></div>
+                        <div class="text-xs opacity-60">血压计屏幕</div>
+                      </div>
+                    </div>
+                    <!-- 扫描动画 -->
+                    <div class="absolute w-full left-0" style="top:30%;height:2px;background:linear-gradient(90deg,transparent,#60a5fa,transparent);animation:scanLine 1.5s infinite;">
+                    </div>
+                  </div>
+                  <div class="text-xs text-gray-500 mb-3 text-center"><i class="fas fa-lightbulb mr-1 text-yellow-500"></i> 提示：请确保血压计屏幕清晰可见</div>
+                  <div class="modal-actions">
+                    <button class="modal-btn modal-btn-cancel" onclick="closePhotoModal('bp')">取消</button>
+                    <button class="modal-btn modal-btn-confirm" onclick="simulateBpPhoto()"><i class="fas fa-camera mr-1"></i>拍照</button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 识别结果弹窗：血压计 -->
+              <div class="modal-overlay hidden" id="bpResultModal">
+                <div class="modal-dialog" style="max-width:340px;">
+                  <div class="modal-icon">✅</div>
+                  <div class="modal-title">识别成功</div>
+                  <div class="modal-desc">已自动提取血压数据</div>
+                  <div class="bg-orange-50 rounded-xl p-4 mb-4 text-left">
+                    <div class="flex items-center justify-between mb-2">
+                      <span class="text-sm text-gray-600">收缩压 / 舒张压</span>
+                      <span class="text-lg font-bold text-orange-600" id="bpResultValue">125 / 82</span>
+                    </div>
+                    <div class="flex items-center justify-between mb-2">
+                      <span class="text-sm text-gray-600">心率</span>
+                      <span class="text-lg font-bold text-green-600" id="bpResultPulse">75</span>
+                    </div>
+                    <div class="flex items-center justify-between">
+                      <span class="text-sm text-gray-600">测量时间</span>
+                      <span class="text-sm text-gray-800" id="bpResultTime">14:52</span>
+                    </div>
+                  </div>
+                  <div class="text-xs text-gray-500 mb-3">数据已保存至健康记录</div>
+                  <div class="modal-actions">
+                    <button class="modal-btn modal-btn-confirm" onclick="confirmBpRecord()">确认保存</button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 拍照弹窗：餐食 -->
+              <div class="modal-overlay hidden" id="photoMealModal">
+                <div class="modal-dialog" style="max-width:340px;">
+                  <div class="modal-title"><i class="fas fa-utensils text-green-500 mr-2"></i>拍照记录餐食</div>
+                  <div class="modal-desc mb-3">将摄像头对准您的餐食</div>
+                  <!-- 模拟相机取景框 -->
+                  <div class="bg-gray-900 rounded-xl p-4 mb-4" style="aspect-ratio:4/3;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;">
+                    <div class="text-white text-xs mb-2 opacity-60">取景框</div>
+                    <div class="border-2 border-dashed border-green-400 rounded-lg w-3/4 h-3/4 flex items-center justify-center">
+                      <div class="text-white text-center">
+                        <div class="text-3xl mb-2"><i class="fas fa-utensils"></i></div>
+                        <div class="text-xs opacity-60">餐食照片</div>
+                      </div>
+                    </div>
+                    <!-- 扫描动画 -->
+                    <div class="absolute w-full left-0" style="top:30%;height:2px;background:linear-gradient(90deg,transparent,#60a5fa,transparent);animation:scanLine 1.5s infinite;">
+                    </div>
+                  </div>
+                  <div class="text-xs text-gray-500 mb-3 text-center"><i class="fas fa-lightbulb mr-1 text-yellow-500"></i> 提示：请确保餐食在画面中完整可见</div>
+                  <div class="modal-actions">
+                    <button class="modal-btn modal-btn-cancel" onclick="closePhotoModal('meal')">取消</button>
+                    <button class="modal-btn modal-btn-confirm" onclick="simulateMealPhoto()"><i class="fas fa-camera mr-1"></i>拍照</button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 识别结果弹窗：餐食 -->
+              <div class="modal-overlay hidden" id="mealResultModal">
+                <div class="modal-dialog" style="max-width:340px;">
+                  <div class="modal-icon">✅</div>
+                  <div class="modal-title">识别成功</div>
+                  <div class="modal-desc">已自动识别餐食内容</div>
+                  <div class="bg-green-50 rounded-xl p-4 mb-4 text-left">
+                    <div class="mb-3">
+                      <div class="text-sm text-gray-600 mb-1">识别到的餐品</div>
+                      <div class="flex flex-wrap gap-1" id="mealResultTags">
+                        <span class="bg-white text-green-700 text-xs px-2 py-1 rounded-full border border-green-200">米饭</span>
+                        <span class="bg-white text-green-700 text-xs px-2 py-1 rounded-full border border-green-200">清炒时蔬</span>
+                        <span class="bg-white text-green-700 text-xs px-2 py-1 rounded-full border border-green-200">红烧豆腐</span>
+                        <span class="bg-white text-green-700 text-xs px-2 py-1 rounded-full border border-green-200">鸡蛋汤</span>
+                      </div>
+                    </div>
+                    <div class="flex items-center justify-between mb-2">
+                      <span class="text-sm text-gray-600">用餐时间</span>
+                      <span class="text-sm text-gray-800" id="mealResultTime">今天 12:30</span>
+                    </div>
+                    <div class="flex items-center justify-between">
+                      <span class="text-sm text-gray-600">预估热量</span>
+                      <span class="text-lg font-bold text-orange-600" id="mealResultCal">约 480 kcal</span>
+                    </div>
+                  </div>
+                  <div class="text-xs text-gray-500 mb-3">数据已保存至饮食记录</div>
+                  <div class="modal-actions">
+                    <button class="modal-btn modal-btn-cancel" onclick="closeMealResult()">重新拍照</button>
+                    <button class="modal-btn modal-btn-confirm" onclick="confirmMealRecord()">确认保存</button>
+                  </div>
+                </div>
+              </div>
+
               <!-- 老人端子页面: 首页 -->
               <div class="miniapp-page active" id="mp-elder-home">
                 <!-- 天气问候 -->
@@ -386,7 +500,17 @@
 
               <!-- 老人端子页面: 健康 -->
               <div class="miniapp-page" id="mp-elder-health">
-                <div class="px-4 pt-4 pb-2"><div class="text-lg font-medium text-gray-800">健康数据</div></div>
+                <div class="px-4 pt-4 pb-2 flex items-center justify-between">
+                  <div class="text-lg font-medium text-gray-800">健康数据</div>
+                  <div class="flex gap-2">
+                    <div class="bg-orange-100 text-orange-600 text-xs px-3 py-1.5 rounded-full cursor-pointer font-medium" onclick="showPhotoModal('bp')">
+                      <i class="fas fa-camera mr-1"></i>拍血压计
+                    </div>
+                    <div class="bg-green-100 text-green-600 text-xs px-3 py-1.5 rounded-full cursor-pointer font-medium" onclick="showPhotoModal('meal')">
+                      <i class="fas fa-utensils mr-1"></i>拍餐食
+                    </div>
+                  </div>
+                </div>
                 <div class="px-4 space-y-3">
                   <div class="bg-white rounded-2xl p-5 shadow-sm">
                     <div class="flex items-center gap-3 mb-3">
@@ -1292,6 +1416,104 @@ function doCheckin() {
     card.style.transform = 'scale(1.02)';
     setTimeout(function() { card.style.transform = 'scale(1)'; }, 300);
   }
+}
+
+// ===== 老人端深化：拍照识别 =====
+function showPhotoModal(type) {
+  var modal = document.getElementById(type === 'bp' ? 'photoBpModal' : 'photoMealModal');
+  if (modal) modal.classList.remove('hidden');
+}
+
+function closePhotoModal(type) {
+  var modal = document.getElementById(type === 'bp' ? 'photoBpModal' : 'photoMealModal');
+  if (modal) modal.classList.add('hidden');
+}
+
+function simulateBpPhoto() {
+  // 关闭拍照弹窗，显示识别中...
+  closePhotoModal('bp');
+  // 模拟识别过程
+  setTimeout(function() {
+    var now = new Date();
+    var timeStr = now.getHours() + ':' + String(now.getMinutes()).padStart(2, '0');
+    document.getElementById('bpResultTime').textContent = timeStr;
+    // 随机生成血压数据（模拟识别）
+    var systolic = 118 + Math.floor(Math.random() * 20) - 5;
+    var diastolic = 75 + Math.floor(Math.random() * 15) - 5;
+    var pulse = 68 + Math.floor(Math.random() * 15) - 3;
+    document.getElementById('bpResultValue').textContent = systolic + ' / ' + diastolic;
+    document.getElementById('bpResultPulse').textContent = pulse;
+    // 显示结果弹窗
+    var resultModal = document.getElementById('bpResultModal');
+    if (resultModal) resultModal.classList.remove('hidden');
+  }, 800);
+}
+
+function confirmBpRecord() {
+  var resultModal = document.getElementById('bpResultModal');
+  if (resultModal) resultModal.classList.add('hidden');
+  // 更新健康页的血压数据
+  var bpValue = document.getElementById('bpResultValue').textContent;
+  var pulseValue = document.getElementById('bpResultPulse').textContent;
+  // 找到健康页的血压和心率卡片并更新
+  var healthPage = document.getElementById('mp-elder-health');
+  if (healthPage) {
+    var bpCard = healthPage.querySelectorAll('.bg-white.rounded-2xl')[2]; // 血压卡片
+    var pulseCard = healthPage.querySelectorAll('.bg-white.rounded-2xl')[1]; // 心率卡片
+    if (bpCard) {
+      var bpText = bpCard.querySelector('.text-2xl');
+      if (bpText) bpText.innerHTML = bpValue + ' <span class="text-sm font-normal text-gray-500">mmHg</span>';
+    }
+    if (pulseCard) {
+      var pulseText = pulseCard.querySelector('.text-2xl');
+      if (pulseText) pulseText.innerHTML = pulseValue + ' <span class="text-sm font-normal text-gray-500">bpm</span>';
+    }
+  }
+  // 显示成功提示
+  showToast('血压数据已保存');
+}
+
+function simulateMealPhoto() {
+  closePhotoModal('meal');
+  setTimeout(function() {
+    var now = new Date();
+    var timeStr = '今天 ' + now.getHours() + ':' + String(now.getMinutes()).padStart(2, '0');
+    document.getElementById('mealResultTime').textContent = timeStr;
+    // 随机生成餐食识别结果
+    var meals = [
+      { tags: ['米饭', '清炒时蔬', '红烧豆腐', '鸡蛋汤'], cal: '约 480 kcal' },
+      { tags: ['小米粥', '包子', '咸鸭蛋', '豆浆'], cal: '约 520 kcal' },
+      { tags: ['米饭', '红烧肉', '炒青菜', '紫菜蛋花汤'], cal: '约 680 kcal' }
+    ];
+    var meal = meals[Math.floor(Math.random() * meals.length)];
+    var tagsHtml = meal.tags.map(function(t) { return '<span class="bg-white text-green-700 text-xs px-2 py-1 rounded-full border border-green-200">' + t + '</span>'; }).join('');
+    document.getElementById('mealResultTags').innerHTML = tagsHtml;
+    document.getElementById('mealResultCal').textContent = meal.cal;
+    var resultModal = document.getElementById('mealResultModal');
+    if (resultModal) resultModal.classList.remove('hidden');
+  }, 800);
+}
+
+function closeMealResult() {
+  var resultModal = document.getElementById('mealResultModal');
+  if (resultModal) resultModal.classList.add('hidden');
+  // 重新打开拍照弹窗
+  showPhotoModal('meal');
+}
+
+function confirmMealRecord() {
+  var resultModal = document.getElementById('mealResultModal');
+  if (resultModal) resultModal.classList.add('hidden');
+  showToast('饮食记录已保存');
+}
+
+function showToast(msg) {
+  var toast = document.createElement('div');
+  toast.className = 'fixed top-4 left-1/2 transform -translate-x-1/2 bg-green-500 text-white text-sm px-4 py-2 rounded-full shadow-lg z-50';
+  toast.style.animation = 'fadeIn 0.3s ease';
+  toast.textContent = msg;
+  document.body.appendChild(toast);
+  setTimeout(function() { toast.remove(); }, 2000);
 }
 
 // ===== 老人端深化：待办事项 =====
