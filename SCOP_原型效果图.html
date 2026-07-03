@@ -500,17 +500,7 @@
 
               <!-- 老人端子页面: 健康 -->
               <div class="miniapp-page" id="mp-elder-health">
-                <div class="px-4 pt-4 pb-2 flex items-center justify-between">
-                  <div class="text-lg font-medium text-gray-800">健康数据</div>
-                  <div class="flex gap-2">
-                    <div class="bg-orange-100 text-orange-600 text-xs px-3 py-1.5 rounded-full cursor-pointer font-medium" onclick="showPhotoModal('bp')">
-                      <i class="fas fa-camera mr-1"></i>拍血压计
-                    </div>
-                    <div class="bg-green-100 text-green-600 text-xs px-3 py-1.5 rounded-full cursor-pointer font-medium" onclick="showPhotoModal('meal')">
-                      <i class="fas fa-utensils mr-1"></i>拍餐食
-                    </div>
-                  </div>
-                </div>
+                <div class="px-4 pt-4 pb-2"><div class="text-lg font-medium text-gray-800">健康数据</div></div>
                 <div class="px-4 space-y-3">
                   <div class="bg-white rounded-2xl p-5 shadow-sm">
                     <div class="flex items-center gap-3 mb-3">
@@ -536,6 +526,27 @@
                     <div><div class="text-sm text-gray-500">睡眠</div><div class="text-2xl font-bold">7h 12m</div></div>
                     <div class="ml-auto text-xs text-gray-400">深度睡眠 3h 8m</div>
                   </div>
+                </div>
+
+                <!-- 健康数据下方：拍照功能区（适老化大按钮） -->
+                <div class="px-4 mt-5">
+                  <div class="text-sm font-medium text-gray-700 mb-3 flex items-center gap-2">
+                    <i class="fas fa-camera text-blue-500"></i>
+                    <span>拍照记录健康数据</span>
+                  </div>
+                  <div class="grid grid-cols-2 gap-3">
+                    <div class="rounded-2xl p-5 text-center cursor-pointer active:scale-95 transition-transform shadow-md" style="background:linear-gradient(135deg,#fed7aa,#fdba74);" onclick="showPhotoModal('bp')">
+                      <div class="text-4xl mb-2"><i class="fas fa-camera" style="color:#ea580c;"></i></div>
+                      <div class="text-lg font-bold" style="color:#9a3412;">拍血压计</div>
+                      <div class="text-xs mt-1" style="color:#c2410c;">对准屏幕拍照</div>
+                    </div>
+                    <div class="rounded-2xl p-5 text-center cursor-pointer active:scale-95 transition-transform shadow-md" style="background:linear-gradient(135deg,#bbf7d0,#86efac);" onclick="showPhotoModal('meal')">
+                      <div class="text-4xl mb-2"><i class="fas fa-utensils" style="color:#16a34a;"></i></div>
+                      <div class="text-lg font-bold" style="color:#14532d;">拍餐食</div>
+                      <div class="text-xs mt-1" style="color:#15803d;">记录用餐情况</div>
+                    </div>
+                  </div>
+                  <div class="text-xs text-gray-400 text-center mt-2"><i class="fas fa-hand-pointer mr-1"></i>点击大按钮开始拍照</div>
                 </div>
               </div>
 
