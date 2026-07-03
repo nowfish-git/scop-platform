@@ -1,0 +1,14 @@
+{
+  "name": "@scop/web-station",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "SCOP 工作站端 (React 18 + Ant Design 5)",
+  "scripts": {
+    "dev": "echo 'M0 skeleton: web-station dev pending (M1.1)'",
+    "build": "echo 'M0 skeleton: web-station build pending (M1.1)'",
+    "lint": "echo 'M0 skeleton: web-station lint pending (M1.1)'",
+    "typecheck": "echo 'M0 skeleton: web-station typecheck pending (M1.1)'",
+    "test": "echo 'M0 skeleton: web-station test pending (M1.1)'"
+  }
+}

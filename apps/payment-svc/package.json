@@ -1,0 +1,13 @@
+{
+  "name": "@scop/payment-svc",
+  "version": "0.0.0",
+  "private": true,
+  "description": "SCOP 支付中心微服务",
+  "scripts": {
+    "dev": "echo 'M0 skeleton: payment-svc dev pending (M3)'",
+    "build": "echo 'M0 skeleton: payment-svc build pending (M3)'",
+    "lint": "echo 'M0 skeleton: payment-svc lint pending (M3)'",
+    "typecheck": "echo 'M0 skeleton: payment-svc typecheck pending (M3)'",
+    "test": "echo 'M0 skeleton: payment-svc test pending (M3)'"
+  }
+}

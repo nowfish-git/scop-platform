@@ -1,0 +1,13 @@
+{
+  "name": "@scop/market-svc",
+  "version": "0.0.0",
+  "private": true,
+  "description": "SCOP 商城中心微服务",
+  "scripts": {
+    "dev": "echo 'M0 skeleton: market-svc dev pending (M3)'",
+    "build": "echo 'M0 skeleton: market-svc build pending (M3)'",
+    "lint": "echo 'M0 skeleton: market-svc lint pending (M3)'",
+    "typecheck": "echo 'M0 skeleton: market-svc typecheck pending (M3)'",
+    "test": "echo 'M0 skeleton: market-svc test pending (M3)'"
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "name": "@scop/miniapp-family",
+  "version": "0.0.0",
+  "private": true,
+  "description": "SCOP 家属端小程序 (Taro 4 + React + NutUI)",
+  "scripts": {
+    "dev:weapp": "echo 'M0 skeleton: miniapp-family dev pending (M3)'",
+    "build:weapp": "echo 'M0 skeleton: miniapp-family build pending (M3)'",
+    "lint": "echo 'M0 skeleton: miniapp-family lint pending (M3)'",
+    "typecheck": "echo 'M0 skeleton: miniapp-family typecheck pending (M3)'"
+  }
+}

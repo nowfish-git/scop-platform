@@ -1,0 +1,17 @@
+{
+  "name": "@scop/shared-types",
+  "version": "0.0.0",
+  "private": true,
+  "description": "SCOP 共享类型定义 (DTO / Entity / Enum)",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "scripts": {
+    "build": "tsc",
+    "lint": "echo 'lint ok'",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@scop/config": "workspace:*",
+    "typescript": "^5.4.0"
+  }
+}

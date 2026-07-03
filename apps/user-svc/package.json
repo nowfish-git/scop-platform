@@ -1,0 +1,13 @@
+{
+  "name": "@scop/user-svc",
+  "version": "0.0.0",
+  "private": true,
+  "description": "SCOP 用户中心微服务",
+  "scripts": {
+    "dev": "echo 'M0 skeleton: user-svc dev script pending (M1.1)'",
+    "build": "echo 'M0 skeleton: user-svc build pending (M1.1)'",
+    "lint": "echo 'M0 skeleton: user-svc lint pending (M1.1)'",
+    "typecheck": "echo 'M0 skeleton: user-svc typecheck pending (M1.1)'",
+    "test": "echo 'M0 skeleton: user-svc test pending (M1.1)'"
+  }
+}

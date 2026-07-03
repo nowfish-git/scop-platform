@@ -1,0 +1,14 @@
+{
+  "name": "@scop/web-admin",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "SCOP 运营后台 (React 18 + Ant Design Pro 5)",
+  "scripts": {
+    "dev": "echo 'M0 skeleton: web-admin dev pending (M2)'",
+    "build": "echo 'M0 skeleton: web-admin build pending (M2)'",
+    "lint": "echo 'M0 skeleton: web-admin lint pending (M2)'",
+    "typecheck": "echo 'M0 skeleton: web-admin typecheck pending (M2)'",
+    "test": "echo 'M0 skeleton: web-admin test pending (M2)'"
+  }
+}

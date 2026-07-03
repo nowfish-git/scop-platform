@@ -1,0 +1,13 @@
+{
+  "name": "@scop/notify-svc",
+  "version": "0.0.0",
+  "private": true,
+  "description": "SCOP 消息中心微服务",
+  "scripts": {
+    "dev": "echo 'M0 skeleton: notify-svc dev pending (M2)'",
+    "build": "echo 'M0 skeleton: notify-svc build pending (M2)'",
+    "lint": "echo 'M0 skeleton: notify-svc lint pending (M2)'",
+    "typecheck": "echo 'M0 skeleton: notify-svc typecheck pending (M2)'",
+    "test": "echo 'M0 skeleton: notify-svc test pending (M2)'"
+  }
+}

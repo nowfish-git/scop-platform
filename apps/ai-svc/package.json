@@ -1,0 +1,13 @@
+{
+  "name": "@scop/ai-svc",
+  "version": "0.0.0",
+  "private": true,
+  "description": "SCOP AI 中心微服务",
+  "scripts": {
+    "dev": "echo 'M0 skeleton: ai-svc dev pending (M3)'",
+    "build": "echo 'M0 skeleton: ai-svc build pending (M3)'",
+    "lint": "echo 'M0 skeleton: ai-svc lint pending (M3)'",
+    "typecheck": "echo 'M0 skeleton: ai-svc typecheck pending (M3)'",
+    "test": "echo 'M0 skeleton: ai-svc test pending (M3)'"
+  }
+}

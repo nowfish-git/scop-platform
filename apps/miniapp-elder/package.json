@@ -1,0 +1,12 @@
+{
+  "name": "@scop/miniapp-elder",
+  "version": "0.0.0",
+  "private": true,
+  "description": "SCOP 老人端小程序 (Taro 4 + React + NutUI)",
+  "scripts": {
+    "dev:weapp": "echo 'M0 skeleton: miniapp-elder dev pending (M2)'",
+    "build:weapp": "echo 'M0 skeleton: miniapp-elder build pending (M2)'",
+    "lint": "echo 'M0 skeleton: miniapp-elder lint pending (M2)'",
+    "typecheck": "echo 'M0 skeleton: miniapp-elder typecheck pending (M2)'"
+  }
+}

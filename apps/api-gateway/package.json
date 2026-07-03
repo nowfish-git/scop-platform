@@ -1,0 +1,13 @@
+{
+  "name": "@scop/api-gateway",
+  "version": "0.0.0",
+  "private": true,
+  "description": "SCOP API 网关 (Kong / Nginx / TKE Ingress)",
+  "scripts": {
+    "dev": "echo 'M0 skeleton: api-gateway dev pending (M3)'",
+    "build": "echo 'M0 skeleton: api-gateway build pending (M3)'",
+    "lint": "echo 'M0 skeleton: api-gateway lint pending (M3)'",
+    "typecheck": "echo 'M0 skeleton: api-gateway typecheck pending (M3)'",
+    "test": "echo 'M0 skeleton: api-gateway test pending (M3)'"
+  }
+}

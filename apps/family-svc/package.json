@@ -1,0 +1,13 @@
+{
+  "name": "@scop/family-svc",
+  "version": "0.0.0",
+  "private": true,
+  "description": "SCOP 家庭中心微服务",
+  "scripts": {
+    "dev": "echo 'M0 skeleton: family-svc dev pending (M2)'",
+    "build": "echo 'M0 skeleton: family-svc build pending (M2)'",
+    "lint": "echo 'M0 skeleton: family-svc lint pending (M2)'",
+    "typecheck": "echo 'M0 skeleton: family-svc typecheck pending (M2)'",
+    "test": "echo 'M0 skeleton: family-svc test pending (M2)'"
+  }
+}

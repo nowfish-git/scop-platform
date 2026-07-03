@@ -1,0 +1,13 @@
+{
+  "name": "@scop/data-svc",
+  "version": "0.0.0",
+  "private": true,
+  "description": "SCOP 数据中心微服务",
+  "scripts": {
+    "dev": "echo 'M0 skeleton: data-svc dev pending (M3)'",
+    "build": "echo 'M0 skeleton: data-svc build pending (M3)'",
+    "lint": "echo 'M0 skeleton: data-svc lint pending (M3)'",
+    "typecheck": "echo 'M0 skeleton: data-svc typecheck pending (M3)'",
+    "test": "echo 'M0 skeleton: data-svc test pending (M3)'"
+  }
+}

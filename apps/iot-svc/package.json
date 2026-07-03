@@ -1,0 +1,13 @@
+{
+  "name": "@scop/iot-svc",
+  "version": "0.0.0",
+  "private": true,
+  "description": "SCOP IoT 中心微服务",
+  "scripts": {
+    "dev": "echo 'M0 skeleton: iot-svc dev pending (M3)'",
+    "build": "echo 'M0 skeleton: iot-svc build pending (M3)'",
+    "lint": "echo 'M0 skeleton: iot-svc lint pending (M3)'",
+    "typecheck": "echo 'M0 skeleton: iot-svc typecheck pending (M3)'",
+    "test": "echo 'M0 skeleton: iot-svc test pending (M3)'"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "name": "@scop/community-svc",
+  "version": "0.0.0",
+  "private": true,
+  "description": "SCOP 社区中心微服务",
+  "scripts": {
+    "dev": "echo 'M0 skeleton: community-svc dev pending (M2)'",
+    "build": "echo 'M0 skeleton: community-svc build pending (M2)'",
+    "lint": "echo 'M0 skeleton: community-svc lint pending (M2)'",
+    "typecheck": "echo 'M0 skeleton: community-svc typecheck pending (M2)'",
+    "test": "echo 'M0 skeleton: community-svc test pending (M2)'"
+  }
+}
