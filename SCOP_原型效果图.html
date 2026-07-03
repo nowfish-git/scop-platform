@@ -409,6 +409,100 @@
                 </div>
               </div>
 
+              <!-- 服务下单弹窗：订餐 -->
+              <div class="modal-overlay hidden" id="serviceMealModal">
+                <div class="modal-dialog" style="max-width:340px;">
+                  <div class="modal-icon" style="font-size:36px;">🍱</div>
+                  <div class="modal-title">订餐服务</div>
+                  <div class="modal-desc mb-2">选择您的用餐需求</div>
+                  <div class="space-y-2 mb-3">
+                    <div class="flex gap-2">
+                      <div class="flex-1 bg-yellow-50 text-yellow-800 text-sm py-2.5 rounded-xl text-center cursor-pointer border-2 border-yellow-200 hover:border-yellow-500 transition-colors meal-option active:scale-95" data-selected="true" onclick="selectMealOption(this)" style="border-color:#f59e0b;font-weight:600;">今日推荐</div>
+                      <div class="flex-1 bg-yellow-50 text-yellow-800 text-sm py-2.5 rounded-xl text-center cursor-pointer border-2 border-yellow-200 hover:border-yellow-500 transition-colors meal-option active:scale-95" onclick="selectMealOption(this)">预订明餐</div>
+                      <div class="flex-1 bg-yellow-50 text-yellow-800 text-sm py-2.5 rounded-xl text-center cursor-pointer border-2 border-yellow-200 hover:border-yellow-500 transition-colors meal-option active:scale-95" onclick="selectMealOption(this)">特殊饮食</div>
+                    </div>
+                  </div>
+                  <div class="bg-white rounded-xl p-3 mb-3 border border-gray-100">
+                    <div class="text-xs text-gray-500 mb-1">配送时间</div>
+                    <div class="text-sm font-medium text-gray-800">今天 12:00 · 午餐</div>
+                  </div>
+                  <div class="bg-yellow-50 rounded-xl p-3 mb-4">
+                    <div class="text-xs text-gray-500 mb-1">今日推荐菜品</div>
+                    <div class="flex flex-wrap gap-1">
+                      <span class="bg-white text-xs px-2 py-1 rounded-full border border-yellow-200">红烧鱼</span>
+                      <span class="bg-white text-xs px-2 py-1 rounded-full border border-yellow-200">时蔬炒蛋</span>
+                      <span class="bg-white text-xs px-2 py-1 rounded-full border border-yellow-200">小米粥</span>
+                    </div>
+                  </div>
+                  <div class="modal-actions">
+                    <button class="modal-btn modal-btn-cancel" onclick="closeServiceModal('meal')">取消</button>
+                    <button class="modal-btn modal-btn-confirm" onclick="confirmServiceOrder('meal')"><i class="fas fa-check mr-1"></i>确认下单</button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 服务下单弹窗：打扫 -->
+              <div class="modal-overlay hidden" id="serviceCleanModal">
+                <div class="modal-dialog" style="max-width:340px;">
+                  <div class="modal-icon" style="font-size:36px;">🧹</div>
+                  <div class="modal-title">家政打扫</div>
+                  <div class="modal-desc mb-2">选择清洁服务类型</div>
+                  <div class="space-y-2 mb-3">
+                    <div class="flex gap-2">
+                      <div class="flex-1 bg-blue-50 text-blue-800 text-sm py-2.5 rounded-xl text-center cursor-pointer border-2 border-blue-200 hover:border-blue-500 transition-colors clean-option active:scale-95" data-selected="true" onclick="selectCleanOption(this)" style="border-color:#3b82f6;font-weight:600;">日常保洁</div>
+                      <div class="flex-1 bg-blue-50 text-blue-800 text-sm py-2.5 rounded-xl text-center cursor-pointer border-2 border-blue-200 hover:border-blue-500 transition-colors clean-option active:scale-95" onclick="selectCleanOption(this)">深度清洁</div>
+                      <div class="flex-1 bg-blue-50 text-blue-800 text-sm py-2.5 rounded-xl text-center cursor-pointer border-2 border-blue-200 hover:border-blue-500 transition-colors clean-option active:scale-95" onclick="selectCleanOption(this)">衣物清洗</div>
+                    </div>
+                  </div>
+                  <div class="bg-white rounded-xl p-3 mb-3 border border-gray-100">
+                    <div class="text-xs text-gray-500 mb-1">上门时间</div>
+                    <div class="text-sm font-medium text-gray-800">明天 09:00 · 2小时</div>
+                  </div>
+                  <div class="bg-blue-50 rounded-xl p-3 mb-4">
+                    <div class="text-xs text-gray-500 mb-1">服务内容</div>
+                    <div class="text-sm text-blue-800">客厅 + 卧室 + 厨卫基础清洁</div>
+                    <div class="text-xs text-gray-500 mt-1">参考价格 ¥80 / 次</div>
+                  </div>
+                  <div class="modal-actions">
+                    <button class="modal-btn modal-btn-cancel" onclick="closeServiceModal('clean')">取消</button>
+                    <button class="modal-btn modal-btn-confirm" onclick="confirmServiceOrder('clean')"><i class="fas fa-check mr-1"></i>确认下单</button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 服务下单弹窗：陪诊 -->
+              <div class="modal-overlay hidden" id="serviceCareModal">
+                <div class="modal-dialog" style="max-width:340px;">
+                  <div class="modal-icon" style="font-size:36px;">👨‍⚕️</div>
+                  <div class="modal-title">陪诊服务</div>
+                  <div class="modal-desc mb-2">选择陪诊类型和医院</div>
+                  <div class="space-y-2 mb-3">
+                    <div class="flex gap-2">
+                      <div class="flex-1 bg-pink-50 text-pink-800 text-sm py-2.5 rounded-xl text-center cursor-pointer border-2 border-pink-200 hover:border-pink-500 transition-colors care-option active:scale-95" data-selected="true" onclick="selectCareOption(this)" style="border-color:#ec4899;font-weight:600;">门诊陪诊</div>
+                      <div class="flex-1 bg-pink-50 text-pink-800 text-sm py-2.5 rounded-xl text-center cursor-pointer border-2 border-pink-200 hover:border-pink-500 transition-colors care-option active:scale-95" onclick="selectCareOption(this)">体检陪护</div>
+                      <div class="flex-1 bg-pink-50 text-pink-800 text-sm py-2.5 rounded-xl text-center cursor-pointer border-2 border-pink-200 hover:border-pink-500 transition-colors care-option active:scale-95" onclick="selectCareOption(this)">代办取药</div>
+                    </div>
+                  </div>
+                  <div class="bg-white rounded-xl p-3 mb-3 border border-gray-100">
+                    <div class="text-xs text-gray-500 mb-1">就诊医院</div>
+                    <div class="text-sm font-medium text-gray-800">市中心医院 · 内科</div>
+                  </div>
+                  <div class="bg-white rounded-xl p-3 mb-3 border border-gray-100">
+                    <div class="text-xs text-gray-500 mb-1">就诊时间</div>
+                    <div class="text-sm font-medium text-gray-800">后天 08:30</div>
+                  </div>
+                  <div class="bg-pink-50 rounded-xl p-3 mb-4">
+                    <div class="text-xs text-gray-500 mb-1">陪诊说明</div>
+                    <div class="text-sm text-pink-800">全程陪同挂号、就诊、检查、取药</div>
+                    <div class="text-xs text-gray-500 mt-1">参考价格 ¥150 / 次</div>
+                  </div>
+                  <div class="modal-actions">
+                    <button class="modal-btn modal-btn-cancel" onclick="closeServiceModal('care')">取消</button>
+                    <button class="modal-btn modal-btn-confirm" onclick="confirmServiceOrder('care')"><i class="fas fa-check mr-1"></i>确认下单</button>
+                  </div>
+                </div>
+              </div>
+
               <!-- 老人端子页面: 首页 -->
               <div class="miniapp-page active" id="mp-elder-home">
                 <!-- 天气问候 -->
@@ -583,9 +677,12 @@
                 </div>
               </div>
 
-              <!-- 老人端子页面: 我的设备 -->
+              <!-- 老人端子页面: 我的设备（子页面，从个人中心进入） -->
               <div class="miniapp-page" id="mp-elder-device">
-                <div class="px-4 pt-4 pb-2"><div class="text-lg font-medium text-gray-800">我的设备</div></div>
+                <div class="flex items-center gap-3 px-4 pt-4 pb-2">
+                  <div class="text-lg cursor-pointer" onclick="goBackElderPage()"><i class="fas fa-arrow-left"></i></div>
+                  <div class="text-lg font-medium text-gray-800">我的设备</div>
+                </div>
                 <div class="px-4 space-y-3">
                   <!-- 设备 1：手环 -->
                   <div class="bg-white rounded-2xl p-4 shadow-sm">
@@ -645,6 +742,69 @@
                       <div class="w-2 h-2 bg-yellow-400 rounded-full" title="低电量"></div>
                     </div>
                   </div>
+                </div>
+              </div>
+
+              <!-- 老人端子页面: 服务 -->
+              <div class="miniapp-page" id="mp-elder-service">
+                <div class="px-4 pt-4 pb-2"><div class="text-lg font-medium text-gray-800">社区服务</div></div>
+                <div class="px-4 space-y-3">
+                  <!-- 订餐服务 -->
+                  <div class="rounded-2xl p-5 cursor-pointer active:scale-95 transition-transform shadow-md" style="background:linear-gradient(135deg,#fef3c7,#fde68a);" onclick="showServiceModal('meal')">
+                    <div class="flex items-center gap-4">
+                      <div class="w-14 h-14 rounded-2xl flex items-center justify-center" style="background:#fbbf24;">
+                        <i class="fas fa-utensils text-2xl" style="color:#fff;"></i>
+                      </div>
+                      <div class="flex-1">
+                        <div class="text-xl font-bold" style="color:#92400e;">订餐服务</div>
+                        <div class="text-sm" style="color:#b45309;">营养配餐送到家</div>
+                      </div>
+                      <div class="text-sm font-medium px-3 py-1.5 rounded-full" style="background:#fbbf24;color:#fff;">立即下单</div>
+                    </div>
+                    <div class="flex gap-2 mt-3">
+                      <div class="text-xs px-2 py-1 rounded-full" style="background:#fff;color:#92400e;border:1px solid #fde68a;">今日推荐</div>
+                      <div class="text-xs px-2 py-1 rounded-full" style="background:#fff;color:#92400e;border:1px solid #fde68a;">预订明餐</div>
+                      <div class="text-xs px-2 py-1 rounded-full" style="background:#fff;color:#92400e;border:1px solid #fde68a;">特殊饮食</div>
+                    </div>
+                  </div>
+                  <!-- 家政打扫 -->
+                  <div class="rounded-2xl p-5 cursor-pointer active:scale-95 transition-transform shadow-md" style="background:linear-gradient(135deg,#dbeafe,#bfdbfe);" onclick="showServiceModal('clean')">
+                    <div class="flex items-center gap-4">
+                      <div class="w-14 h-14 rounded-2xl flex items-center justify-center" style="background:#3b82f6;">
+                        <i class="fas fa-broom text-2xl" style="color:#fff;"></i>
+                      </div>
+                      <div class="flex-1">
+                        <div class="text-xl font-bold" style="color:#1e3a8a;">家政打扫</div>
+                        <div class="text-sm" style="color:#1d4ed8;">居家清洁上门服务</div>
+                      </div>
+                      <div class="text-sm font-medium px-3 py-1.5 rounded-full" style="background:#3b82f6;color:#fff;">立即下单</div>
+                    </div>
+                    <div class="flex gap-2 mt-3">
+                      <div class="text-xs px-2 py-1 rounded-full" style="background:#fff;color:#1e3a8a;border:1px solid #bfdbfe;">日常保洁</div>
+                      <div class="text-xs px-2 py-1 rounded-full" style="background:#fff;color:#1e3a8a;border:1px solid #bfdbfe;">深度清洁</div>
+                      <div class="text-xs px-2 py-1 rounded-full" style="background:#fff;color:#1e3a8a;border:1px solid #bfdbfe;">衣物清洗</div>
+                    </div>
+                  </div>
+                  <!-- 陪诊服务 -->
+                  <div class="rounded-2xl p-5 cursor-pointer active:scale-95 transition-transform shadow-md" style="background:linear-gradient(135deg,#fce7f3,#fbcfe8);" onclick="showServiceModal('care')">
+                    <div class="flex items-center gap-4">
+                      <div class="w-14 h-14 rounded-2xl flex items-center justify-center" style="background:#ec4899;">
+                        <i class="fas fa-user-nurse text-2xl" style="color:#fff;"></i>
+                      </div>
+                      <div class="flex-1">
+                        <div class="text-xl font-bold" style="color:#9d174d;">陪诊服务</div>
+                        <div class="text-sm" style="color:#be185d;">专人陪同就医</div>
+                      </div>
+                      <div class="text-sm font-medium px-3 py-1.5 rounded-full" style="background:#ec4899;color:#fff;">立即下单</div>
+                    </div>
+                    <div class="flex gap-2 mt-3">
+                      <div class="text-xs px-2 py-1 rounded-full" style="background:#fff;color:#9d174d;border:1px solid #fbcfe8;">门诊陪诊</div>
+                      <div class="text-xs px-2 py-1 rounded-full" style="background:#fff;color:#9d174d;border:1px solid #fbcfe8;">体检陪护</div>
+                      <div class="text-xs px-2 py-1 rounded-full" style="background:#fff;color:#9d174d;border:1px solid #fbcfe8;">代办取药</div>
+                    </div>
+                  </div>
+                  <!-- 服务提示 -->
+                  <div class="text-xs text-gray-400 text-center mt-2"><i class="fas fa-phone-alt mr-1"></i> 如需帮助可拨打社区服务热线 400-888-0000</div>
                 </div>
               </div>
 
@@ -730,16 +890,16 @@
             </div><!-- /phone-body -->
             <!-- 老人端 TabBar（4 Tab） -->
             <div class="phone-tabbar">
-              <div class="tab-item active" onclick="switchMiniappTab('mp-elder-', this, ['home','health','device','my'])">
+              <div class="tab-item active" onclick="switchMiniappTab('mp-elder-', this, ['home','health','service','my'])">
                 <i class="fas fa-home"></i><span>首页</span>
               </div>
-              <div class="tab-item" onclick="switchMiniappTab('mp-elder-', this, ['home','health','device','my'])">
+              <div class="tab-item" onclick="switchMiniappTab('mp-elder-', this, ['home','health','service','my'])">
                 <i class="fas fa-heartbeat"></i><span>健康</span>
               </div>
-              <div class="tab-item" onclick="switchMiniappTab('mp-elder-', this, ['home','health','device','my'])">
-                <i class="fas fa-microchip"></i><span>我的设备</span>
+              <div class="tab-item" onclick="switchMiniappTab('mp-elder-', this, ['home','health','service','my'])">
+                <i class="fas fa-concierge-bell"></i><span>服务</span>
               </div>
-              <div class="tab-item" onclick="switchMiniappTab('mp-elder-', this, ['home','health','device','my'])">
+              <div class="tab-item" onclick="switchMiniappTab('mp-elder-', this, ['home','health','service','my'])">
                 <i class="fas fa-user"></i><span>个人中心</span>
               </div>
             </div>
@@ -1381,7 +1541,7 @@ function goBackElderPage() {
     if (homePage) homePage.classList.add('active');
   }
   // 显示 TabBar（如果回到主Tab页）
-  if (!prevPageId || ['mp-elder-home','mp-elder-health','mp-elder-device','mp-elder-my'].indexOf(prevPageId) !== -1) {
+  if (!prevPageId || ['mp-elder-home','mp-elder-health','mp-elder-service','mp-elder-my'].indexOf(prevPageId) !== -1) {
     var tabbar = document.querySelector('#page-elder .phone-tabbar');
     if (tabbar) tabbar.style.display = '';
   }
@@ -1525,6 +1685,56 @@ function showToast(msg) {
   toast.textContent = msg;
   document.body.appendChild(toast);
   setTimeout(function() { toast.remove(); }, 2000);
+}
+
+// ===== 老人端深化：服务下单 =====
+function showServiceModal(type) {
+  var modal = document.getElementById('service' + type.charAt(0).toUpperCase() + type.slice(1) + 'Modal');
+  if (modal) modal.classList.remove('hidden');
+}
+
+function closeServiceModal(type) {
+  var modal = document.getElementById('service' + type.charAt(0).toUpperCase() + type.slice(1) + 'Modal');
+  if (modal) modal.classList.add('hidden');
+}
+
+function selectMealOption(el) {
+  Array.from(el.parentNode.children).forEach(function(s) {
+    s.style.borderColor = '#fde68a';
+    s.style.fontWeight = '400';
+    s.removeAttribute('data-selected');
+  });
+  el.style.borderColor = '#f59e0b';
+  el.style.fontWeight = '600';
+  el.setAttribute('data-selected', 'true');
+}
+
+function selectCleanOption(el) {
+  Array.from(el.parentNode.children).forEach(function(s) {
+    s.style.borderColor = '#bfdbfe';
+    s.style.fontWeight = '400';
+    s.removeAttribute('data-selected');
+  });
+  el.style.borderColor = '#3b82f6';
+  el.style.fontWeight = '600';
+  el.setAttribute('data-selected', 'true');
+}
+
+function selectCareOption(el) {
+  Array.from(el.parentNode.children).forEach(function(s) {
+    s.style.borderColor = '#fbcfe8';
+    s.style.fontWeight = '400';
+    s.removeAttribute('data-selected');
+  });
+  el.style.borderColor = '#ec4899';
+  el.style.fontWeight = '600';
+  el.setAttribute('data-selected', 'true');
+}
+
+function confirmServiceOrder(type) {
+  closeServiceModal(type);
+  var names = { meal: '订餐', clean: '家政打扫', care: '陪诊' };
+  showToast(names[type] + '订单已提交，工作人员将尽快联系您');
 }
 
 // ===== 老人端深化：待办事项 =====
